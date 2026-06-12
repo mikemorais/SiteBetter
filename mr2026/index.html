@@ -1,498 +1,1578 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BETTER. — Minhas Responsabilidades</title>
+<title>BETTER. — Sistema de Demandas</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500;600&display=swap');
 
-  :root {
-    --b-carvao: #1E1E1C;
-    --b-areia: #C8B89A;
-    --b-offwhite: #F5F4F0;
-    --b-branco: #FFFFFF;
-    --b-grafite: #6B6B62;
-    --b-sage: #3D7A5E;
-  }
+:root {
+  --carvao: #1E1E1C;
+  --areia: #C8B89A;
+  --offwhite: #F5F4F0;
+  --branco: #FFFFFF;
+  --grafite: #6B6B62;
+  --sage: #3D7A5E;
+  --sage-lt: rgba(61,122,94,0.10);
+  --areia-lt: rgba(200,184,154,0.15);
+  --borda: rgba(30,30,28,0.10);
+  --verde: #2D7A4F;
+  --verde-bg: rgba(45,122,79,0.09);
+  --amarelo: #9A7000;
+  --amarelo-bg: rgba(154,112,0,0.09);
+  --vermelho: #9B2E2E;
+  --vermelho-bg: rgba(155,46,46,0.09);
+  --azul: #2E5F9B;
+  --azul-bg: rgba(46,95,155,0.09);
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    font-family: 'Barlow', sans-serif;
-    background: var(--b-offwhite);
-    color: var(--b-carvao);
-  }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--offwhite);
+  color: var(--carvao);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
 
-  /* ─── HERO ─── */
-  .hero {
-    background: var(--b-carvao);
-    padding: 2.75rem 2rem 2.25rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -70px; right: -70px;
-    width: 260px; height: 260px;
-    border: 1px solid rgba(200,184,154,0.13);
-    border-radius: 50%;
-    pointer-events: none;
-  }
-  .hero-eyebrow {
-    font-size: 10px; font-weight: 600;
-    letter-spacing: 0.24em; text-transform: uppercase;
-    color: var(--b-areia); opacity: 0.7;
-    margin-bottom: 1rem;
-  }
-  .hero-logo {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900; font-size: 52px;
-    letter-spacing: -0.01em; text-transform: uppercase;
-    color: var(--b-branco); line-height: 1;
-  }
-  .hero-logo span { color: var(--b-areia); }
-  .hero-question {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 26px;
-    text-transform: uppercase; letter-spacing: 0.02em;
-    color: var(--b-areia);
-    margin-top: 1.1rem;
-  }
-  .hero-sub {
-    font-size: 13px;
-    color: rgba(245,244,240,0.55);
-    margin-top: 0.4rem;
-    max-width: 540px;
-    line-height: 1.55;
-  }
+/* ─── LOGIN SCREEN ─── */
+.login-screen {
+  position: fixed; inset: 0;
+  background: var(--carvao);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2000;
+}
+.login-box { width: 300px; text-align: center; }
+.login-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 44px;
+  text-transform: uppercase; color: var(--branco);
+  letter-spacing: -0.01em; line-height: 1;
+}
+.login-logo span { color: var(--areia); }
+.login-sub {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(200,184,154,0.6);
+  margin: 6px 0 24px;
+}
+.login-input {
+  width: 100%;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  padding: 11px 14px;
+  border-radius: 4px;
+  border: 0.5px solid rgba(200,184,154,0.3);
+  background: rgba(255,255,255,0.04);
+  color: var(--branco);
+  outline: none; text-align: center;
+  transition: border-color 0.15s;
+}
+.login-input:focus { border-color: var(--sage); }
+.login-input::placeholder { color: rgba(245,244,240,0.3); }
+.login-btn {
+  width: 100%; margin-top: 10px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 11px; border-radius: 4px;
+  border: none; background: var(--sage); color: var(--branco);
+  cursor: pointer; transition: background 0.15s;
+}
+.login-btn:hover { background: #336950; }
+.login-btn:disabled { opacity: 0.5; cursor: wait; }
+.login-msg { font-size: 11.5px; margin-top: 12px; min-height: 16px; color: rgba(245,244,240,0.5); }
+.login-msg.erro { color: #d98080; }
 
-  /* ─── TABS ─── */
-  .tabs {
-    display: flex;
-    gap: 8px;
-    padding: 1.25rem 2rem 0;
-    flex-wrap: wrap;
-  }
-  .tab {
-    font-family: 'Barlow', sans-serif;
-    font-size: 11px; font-weight: 600;
-    letter-spacing: 0.16em; text-transform: uppercase;
-    padding: 9px 18px;
-    border-radius: 4px;
-    border: 0.5px solid rgba(30,30,28,0.18);
-    background: var(--b-branco);
-    color: var(--b-carvao);
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s, border-color 0.15s;
-  }
-  .tab:hover { border-color: var(--b-sage); }
-  .tab:focus-visible { outline: 2px solid var(--b-sage); outline-offset: 2px; }
-  .tab.active {
-    background: var(--b-sage);
-    border-color: var(--b-sage);
-    color: var(--b-branco);
-  }
+/* ─── TOPBAR ─── */
+.topbar {
+  background: var(--carvao);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 52px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.topbar-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 22px;
+  text-transform: uppercase;
+  color: var(--branco);
+  letter-spacing: 0.01em;
+  flex-shrink: 0;
+}
+.topbar-logo span { color: var(--areia); }
+.topbar-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(200,184,154,0.6);
+}
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.day-badge {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--areia);
+  border: 0.5px solid rgba(200,184,154,0.3);
+  padding: 4px 10px;
+  border-radius: 3px;
+}
 
-  /* ─── SUMMARY STRIP ─── */
-  .summary {
-    margin: 1.25rem 2rem 0;
-    background: var(--b-branco);
-    border: 0.5px solid rgba(30,30,28,0.1);
-    border-radius: 8px;
-    padding: 1rem 1.25rem;
-    display: flex;
-    gap: 1.75rem;
-    flex-wrap: wrap;
-    align-items: baseline;
-  }
-  .summary-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900; font-size: 28px;
-    text-transform: uppercase; line-height: 1;
-  }
-  .summary-stat {
-    font-size: 12px; color: var(--b-grafite);
-    letter-spacing: 0.04em;
-  }
-  .summary-stat strong {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 19px;
-    color: var(--b-carvao); margin-right: 4px;
-  }
+/* ─── SYNC INDICATOR ─── */
+.sync-badge {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(245,244,240,0.45);
+}
+.sync-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--grafite); }
+.sync-badge.ok .sync-dot { background: var(--sage); }
+.sync-badge.syncing .sync-dot { background: var(--amarelo); animation: pulse 1s infinite; }
+.sync-badge.err .sync-dot { background: var(--vermelho); }
+@keyframes pulse { 50% { opacity: 0.3; } }
 
-  /* ─── SECTIONS ─── */
-  .role-section { padding: 1.75rem 2rem 0; }
-  .role-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 21px;
-    text-transform: uppercase; letter-spacing: 0.02em;
-    padding-bottom: 0.55rem;
-    border-bottom: 1px solid rgba(30,30,28,0.12);
-    margin-bottom: 0.9rem;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .role-title .bar {
-    display: inline-block; width: 26px; height: 2px;
-    background: var(--b-areia); flex-shrink: 0;
-  }
-  .role-desc {
-    font-size: 12px; color: var(--b-grafite);
-    margin: -0.4rem 0 0.9rem; line-height: 1.5;
-  }
+/* ─── GOOGLE CALENDAR AUTH ─── */
+.gcal-btn {
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 3px;
+  border: 0.5px solid rgba(200,184,154,0.3);
+  background: transparent;
+  color: var(--areia);
+  cursor: pointer;
+  transition: all 0.12s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.gcal-btn:hover { border-color: var(--sage); color: var(--sage); }
+.gcal-btn.connected {
+  background: var(--sage-lt);
+  border-color: var(--sage);
+  color: var(--sage);
+}
+.gcal-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--grafite); flex-shrink: 0; }
+.gcal-btn.connected .gcal-dot { background: var(--sage); }
 
-  /* ─── CARDS ─── */
-  .cards { display: flex; flex-direction: column; gap: 7px; }
-  .card {
-    background: var(--b-branco);
-    border: 0.5px solid rgba(30,30,28,0.09);
-    border-radius: 6px;
-    padding: 0.7rem 0.95rem;
-    display: flex; align-items: flex-start; gap: 12px;
-  }
-  .card-tag {
-    flex-shrink: 0;
-    font-size: 9px; font-weight: 600;
-    letter-spacing: 0.13em; text-transform: uppercase;
-    padding: 4px 9px; border-radius: 3px;
-    margin-top: 1px;
-    min-width: 88px; text-align: center;
-  }
-  .tag-ge { background: rgba(30,30,28,0.07); color: var(--b-grafite); }
-  .tag-mg { background: rgba(61,122,94,0.12); color: var(--b-sage); }
-  .tag-re { background: rgba(200,184,154,0.2); color: #8a7558; }
-  .tag-lc { background: rgba(200,184,154,0.12); color: var(--b-grafite); }
-  .card-body { flex: 1; }
-  .card-process {
-    font-size: 14px; font-weight: 600;
-    color: var(--b-carvao); line-height: 1.35;
-  }
-  .card-detail {
-    font-size: 12px; color: var(--b-grafite);
-    line-height: 1.5; margin-top: 2px;
-  }
-  .card-detail strong { font-weight: 600; color: var(--b-carvao); }
-  .empty {
-    font-size: 13px; color: var(--b-grafite);
-    background: var(--b-branco);
-    border: 0.5px dashed rgba(30,30,28,0.15);
-    border-radius: 6px; padding: 0.8rem 1rem;
-  }
+/* ─── CALENDAR TOGGLE ON CARDS ─── */
+.dc-cal-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--grafite);
+  cursor: pointer;
+  padding: 6px 14px;
+  border-top: 0.5px solid var(--borda);
+  background: rgba(46,95,155,0.03);
+  transition: background 0.12s;
+  user-select: none;
+}
+.dc-cal-toggle:hover { background: rgba(46,95,155,0.06); }
+.dc-cal-checkbox {
+  width: 14px; height: 14px;
+  border-radius: 3px;
+  border: 1.5px solid var(--borda);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.12s;
+}
+.dc-cal-checkbox.checked { background: var(--azul); border-color: var(--azul); }
+.dc-cal-checkbox.checked::after { content: '✓'; color: white; font-size: 9px; font-weight: 700; }
+.dc-cal-toggle.in-cal { color: var(--azul); }
 
-  /* ─── OVERVIEW TABLE ─── */
-  .overview-table {
-    width: 100%; border-collapse: collapse;
-    font-size: 13px; background: var(--b-branco);
-    border: 0.5px solid rgba(30,30,28,0.1);
-    border-radius: 8px; overflow: hidden;
-  }
-  .overview-wrap { overflow-x: auto; border-radius: 8px; }
-  .overview-table th {
-    font-size: 10px; font-weight: 600;
-    letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--b-areia);
-    background: var(--b-carvao);
-    text-align: left; padding: 0.7rem 0.85rem;
-  }
-  .overview-table td {
-    padding: 0.55rem 0.85rem;
-    border-bottom: 0.5px solid rgba(30,30,28,0.06);
-    vertical-align: top; line-height: 1.45;
-  }
-  .overview-table tr:last-child td { border-bottom: none; }
-  .ov-area {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 15px;
-    text-transform: uppercase; letter-spacing: 0.04em;
-    background: rgba(200,184,154,0.12) !important;
-    color: #8a7558;
-  }
-  .ov-owner { font-weight: 600; white-space: nowrap; }
-  .ov-muted { color: var(--b-grafite); font-size: 12px; }
+/* ─── MODAL ─── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(30,30,28,0.45);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.modal-box {
+  background: var(--branco);
+  border-radius: 8px;
+  padding: 20px;
+  width: 280px;
+  box-shadow: 0 8px 32px rgba(30,30,28,0.2);
+}
+.modal-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 14px;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--carvao); margin-bottom: 4px;
+}
+.modal-subtitle { font-size: 12px; color: var(--grafite); margin-bottom: 14px; }
+.modal-row { margin-bottom: 12px; }
+.modal-actions { display: flex; gap: 8px; margin-top: 16px; }
+.modal-btn {
+  flex: 1;
+  font-family: 'Barlow', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 9px; border-radius: 4px; cursor: pointer;
+  transition: background 0.12s;
+}
+.modal-btn.cancel { background: transparent; border: 0.5px solid var(--borda); color: var(--grafite); }
+.modal-btn.cancel:hover { border-color: var(--vermelho); color: var(--vermelho); }
+.modal-btn.confirm { background: var(--azul); border: none; color: var(--branco); }
+.modal-btn.confirm:hover { background: #244e80; }
+.modal-btn.danger { background: var(--vermelho); border: none; color: var(--branco); }
 
-  /* ─── RULES ─── */
-  .rules { padding: 2rem 2rem 0; }
-  .rules-box {
-    background: var(--b-carvao);
-    border-radius: 8px;
-    padding: 1.5rem 1.5rem 1.4rem;
-    position: relative; overflow: hidden;
-  }
-  .rules-box::before {
-    content: '';
-    position: absolute;
-    bottom: -50px; right: -50px;
-    width: 160px; height: 160px;
-    border: 1px solid rgba(200,184,154,0.1);
-    border-radius: 50%;
-  }
-  .rules-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 18px;
-    text-transform: uppercase; letter-spacing: 0.04em;
-    color: var(--b-areia);
-    margin-bottom: 0.9rem;
-  }
-  .rule-item {
-    display: flex; gap: 10px;
-    font-size: 12.5px; color: rgba(245,244,240,0.78);
-    line-height: 1.6; padding: 4px 0;
-    position: relative;
-  }
-  .rule-item::before {
-    content: '';
-    display: block; width: 14px; height: 1px;
-    background: rgba(200,184,154,0.4);
-    flex-shrink: 0; margin-top: 9px;
-  }
-  .rule-item strong { color: var(--b-branco); font-weight: 600; }
-  .rule-15h {
-    margin-top: 0.9rem;
-    background: rgba(61,122,94,0.12);
-    border: 0.5px solid rgba(61,122,94,0.3);
-    border-radius: 6px;
-    padding: 0.75rem 0.95rem;
-    font-size: 12.5px; color: rgba(245,244,240,0.85);
-    line-height: 1.6; position: relative;
-  }
-  .rule-15h strong { color: var(--b-sage); text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; }
+/* ─── DATE NAVIGATION ─── */
+.date-bar {
+  background: var(--branco);
+  border-bottom: 0.5px solid var(--borda);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.date-nav-btn {
+  width: 30px; height: 30px;
+  border-radius: 4px;
+  border: 0.5px solid var(--borda);
+  background: var(--branco);
+  color: var(--carvao);
+  font-size: 14px; font-weight: 700;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.12s;
+  flex-shrink: 0;
+}
+.date-nav-btn:hover { border-color: var(--sage); color: var(--sage); }
+.date-current {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 15px;
+  text-transform: capitalize;
+  color: var(--carvao);
+  flex: 1; text-align: center; min-width: 140px;
+  cursor: pointer; padding: 4px 8px; border-radius: 4px;
+  transition: background 0.12s;
+}
+.date-current:hover { background: var(--areia-lt); }
+.date-current .date-year { font-size: 11px; font-weight: 600; color: var(--grafite); margin-left: 4px; }
+#datePicker { position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
+.btn-today {
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 7px 12px; border-radius: 4px;
+  border: 0.5px solid var(--borda);
+  background: transparent; color: var(--grafite);
+  cursor: pointer; transition: all 0.12s; flex-shrink: 0;
+}
+.btn-today:hover { border-color: var(--sage); color: var(--sage); }
+.btn-today.is-today { border-color: var(--sage); color: var(--sage); background: var(--sage-lt); }
 
-  /* ─── FOOTER ─── */
-  .footer {
-    margin: 2.25rem 2rem 0;
-    padding: 1.1rem 0 2.25rem;
-    border-top: 1px solid rgba(30,30,28,0.1);
-    display: flex; justify-content: space-between;
-    align-items: center; flex-wrap: wrap; gap: 8px;
-  }
-  .footer-logo {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900; font-size: 17px;
-    text-transform: uppercase; color: var(--b-carvao);
-    letter-spacing: -0.01em;
-  }
-  .footer-logo span { color: var(--b-areia); }
-  .footer-meta {
-    font-size: 10.5px; color: var(--b-grafite);
-    letter-spacing: 0.05em; text-align: right; line-height: 1.5;
-  }
+/* ─── PERSON FILTER ─── */
+.filter-bar {
+  background: var(--branco);
+  border-bottom: 0.5px solid var(--borda);
+  padding: 10px 20px;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.filter-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--grafite); margin-right: 4px;
+}
+.filter-btn {
+  font-family: 'Barlow', sans-serif;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 3px;
+  border: 0.5px solid var(--borda);
+  background: transparent; color: var(--grafite);
+  cursor: pointer; transition: all 0.14s;
+}
+.filter-btn:hover { border-color: var(--sage); color: var(--sage); }
+.filter-btn.active-all { background: var(--carvao); border-color: var(--carvao); color: var(--branco); }
+.filter-btn.active-mike { background: var(--carvao); border-color: var(--carvao); color: var(--branco); }
+.filter-btn.active-leonam { background: var(--sage); border-color: var(--sage); color: var(--branco); }
+.filter-btn.active-beatriz { background: #8a7558; border-color: #8a7558; color: var(--branco); }
 
-  @media (max-width: 560px) {
-    .hero, .tabs, .role-section, .rules, .footer { padding-left: 1.1rem; padding-right: 1.1rem; }
-    .summary { margin-left: 1.1rem; margin-right: 1.1rem; gap: 1rem; }
-    .hero-logo { font-size: 42px; }
-    .card { flex-direction: column; gap: 6px; }
-    .card-tag { min-width: 0; }
-  }
+/* ─── LAYOUT ─── */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 0;
+  min-height: calc(100vh - 92px);
+}
+.main { padding: 20px; border-right: 0.5px solid var(--borda); overflow-y: auto; }
+
+/* ─── SECTION HEADER ─── */
+.sec-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px; margin-top: 24px;
+}
+.sec-header:first-child { margin-top: 0; }
+.sec-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 13px;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--grafite);
+  display: flex; align-items: center; gap: 8px;
+}
+.sec-title::before { content: ''; display: block; width: 20px; height: 1.5px; background: var(--areia); }
+.sec-count {
+  font-size: 10px; font-weight: 600;
+  background: var(--areia-lt); color: #8a7558;
+  padding: 2px 8px; border-radius: 20px;
+}
+
+/* ─── DEMAND CARD ─── */
+.demand-card {
+  background: var(--branco);
+  border: 0.5px solid var(--borda);
+  border-radius: 6px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.14s;
+}
+.demand-card:hover { box-shadow: 0 2px 8px rgba(30,30,28,0.07); }
+.demand-card.status-done { opacity: 0.6; }
+.demand-card.status-done .dc-title { text-decoration: line-through; color: var(--grafite); }
+.demand-card.status-waiting { border-left: 3px solid var(--amarelo); }
+.demand-card.status-late    { border-left: 3px solid var(--vermelho); }
+.demand-card.status-done    { border-left: 3px solid var(--verde); }
+.demand-card.status-pending { border-left: 3px solid var(--borda); }
+
+.dc-main { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; }
+.dc-checkbox {
+  width: 18px; height: 18px;
+  border-radius: 3px;
+  border: 1.5px solid var(--borda);
+  flex-shrink: 0; margin-top: 1px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.12s;
+  background: transparent;
+}
+.dc-checkbox:hover { border-color: var(--sage); }
+.dc-checkbox.checked { background: var(--verde); border-color: var(--verde); }
+.dc-checkbox.checked::after { content: '✓'; color: white; font-size: 11px; font-weight: 700; }
+.dc-checkbox.disabled { cursor: not-allowed; opacity: 0.4; }
+
+.dc-body { flex: 1; min-width: 0; }
+.dc-meta { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap; }
+.dc-who {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 2px;
+}
+.who-mike    { background: var(--carvao); color: var(--branco); }
+.who-leonam  { background: var(--sage-lt); color: var(--sage); }
+.who-beatriz { background: var(--areia-lt); color: #8a7558; }
+.dc-area {
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.10em; text-transform: uppercase;
+  color: var(--grafite);
+}
+.dc-due { font-size: 10px; font-weight: 600; color: var(--grafite); }
+.dc-due.passed { color: var(--vermelho); }
+.dc-origin {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--vermelho-bg); color: var(--vermelho);
+  padding: 2px 7px; border-radius: 2px;
+}
+.dc-title { font-size: 13.5px; font-weight: 600; color: var(--carvao); line-height: 1.35; margin-bottom: 3px; }
+.dc-desc { font-size: 12px; color: var(--grafite); line-height: 1.4; }
+.dc-del {
+  margin-left: auto;
+  width: 18px; height: 18px;
+  border-radius: 3px;
+  border: none; background: transparent;
+  color: var(--grafite); font-size: 13px; line-height: 1;
+  cursor: pointer; flex-shrink: 0;
+  transition: all 0.12s;
+}
+.dc-del:hover { background: var(--vermelho-bg); color: var(--vermelho); }
+
+/* ─── CHAIN ─── */
+.dc-chain {
+  padding: 8px 14px;
+  background: rgba(30,30,28,0.025);
+  border-top: 0.5px solid var(--borda);
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; color: var(--grafite);
+}
+.chain-arrow { color: var(--areia); font-size: 13px; }
+.chain-next-who {
+  font-weight: 700; font-size: 10px;
+  letter-spacing: 0.10em; text-transform: uppercase;
+}
+.chain-next-who.mike    { color: var(--carvao); }
+.chain-next-who.leonam  { color: var(--sage); }
+.chain-next-who.beatriz { color: #8a7558; }
+
+/* ─── STATUS BADGE ─── */
+.status-badge {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.10em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 2px;
+}
+.sb-pending  { background: var(--areia-lt); color: #8a7558; }
+.sb-waiting  { background: var(--amarelo-bg); color: var(--amarelo); }
+.sb-late     { background: var(--vermelho-bg); color: var(--vermelho); }
+.sb-done     { background: var(--verde-bg); color: var(--verde); }
+
+/* ─── SIDEBAR ─── */
+.sidebar { padding: 20px; background: var(--branco); overflow-y: auto; }
+.sidebar-section { margin-bottom: 24px; }
+.sidebar-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 13px;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--grafite); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sidebar-title::before { content: ''; display: block; width: 16px; height: 1.5px; background: var(--areia); }
+
+/* ─── ALERTS ─── */
+.alert-item {
+  display: flex; gap: 10px;
+  padding: 10px 12px;
+  border-radius: 5px; margin-bottom: 6px;
+  font-size: 12px; line-height: 1.4;
+}
+.alert-late     { background: var(--vermelho-bg); border-left: 3px solid var(--vermelho); }
+.alert-waiting  { background: var(--amarelo-bg); border-left: 3px solid var(--amarelo); }
+.alert-ok       { background: var(--verde-bg); border-left: 3px solid var(--verde); }
+.alert-15h      { background: var(--areia-lt); border-left: 3px solid var(--areia); }
+.alert-icon { font-size: 14px; flex-shrink: 0; }
+.alert-text strong { display: block; font-weight: 600; margin-bottom: 2px; }
+
+/* ─── FORM ─── */
+.new-demand-form {
+  background: var(--offwhite);
+  border: 0.5px solid var(--borda);
+  border-radius: 6px;
+  padding: 14px;
+}
+.form-row { margin-bottom: 10px; }
+.form-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--grafite); margin-bottom: 5px; display: block;
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  font-family: 'Barlow', sans-serif;
+  font-size: 12.5px;
+  padding: 7px 10px;
+  border: 0.5px solid var(--borda);
+  border-radius: 4px;
+  background: var(--branco);
+  color: var(--carvao);
+  outline: none;
+  transition: border-color 0.12s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--sage); }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.btn-add {
+  width: 100%;
+  font-family: 'Barlow', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 9px; border-radius: 4px;
+  border: none; background: var(--carvao); color: var(--branco);
+  cursor: pointer; transition: background 0.12s; margin-top: 4px;
+}
+.btn-add:hover { background: #2d2d2a; }
+
+/* ─── STATS ─── */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--borda);
+  border: 0.5px solid var(--borda);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.stat-cell { background: var(--branco); padding: 10px 12px; text-align: center; }
+.stat-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 26px; line-height: 1;
+  color: var(--carvao);
+}
+.stat-num.red { color: var(--vermelho); }
+.stat-num.yellow { color: var(--amarelo); }
+.stat-num.green { color: var(--verde); }
+.stat-lbl {
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.10em; text-transform: uppercase;
+  color: var(--grafite); margin-top: 2px;
+}
+
+/* ─── EMPTY / BANNER / TOAST ─── */
+.empty-state { padding: 32px 20px; text-align: center; color: var(--grafite); font-size: 13px; }
+.empty-state-icon { font-size: 28px; margin-bottom: 8px; }
+.view-banner {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; border-radius: 5px;
+  font-size: 11.5px; font-weight: 600;
+  margin-bottom: 16px;
+}
+.view-banner.past   { background: var(--areia-lt); color: #8a7558; }
+.view-banner.future { background: var(--azul-bg); color: var(--azul); }
+.toast {
+  position: fixed;
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: var(--carvao); color: var(--branco);
+  font-size: 12px; font-weight: 600;
+  padding: 10px 20px; border-radius: 4px;
+  transition: transform 0.22s ease;
+  z-index: 999; white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 700px) {
+  .layout { grid-template-columns: 1fr; }
+  .main { border-right: none; border-bottom: 0.5px solid var(--borda); }
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .date-bar { padding: 10px 12px; }
+}
 </style>
 </head>
 <body>
-<script>
-const senha = "BETTER2026";
 
-if (localStorage.getItem("mr_access") !== "true") {
-
-    const tentativa = prompt("Digite o código de acesso");
-
-    if (tentativa === senha) {
-        localStorage.setItem("mr_access", "true");
-    } else {
-        document.body.innerHTML = `
-            <div style="
-                display:flex;
-                height:100vh;
-                align-items:center;
-                justify-content:center;
-                font-family:sans-serif;
-                flex-direction:column;
-            ">
-                <h1>Acesso Restrito</h1>
-                <p>Entre em contato com a BETTER.</p>
-            </div>
-        `;
-        throw new Error("Acesso negado");
-    }
-}
-</script>
-<div class="hero">
-  <div class="hero-eyebrow">Matriz de Responsabilidades v1.0 · 2026</div>
-  <div class="hero-logo">BETTER<span>.</span></div>
-  <div class="hero-question">De quem é isso?</div>
-  <div class="hero-sub">Cada processo da BETTER tem exatamente um dono. Selecione seu nome e veja, em um só lugar, o que é seu — o que você garante, o que você apoia e o que você aprova.</div>
-</div>
-
-<div class="tabs" role="tablist" aria-label="Selecionar colaborador">
-  <button class="tab active" data-view="Leonam" onclick="setView('Leonam', this)">Leonam</button>
-  <button class="tab" data-view="Beatriz" onclick="setView('Beatriz', this)">Beatriz</button>
-  <button class="tab" data-view="Mike" onclick="setView('Mike', this)">Mike</button>
-  <button class="tab" data-view="all" onclick="setView('all', this)">Visão Geral</button>
-</div>
-
-<div id="content"></div>
-
-<div class="rules">
-  <div class="rules-box">
-    <div class="rules-title">Como esta matriz funciona</div>
-    <div class="rule-item"><div><strong>Todo processo tem exatamente um dono.</strong> Dono duplo é dono nenhum.</div></div>
-    <div class="rule-item"><div><strong>Ser dono não significa fazer tudo sozinho</strong> — significa não deixar cair. Se precisar de ajuda, a iniciativa de pedir é do dono.</div></div>
-    <div class="rule-item"><div><strong>Aprovação é exceção, não rotina.</strong> Quando não há aprovador indicado, o dono decide e conclui. Se você precisa consultar o Mike para o trivial, falta procedimento — anote como procedimento a escrever.</div></div>
-    <div class="rule-item"><div><strong>Dúvida de responsabilidade se resolve apontando para esta matriz</strong> — não para o costume. Se a matriz estiver errada, anota-se a correção para a revisão.</div></div>
-    <div class="rule-15h"><strong>Regra das 15h</strong> · Tudo que depende da Beatriz e tem prazo deve chegar organizado até as 15h (preparado pelo Leonam) ou prever execução no dia anterior. Urgência fiscal de manhã sobe para o Mike — e deve ser registrada toda vez que ocorrer.</div>
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">BETTER<span>.</span></div>
+    <div class="login-sub">Sistema de Demandas</div>
+    <input type="password" class="login-input" id="loginSenha" placeholder="Senha de acesso"
+           onkeydown="if(event.key==='Enter')entrar()">
+    <button class="login-btn" id="loginBtn" onclick="entrar()">Entrar</button>
+    <div class="login-msg" id="loginMsg"></div>
   </div>
 </div>
 
-<div class="footer">
-  <div class="footer-logo">BETTER<span>.</span></div>
-  <div class="footer-meta">Matriz de Responsabilidades v1.0 · Complementar ao SOB<br>Revisão prevista: 90 dias · Uso interno</div>
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:14px;">
+    <div class="topbar-logo">BETTER<span>.</span></div>
+    <div class="topbar-title">Sistema de Demandas</div>
+  </div>
+  <div class="topbar-right">
+    <div class="sync-badge" id="syncBadge"><span class="sync-dot"></span><span id="syncLabel">—</span></div>
+    <button class="gcal-btn" id="gcalBtn" onclick="handleGcalClick()">
+      <span class="gcal-dot"></span>
+      <span id="gcalBtnLabel">Conectar agenda</span>
+    </button>
+    <div class="day-badge" id="dayBadge"></div>
+  </div>
 </div>
 
+<!-- DATE NAVIGATION -->
+<div class="date-bar">
+  <button class="date-nav-btn" onclick="changeDay(-1)" title="Dia anterior">‹</button>
+  <div class="date-current" id="dateCurrent" onclick="openDatePicker()"></div>
+  <input type="date" id="datePicker" onchange="onDatePicked(this.value)">
+  <button class="date-nav-btn" onclick="changeDay(1)" title="Próximo dia">›</button>
+  <button class="btn-today" id="btnToday" onclick="goToday()">Hoje</button>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="filter-label">Ver por</span>
+  <button class="filter-btn active-all" id="fb-all" onclick="setFilter('all')">Todos</button>
+  <button class="filter-btn" id="fb-mike" onclick="setFilter('mike')">Mike</button>
+  <button class="filter-btn" id="fb-leonam" onclick="setFilter('leonam')">Leonam</button>
+  <button class="filter-btn" id="fb-beatriz" onclick="setFilter('beatriz')">Beatriz</button>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+  <div class="main">
+    <div class="stats-bar" id="statsBar"></div>
+    <div id="viewBanner"></div>
+
+    <div id="section-late">
+      <div class="sec-header">
+        <div class="sec-title">Em atraso</div>
+        <span class="sec-count" id="count-late">0</span>
+      </div>
+      <div id="feed-late"></div>
+    </div>
+
+    <div id="section-waiting">
+      <div class="sec-header">
+        <div class="sec-title">Aguardando ação</div>
+        <span class="sec-count" id="count-waiting">0</span>
+      </div>
+      <div id="feed-waiting"></div>
+    </div>
+
+    <div id="section-pending">
+      <div class="sec-header">
+        <div class="sec-title" id="pending-title">A fazer hoje</div>
+        <span class="sec-count" id="count-pending">0</span>
+      </div>
+      <div id="feed-pending"></div>
+    </div>
+
+    <div id="section-done">
+      <div class="sec-header">
+        <div class="sec-title" id="done-title">Concluídas hoje</div>
+        <span class="sec-count" id="count-done">0</span>
+      </div>
+      <div id="feed-done"></div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Alertas</div>
+      <div id="alertPanel"></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Nova demanda avulsa</div>
+      <div class="new-demand-form">
+        <div class="form-row">
+          <label class="form-label">Descrição</label>
+          <input class="form-input" id="f-title" maxlength="140" placeholder="O que precisa ser feito?" />
+        </div>
+        <div class="form-row-2">
+          <div>
+            <label class="form-label">Responsável</label>
+            <select class="form-select" id="f-who">
+              <option value="mike">Mike</option>
+              <option value="leonam">Leonam</option>
+              <option value="beatriz">Beatriz</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Área</label>
+            <select class="form-select" id="f-area">
+              <option value="Management">Management</option>
+              <option value="Financeiro">Financeiro</option>
+              <option value="Real Estate">Real Estate</option>
+              <option value="Locações">Locações</option>
+              <option value="Gestão">Gestão</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Próximo passo (encadeamento)</label>
+          <select class="form-select" id="f-chain-who">
+            <option value="">Sem encadeamento</option>
+            <option value="mike">→ Mike confere</option>
+            <option value="leonam">→ Leonam continua</option>
+            <option value="beatriz">→ Beatriz processa</option>
+          </select>
+        </div>
+        <div id="chainDetail" style="display:none;" class="form-row">
+          <label class="form-label">O que o próximo deve fazer?</label>
+          <input class="form-input" id="f-chain-action" maxlength="140" placeholder="ex: conferir e aprovar" />
+        </div>
+        <button class="btn-add" onclick="addCustomDemand()">Adicionar demanda</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
-// ─── DADOS · Matriz de Responsabilidades v1.0 ───
-// area: GE = Gestão Empresarial · MG = Management · RE = Real Estate · LC = Locações
-const AREAS = { GE: 'Gestão', MG: 'Management', RE: 'Real Estate', LC: 'Locações' };
-const P = [
-  // Gestão Empresarial
-  { a:'GE', p:'Planejamento da BETTER', dono:'Mike', donoNota:'', apoia:[['Beatriz','informações da rotina'],['Leonam','informações da rotina']], aprova:null },
-  { a:'GE', p:'Crescimento da empresa (novos contratos e frentes)', dono:'Mike', apoia:[['Leonam','dados e documentação']], aprova:null },
-  { a:'GE', p:'Controle financeiro da BETTER (caixa, recebimentos, visão mensal)', dono:'Beatriz', apoia:[['Leonam','lançamentos da manhã']], aprova:['Mike',''] },
-  { a:'GE', p:'Contas a pagar (da empresa)', dono:'Beatriz', apoia:[['Leonam','organização das contas até 15h']], aprova:['Mike','fora da rotina'] },
-  { a:'GE', p:'Contas a receber (honorários da BETTER)', dono:'Leonam', apoia:[['Beatriz','conferência']], aprova:['Mike','negociação de atrasos'] },
-  { a:'GE', p:'Organização documental da empresa', dono:'Leonam', apoia:[['Beatriz','documentos fiscais']], aprova:null },
-  { a:'GE', p:'Controle de acessos e senhas', dono:'Mike', apoia:[['Leonam','inventário e atualização']], aprova:null },
-  // Management
-  { a:'MG', p:'Atendimento inicial de condôminos', dono:'Leonam', apoia:[['Mike','casos sensíveis']], aprova:null },
-  { a:'MG', p:'Comunicação com condôminos (rotina)', dono:'Leonam', apoia:[], aprova:['Mike','assuntos sensíveis'] },
-  { a:'MG', p:'Comunicados mensais', dono:'Leonam', apoia:[], aprova:['Mike','conteúdo'] },
-  { a:'MG', p:'Cobranças', dono:'Leonam', apoia:[], aprova:null },
-  { a:'MG', p:'Inadimplência (régua e acompanhamento)', dono:'Leonam', apoia:[['Beatriz','conciliação de pagamentos']], aprova:['Mike','acordos e jurídico'] },
-  { a:'MG', p:'Emissão de boletos', dono:'Leonam', apoia:[], aprova:null },
-  { a:'MG', p:'Atualização cadastral', dono:'Leonam', apoia:[], aprova:null },
-  { a:'MG', p:'Controle de pendências (registro único)', dono:'Leonam', apoia:[['Mike','alimenta o registro'],['Beatriz','alimenta o registro']], aprova:null },
-  { a:'MG', p:'Atas', dono:'Leonam', apoia:[], aprova:['Mike','validação'] },
-  { a:'MG', p:'Assembleias (preparação, condução, encaminhamentos)', dono:'Mike', apoia:[['Leonam','convocação, materiais, lista de presença']], aprova:null },
-  { a:'MG', p:'Orçamentos (cotações com fornecedores)', dono:'Mike', apoia:[['Leonam','solicitação e organização das cotações']], aprova:null },
-  { a:'MG', p:'Obras (decisão e acompanhamento técnico)', dono:'Mike', apoia:[['Leonam','registro e arquivo de documentos']], aprova:null },
-  { a:'MG', p:'Acompanhamento da limpeza', dono:'Mike', donoNota:'nas visitas', apoia:[['Leonam','registro de reclamações e ocorrências']], aprova:null },
-  { a:'MG', p:'Prestação de contas', dono:'Leonam', donoNota:'montagem no sistema', apoia:[['Beatriz','conferência financeira']], aprova:['Mike','validação como síndico'] },
-  { a:'MG', p:'Controle bancário dos condomínios', dono:'Beatriz', apoia:[['Leonam','preparação pela manhã']], aprova:['Mike','pagamentos fora da rotina'] },
-  { a:'MG', p:'AVCB e Bombeiros', dono:'Beatriz', apoia:[['Leonam','documentos e controle de prazos']], aprova:['Mike','contratações e orçamentos'] },
-  // Real Estate
-  { a:'RE', p:'Captação de clientes', dono:'Mike', apoia:[], aprova:null },
-  { a:'RE', p:'Diagnóstico de necessidades', dono:'Mike', apoia:[], aprova:null },
-  { a:'RE', p:'Curadoria imobiliária', dono:'Mike', apoia:[['Leonam','organização do material']], aprova:null },
-  { a:'RE', p:'Pesquisa de imóveis', dono:'Mike', apoia:[['Leonam','levantamento preliminar de anúncios e fichas']], aprova:null },
-  { a:'RE', p:'Análise documental', dono:'Mike', apoia:[['Leonam','coleta de certidões e documentos']], aprova:null },
-  { a:'RE', p:'Negociação', dono:'Mike', apoia:[], aprova:null },
-  { a:'RE', p:'Fechamento', dono:'Mike', apoia:[['Beatriz','nota fiscal e parte tributária']], aprova:null },
-  { a:'RE', p:'Pós-venda', dono:'Mike', apoia:[['Leonam','acompanhamento de pendências do pós']], aprova:null },
-  // Locações
-  { a:'LC', p:'Captação (imóveis e inquilinos)', dono:'Mike', apoia:[['Leonam','fichas e cadastro']], aprova:null },
-  { a:'LC', p:'Contratos', dono:'Leonam', donoNota:'elaboração no modelo', apoia:[['Beatriz','parte fiscal quando houver']], aprova:['Mike','condições e assinatura'] },
-  { a:'LC', p:'Cobrança (aluguéis)', dono:'Leonam', apoia:[], aprova:null },
-  { a:'LC', p:'Repasses aos proprietários', dono:'Beatriz', apoia:[['Leonam','conferência de valores pela manhã']], aprova:['Mike','descontos e exceções'] },
-  { a:'LC', p:'Inadimplência de locação', dono:'Leonam', apoia:[], aprova:['Mike','acordos e jurídico'] },
-  { a:'LC', p:'Manutenção dos imóveis', dono:'Mike', donoNota:'decisão e fornecedores', apoia:[['Leonam','recebimento e registro de chamados']], aprova:null },
+// ═══════════════════════════════════════════════════════════════
+//  CONFIGURAÇÃO — cole aqui a URL do seu App da Web (Apps Script)
+//  Ela é gerada ao publicar o Code.gs e termina em /exec
+// ═══════════════════════════════════════════════════════════════
+const API_URL = 'https://script.google.com/macros/s/AKfycbxhZzbIkRonIrcvrtGVV800F5QP5CQhGyc2n2kN5tZTpI1eG9g18T4XyEcF4lmh3lHTPA/exec';
+
+// ─── CONFIGURAÇÕES GOOGLE AGENDA ─────────────────────────────
+const GCAL_CLIENT_ID = '721838040530-r6qe06j6kleph12hb8k9askh8fb0cojm.apps.googleusercontent.com';
+const GCAL_CALENDAR_ID = 'c_12674708fedb9c53aa90cac7881caec8454956b1fb1d618c3ed9675d9165e5c3@group.calendar.google.com';
+const GCAL_SCOPE = 'https://www.googleapis.com/auth/calendar.events';
+
+let gcalTokenClient = null;
+let gcalAccessToken = null;
+
+// ─── ESTADO COMPARTILHADO (sincronizado com a planilha) ──────
+let STORE = { statuses: {}, customs: {}, gcal: {} };
+let SENHA_SESSAO = sessionStorage.getItem('better_senha') || null;
+let carregado = false;
+
+const FILTER_KEY = 'better_filter_v1';
+const CARRYOVER_DAYS = 14;
+
+let currentFilter = localStorage.getItem(FILTER_KEY) || 'all';
+let demands = [];
+let viewDate = new Date();
+
+// ─── DIAS ────────────────────────────────────────────────────
+const DAYS = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+const DAY_NAMES_FULL = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+const MONTH_NAMES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const WHO_LABEL = { mike:'Mike', leonam:'Leonam', beatriz:'Beatriz' };
+
+// ─── ROTINA PRÉ-CARREGADA ────────────────────────────────────
+// due: 'HH:MM' opcional — depois desse horário, tarefa pendente vira "atrasada" no dia
+const ROTINA = [
+
+  // ── DIÁRIO ──
+  {id:'d-leon-email', title:'Triagem de e-mail', desc:'Ler e-mails da Better, responder o rotineiro, sinalizar o sensível para Mike.',
+   who:'leonam', area:'Gestão', day:['segunda','terça','quarta','quinta','sexta'],
+   chain:{ next:{ who:'mike', title:'Verificar sinalização do Leonam', desc:'Retornar itens sensíveis que o Leonam escalou por e-mail.' }}},
+
+  {id:'d-leon-pend', title:'Atualizar registro de pendências', desc:'Fechar o que foi resolvido, registrar o que é novo. Um item por condomínio.',
+   who:'leonam', area:'Management', day:['segunda','terça','quarta','quinta','sexta'],
+   chain:{ next:{ who:'mike', title:'Revisar pendências sinalizadas', desc:'Leonam atualizou o registro. Mike verifica itens escalados como urgentes.' }}},
+
+  {id:'d-leon-lanc', title:'Lançamentos financeiros', desc:'Separar contas a pagar por condomínio e empresa para a Beatriz processar.',
+   who:'leonam', area:'Financeiro', day:['segunda','terça','quarta','quinta','sexta'], due:'14:30',
+   chain:{ next:{ who:'beatriz', title:'Processar lançamentos', desc:'Leonam preparou os lançamentos. Beatriz processa e executa pagamentos autorizados.' }}},
+
+  {id:'d-beat-pgto', title:'Executar pagamentos (a partir das 15h)', desc:'Processar os lançamentos organizados pelo Leonam. Sinalizar ao Mike o que está fora da rotina.',
+   who:'beatriz', area:'Financeiro', day:['segunda','terça','quarta','quinta','sexta'],
+   chain:{ next:{ who:'mike', title:'Aprovar pagamentos fora da rotina', desc:'Beatriz identificou pagamento que precisa de aprovação.' }}},
+
+  {id:'d-mike-pend', title:'Ler resumo de pendências', desc:'Verificar o que o Leonam registrou e resolver aprovações pendentes do dia.',
+   who:'mike', area:'Gestão', day:['segunda','terça','quarta','quinta','sexta'], chain:null},
+
+  {id:'d-mike-wpp', title:'Checar WhatsApp dos condomínios', desc:'Grupos de síndico — responder ou delegar. 2× ao dia.',
+   who:'mike', area:'Management', day:['segunda','terça','quarta','quinta','sexta'], chain:null},
+
+  // ── SEGUNDA ──
+  {id:'s-reuniao', title:'Reunião Better — 8h (45 min)', desc:'Pauta: semáforo, pendências da semana anterior, prioridades, aprovações. Leonam prepara, Mike conduz.',
+   who:'leonam', area:'Gestão', day:['segunda'], due:'09:00',
+   chain:{ next:{ who:'mike', title:'Definir 3 prioridades da semana', desc:'Após reunião, Mike registra as 3 prioridades da semana no sistema.' }}},
+
+  {id:'s-boletos', title:'Emitir/conferir boletos da semana', desc:'Boletos de condomínio com vencimento na semana.',
+   who:'leonam', area:'Management', day:['segunda'],
+   chain:{ next:{ who:'mike', title:'Validar boletos emitidos', desc:'Leonam emitiu os boletos. Mike confirma valores e condomínios.' }}},
+
+  {id:'s-agenda', title:'Confirmar agenda da semana', desc:'Visitas, assembleias, reuniões com clientes RE e Locações.',
+   who:'mike', area:'Gestão', day:['segunda'], chain:null},
+
+  // ── TERÇA ──
+  {id:'t-inadimp', title:'Revisar inadimplência', desc:'Quem pagou, quem está em atraso, próximo passo da régua de cobrança.',
+   who:'leonam', area:'Management', day:['terça'],
+   chain:{ next:{ who:'mike', title:'Decidir casos críticos de inadimplência', desc:'Leonam levantou casos acima de 60 dias. Mike decide: acordo ou jurídico.' }}},
+
+  {id:'t-cobr', title:'Disparar cobranças da semana', desc:'WhatsApp/e-mail conforme régua aprovada. Registrar quem foi acionado.',
+   who:'leonam', area:'Management', day:['terça'], chain:null},
+
+  {id:'t-visita', title:'Visitas presenciais (quando agendado)', desc:'Verificar limpeza, manutenção e obras em andamento. Registrar ocorrências.',
+   who:'mike', area:'Management', day:['terça'], chain:null},
+
+  {id:'t-avcb', title:'Conferir AVCB e Bombeiros', desc:'Verificar prazos próximos de vencimento e sinalizar ao Mike.',
+   who:'beatriz', area:'Management', day:['terça'],
+   chain:{ next:{ who:'mike', title:'Ação em AVCB vencendo', desc:'Beatriz identificou AVCB com prazo crítico. Mike decide contratação ou renovação.' }}},
+
+  // ── QUARTA ──
+  {id:'q-contratos', title:'Conferir contratos de locação', desc:'Vencimentos próximos, reajustes pendentes, renovações a fazer.',
+   who:'leonam', area:'Locações', day:['quarta'],
+   chain:{ next:{ who:'mike', title:'Aprovar renovação ou reajuste', desc:'Leonam identificou contrato próximo de vencimento. Mike aprova termos.' }}},
+
+  {id:'q-repasse-prep', title:'Preparar repasses de proprietários', desc:'Conferir valores e preparar para a Beatriz executar após 15h.',
+   who:'leonam', area:'Locações', day:['quarta'], due:'14:30',
+   chain:{ next:{ who:'beatriz', title:'Executar repasses a proprietários', desc:'Leonam preparou os valores. Beatriz executa os repasses aprovados.' }}},
+
+  {id:'q-clientes-re', title:'Atendimento a clientes RE/Locações', desc:'Reuniões de curadoria, captação e locações. Atualizar pipeline.',
+   who:'mike', area:'Real Estate', day:['quarta'], chain:null},
+
+  // ── QUINTA ──
+  {id:'qu-docs', title:'Organizar documentação da semana', desc:'Arquivar, nomear corretamente, atualizar cadastros de condomínios e locatários.',
+   who:'leonam', area:'Gestão', day:['quinta'], chain:null},
+
+  {id:'qu-pauta', title:'Preparar pauta do fechamento (sexta)', desc:'Listar pendências, semáforo e prioridades para o Mike revisar na sexta às 17h.',
+   who:'leonam', area:'Gestão', day:['quinta'],
+   chain:{ next:{ who:'mike', title:'Revisar pauta de fechamento', desc:'Leonam preparou a pauta. Mike valida antes do fechamento de sexta.' }}},
+
+  {id:'qu-orcamentos', title:'Aprovar orçamentos pendentes', desc:'Prazo limite para fechar com fornecedores sem arrastar para a semana seguinte.',
+   who:'mike', area:'Management', day:['quinta'], chain:null},
+
+  {id:'qu-extrato', title:'Revisar extrato bancário dos condomínios', desc:'Conferir semana inteira. Sinalizar inconsistências.',
+   who:'beatriz', area:'Financeiro', day:['quinta'],
+   chain:{ next:{ who:'mike', title:'Resolver inconsistência bancária', desc:'Beatriz encontrou divergência no extrato. Mike decide a ação.' }}},
+
+  // ── SEXTA ──
+  {id:'sx-comunicados', title:'Enviar comunicados mensais', desc:'Comunicados aprovados pelo Mike. Disparar para todos os condomínios.',
+   who:'leonam', area:'Management', day:['sexta'],
+   chain:{ next:{ who:'mike', title:'Validar comunicados antes do envio', desc:'Leonam preparou. Mike aprova o conteúdo antes do disparo.' }}},
+
+  {id:'sx-fechamento', title:'Fechamento semanal — 17h (30 min)', desc:'Semáforo, Painel do Fundador, pendências que migram, 3 prioridades da próxima semana.',
+   who:'mike', area:'Gestão', day:['sexta'], due:'17:30', chain:null},
+
+  {id:'sx-registro', title:'Fechar registro de pendências da semana', desc:'O que foi resolvido, o que migra, o que é novo. Entregue ao Mike no fechamento.',
+   who:'leonam', area:'Gestão', day:['sexta'],
+   chain:{ next:{ who:'mike', title:'Confirmar fechamento do registro', desc:'Leonam entregou o registro fechado. Mike valida e assina off na semana.' }}},
 ];
 
-function tag(a) {
-  const cls = { GE:'tag-ge', MG:'tag-mg', RE:'tag-re', LC:'tag-lc' }[a];
-  return `<div class="card-tag ${cls}">${AREAS[a]}</div>`;
-}
-
-function card(proc, detailHtml) {
-  return `<div class="card">${tag(proc.a)}<div class="card-body">
-    <div class="card-process">${proc.p}</div>
-    ${detailHtml ? `<div class="card-detail">${detailHtml}</div>` : ''}
-  </div></div>`;
-}
-
-function renderPerson(name) {
-  const dono = P.filter(x => x.dono === name);
-  const apoia = P.filter(x => x.apoia.some(s => s[0] === name));
-  const aprova = P.filter(x => x.aprova && x.aprova[0] === name);
-
-  const donoCards = dono.map(x => {
-    const partes = [];
-    if (x.donoNota) partes.push(`<strong>Seu papel:</strong> ${x.donoNota}.`);
-    if (x.apoia.length) partes.push('<strong>Quem te apoia:</strong> ' + x.apoia.map(s => `${s[0]}${s[1] ? ' (' + s[1] + ')' : ''}`).join(' · ') + '.');
-    if (x.aprova) partes.push(`<strong>Aprovação:</strong> ${x.aprova[0]}${x.aprova[1] ? ' — ' + x.aprova[1] : ''}.`);
-    else partes.push('<strong>Você decide e conclui</strong> — sem necessidade de aprovação.');
-    return card(x, partes.join(' '));
-  }).join('');
-
-  const apoiaCards = apoia.map(x => {
-    const meu = x.apoia.find(s => s[0] === name);
-    return card(x, `<strong>Você apoia com:</strong> ${meu[1] || 'execução de partes do processo'}. <strong>Dono:</strong> ${x.dono}.`);
-  }).join('');
-
-  const aprovaCards = aprova.map(x => {
-    return card(x, `<strong>Você aprova:</strong> ${x.aprova[1] || 'a palavra final'}. <strong>Dono:</strong> ${x.dono}.`);
-  }).join('');
-
-  return `
-    <div class="summary">
-      <div class="summary-name">${name}</div>
-      <div class="summary-stat"><strong>${dono.length}</strong>processos como dono</div>
-      <div class="summary-stat"><strong>${apoia.length}</strong>processos que apoia</div>
-      <div class="summary-stat"><strong>${aprova.length}</strong>aprovações</div>
-    </div>
-
-    <div class="role-section">
-      <div class="role-title"><span class="bar"></span>Você é o dono</div>
-      <div class="role-desc">Você responde por estes processos: garante que aconteçam, no prazo e com qualidade. Se faltar algo, a iniciativa de pedir ajuda é sua.</div>
-      <div class="cards">${donoCards || '<div class="empty">Nenhum processo como dono.</div>'}</div>
-    </div>
-
-    <div class="role-section">
-      <div class="role-title"><span class="bar"></span>Você apoia</div>
-      <div class="role-desc">Você executa partes destes processos ou fornece insumos, sob coordenação do dono.</div>
-      <div class="cards">${apoiaCards || '<div class="empty">Nenhum processo como apoio.</div>'}</div>
-    </div>
-
-    <div class="role-section">
-      <div class="role-title"><span class="bar"></span>Você aprova</div>
-      <div class="role-desc">Você dá a palavra final nestas decisões, que excedem a alçada do dono.</div>
-      <div class="cards">${aprovaCards || '<div class="empty">Nenhuma aprovação atribuída.</div>'}</div>
-    </div>`;
-}
-
-function renderAll() {
-  const order = ['GE','MG','RE','LC'];
-  let rows = '';
-  order.forEach(a => {
-    rows += `<tr><td class="ov-area" colspan="4">${AREAS[a]}</td></tr>`;
-    P.filter(x => x.a === a).forEach(x => {
-      const apoia = x.apoia.length ? x.apoia.map(s => `${s[0]}${s[1] ? ' <span class="ov-muted">(' + s[1] + ')</span>' : ''}`).join('<br>') : '<span class="ov-muted">—</span>';
-      const aprova = x.aprova ? `${x.aprova[0]}${x.aprova[1] ? ' <span class="ov-muted">(' + x.aprova[1] + ')</span>' : ''}` : '<span class="ov-muted">—</span>';
-      rows += `<tr>
-        <td>${x.p}${x.donoNota ? ' <span class="ov-muted">(' + x.donoNota + ')</span>' : ''}</td>
-        <td class="ov-owner">${x.dono}</td>
-        <td>${apoia}</td>
-        <td>${aprova}</td>
-      </tr>`;
-    });
+// ─── API ─────────────────────────────────────────────────────
+async function api(action, payload = {}) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    body: JSON.stringify({ senha: SENHA_SESSAO, action, ...payload }),
   });
-  return `
-    <div class="role-section">
-      <div class="role-title"><span class="bar"></span>Todos os processos · ${P.length} mapeados</div>
-      <div class="overview-wrap">
-      <table class="overview-table">
-        <thead><tr><th>Processo</th><th>Dono</th><th>Apoia</th><th>Aprova</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
+  const data = await res.json();
+  if (!data.ok) throw new Error(data.erro || 'erro');
+  return data;
+}
+
+function setSyncState(state) {
+  const badge = document.getElementById('syncBadge');
+  const label = document.getElementById('syncLabel');
+  badge.className = 'sync-badge ' + state;
+  label.textContent = { ok: 'Sincronizado', syncing: 'Sincronizando', err: 'Sem conexão' }[state] || '—';
+}
+
+// Envia uma alteração; o servidor devolve os dados atualizados de todos
+function sync(action, payload) {
+  setSyncState('syncing');
+  api(action, payload)
+    .then(d => {
+      if (d.dados) STORE = d.dados;
+      setSyncState('ok');
+      render();
+    })
+    .catch(err => {
+      setSyncState('err');
+      if (String(err.message) === 'senha_invalida') {
+        sessionStorage.removeItem('better_senha');
+        location.reload();
+      } else {
+        showToast('Erro ao sincronizar — tente novamente');
+      }
+    });
+}
+
+async function carregarTudo() {
+  setSyncState('syncing');
+  const d = await api('getAll');
+  STORE = d.dados;
+  carregado = true;
+  setSyncState('ok');
+  render();
+}
+
+// ─── LOGIN ───────────────────────────────────────────────────
+async function entrar() {
+  const senha = document.getElementById('loginSenha').value;
+  const msg = document.getElementById('loginMsg');
+  const btn = document.getElementById('loginBtn');
+  if (!senha) { msg.textContent = 'Digite a senha.'; msg.className = 'login-msg erro'; return; }
+
+  btn.disabled = true;
+  msg.textContent = 'Verificando...';
+  msg.className = 'login-msg';
+
+  SENHA_SESSAO = senha;
+  try {
+    await api('ping');
+    sessionStorage.setItem('better_senha', senha);
+    document.getElementById('loginScreen').style.display = 'none';
+    await carregarTudo();
+  } catch (err) {
+    SENHA_SESSAO = null;
+    btn.disabled = false;
+    if (String(err.message) === 'senha_invalida') {
+      msg.textContent = 'Senha incorreta.';
+    } else {
+      msg.textContent = 'Não foi possível conectar. Verifique a internet ou a URL da API.';
+    }
+    msg.className = 'login-msg erro';
+  }
+}
+
+async function iniciarSessao() {
+  if (SENHA_SESSAO) {
+    try {
+      await api('ping');
+      document.getElementById('loginScreen').style.display = 'none';
+      await carregarTudo();
+      return;
+    } catch (e) {
+      sessionStorage.removeItem('better_senha');
+      SENHA_SESSAO = null;
+    }
+  }
+  document.getElementById('loginSenha').focus();
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function dateKey(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+function isSameDay(a, b) {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
+function isPast(d) {
+  const t = new Date(); t.setHours(0,0,0,0);
+  const dd = new Date(d); dd.setHours(0,0,0,0);
+  return dd < t;
+}
+function isFuture(d) {
+  const t = new Date(); t.setHours(0,0,0,0);
+  const dd = new Date(d); dd.setHours(0,0,0,0);
+  return dd > t;
+}
+function duePassed(due) {
+  if (!due) return false;
+  const [h, m] = due.split(':').map(Number);
+  const now = new Date();
+  return now.getHours() > h || (now.getHours() === h && now.getMinutes() >= m);
+}
+function shortDate(key) {
+  const [, m, d] = key.split('-');
+  return `${d}/${m}`;
+}
+function capitalise(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+// ─── ACESSO AOS DADOS (STORE sincronizado) ───────────────────
+function getStatuses(key) { return STORE.statuses[key] || {}; }
+function setStatusLocal(key, id, status) {
+  if (!STORE.statuses[key]) STORE.statuses[key] = {};
+  STORE.statuses[key][id] = status;
+}
+function removeStatusLocal(key, id) {
+  if (STORE.statuses[key]) delete STORE.statuses[key][id];
+}
+function getCustoms(key) { return STORE.customs[key] || []; }
+function getGcalEventId(key, id) { return (STORE.gcal[key] && STORE.gcal[key][id]) || null; }
+
+// ─── GOOGLE OAUTH (AGENDA) ───────────────────────────────────
+function initGcal() {
+  if (!window.google || !google.accounts) { setTimeout(initGcal, 300); return; }
+  gcalTokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: GCAL_CLIENT_ID,
+    scope: GCAL_SCOPE,
+    callback: (resp) => {
+      if (resp && resp.access_token) {
+        gcalAccessToken = resp.access_token;
+        sessionStorage.setItem('better_gcal_token', gcalAccessToken);
+        updateGcalButton();
+        showToast('Agenda conectada ✓');
+      }
+    },
+  });
+  const saved = sessionStorage.getItem('better_gcal_token');
+  if (saved) { gcalAccessToken = saved; updateGcalButton(); }
+}
+function updateGcalButton() {
+  const btn = document.getElementById('gcalBtn');
+  const lbl = document.getElementById('gcalBtnLabel');
+  if (gcalAccessToken) { btn.classList.add('connected'); lbl.textContent = 'Agenda conectada'; }
+  else { btn.classList.remove('connected'); lbl.textContent = 'Conectar agenda'; }
+}
+function handleGcalClick() {
+  if (!gcalAccessToken) gcalTokenClient.requestAccessToken();
+  else showToast('Agenda já conectada');
+}
+function ensureGcalConnected(callback) {
+  if (gcalAccessToken) { callback(); return; }
+  gcalTokenClient.callback = (resp) => {
+    if (resp && resp.access_token) {
+      gcalAccessToken = resp.access_token;
+      sessionStorage.setItem('better_gcal_token', gcalAccessToken);
+      updateGcalButton();
+      callback();
+    }
+  };
+  gcalTokenClient.requestAccessToken();
+}
+async function createGcalEvent(demand, dateObj, hh, mm) {
+  const start = new Date(dateObj);
+  start.setHours(hh, mm, 0, 0);
+  const end = new Date(start);
+  end.setHours(end.getHours() + 1);
+  const body = {
+    summary: `[${WHO_LABEL[demand.who] || demand.who}] ${demand.title}`,
+    description: demand.desc || '',
+    start: { dateTime: start.toISOString() },
+    end: { dateTime: end.toISOString() },
+  };
+  const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(GCAL_CALENDAR_ID)}/events`, {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${gcalAccessToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (res.status === 401) {
+    gcalAccessToken = null;
+    sessionStorage.removeItem('better_gcal_token');
+    updateGcalButton();
+    throw new Error('auth');
+  }
+  if (!res.ok) throw new Error('request_failed');
+  const data = await res.json();
+  return data.id;
+}
+async function deleteGcalEvent(eventId) {
+  const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(GCAL_CALENDAR_ID)}/events/${eventId}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': `Bearer ${gcalAccessToken}` },
+  });
+  if (res.status === 401) {
+    gcalAccessToken = null;
+    sessionStorage.removeItem('better_gcal_token');
+    updateGcalButton();
+    throw new Error('auth');
+  }
+  if (!res.ok && res.status !== 410 && res.status !== 404) throw new Error('request_failed');
+}
+
+// ─── MODAIS ──────────────────────────────────────────────────
+function showTimePickerModal(demandTitle, defaultTime, onConfirm) {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal-box">
+      <div class="modal-title">Adicionar à agenda</div>
+      <div class="modal-subtitle">${esc(demandTitle)}</div>
+      <div class="modal-row">
+        <label class="form-label">Horário</label>
+        <input type="time" class="form-input" id="modalTimeInput" value="${defaultTime || '09:00'}">
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn cancel">Cancelar</button>
+        <button class="modal-btn confirm">Adicionar</button>
       </div>
     </div>`;
+  document.body.appendChild(overlay);
+  const close = () => document.body.removeChild(overlay);
+  overlay.querySelector('.cancel').addEventListener('click', close);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+  overlay.querySelector('.confirm').addEventListener('click', () => {
+    const val = document.getElementById('modalTimeInput').value || '09:00';
+    const [hh, mm] = val.split(':').map(Number);
+    close();
+    onConfirm(hh, mm);
+  });
+}
+function showConfirmModal(title, subtitle, onConfirm) {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal-box">
+      <div class="modal-title">${esc(title)}</div>
+      <div class="modal-subtitle">${esc(subtitle)}</div>
+      <div class="modal-actions">
+        <button class="modal-btn cancel">Cancelar</button>
+        <button class="modal-btn danger">Excluir</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  const close = () => document.body.removeChild(overlay);
+  overlay.querySelector('.cancel').addEventListener('click', close);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+  overlay.querySelector('.danger').addEventListener('click', () => { close(); onConfirm(); });
 }
 
-function setView(view, btn) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('content').innerHTML = view === 'all' ? renderAll() : renderPerson(view);
+function toggleGcalForDemand(demand) {
+  const dayKey = demand._key;
+  const existingEventId = getGcalEventId(dayKey, demand.id);
+
+  if (existingEventId) {
+    ensureGcalConnected(() => {
+      deleteGcalEvent(existingEventId)
+        .then(() => {
+          if (STORE.gcal[dayKey]) delete STORE.gcal[dayKey][demand.id];
+          sync('clearGcal', { date: dayKey, id: demand.id });
+          showToast('Removido da agenda');
+          render();
+        })
+        .catch(() => showToast('Erro ao remover da agenda'));
+    });
+    return;
+  }
+
+  const [y, m, d] = dayKey.split('-').map(Number);
+  const eventDate = new Date(y, m - 1, d);
+
+  showTimePickerModal(demand.title, demand.due || '09:00', (hh, mm) => {
+    ensureGcalConnected(() => {
+      createGcalEvent(demand, eventDate, hh, mm)
+        .then((eventId) => {
+          if (!STORE.gcal[dayKey]) STORE.gcal[dayKey] = {};
+          STORE.gcal[dayKey][demand.id] = eventId;
+          sync('setGcal', { date: dayKey, id: demand.id, eventId });
+          showToast('Adicionado à agenda ✓');
+          render();
+        })
+        .catch(() => showToast('Erro ao adicionar à agenda'));
+    });
+  });
 }
 
-document.getElementById('content').innerHTML = renderPerson('Leonam');
+// ─── MONTAGEM DO DIA ─────────────────────────────────────────
+function buildDayRaw(date) {
+  const key = dateKey(date);
+  const idx = date.getDay();
+  const dayName = DAYS[idx];
+  const statuses = getStatuses(key);
+  const customs = getCustoms(key);
+
+  let list = [];
+
+  if (idx !== 0 && idx !== 6) {
+    list = ROTINA
+      .filter(d => d.day.includes(dayName))
+      .map(d => ({ ...d, status: statuses[d.id] || 'pending', isCustom: false, _key: key }));
+  }
+
+  customs.forEach(c => {
+    list.push({ ...c, status: statuses[c.id] || 'pending', isCustom: true, _key: key });
+  });
+
+  const children = [];
+  list.forEach(d => {
+    if (d.chain && d.status === 'done') {
+      const childId = d.id + '-chain';
+      children.push({
+        id: childId,
+        title: d.chain.next.title,
+        desc: d.chain.next.desc,
+        who: d.chain.next.who,
+        area: d.area,
+        due: null,
+        status: statuses[childId] || 'waiting',
+        isCustom: false,
+        isChainChild: true,
+        parentTitle: d.title,
+        chain: null,
+        _key: key,
+      });
+    }
+  });
+
+  return list.concat(children);
+}
+
+// Pendências de dias anteriores que migram para hoje como atrasadas.
+// Encadeamentos e avulsas sempre migram; da rotina, só as semanais
+// (as diárias se repetem sozinhas e virariam ruído).
+function getCarryover(today) {
+  const carried = [];
+  for (let i = 1; i <= CARRYOVER_DAYS; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const items = buildDayRaw(d);
+    items.forEach(item => {
+      if (item.status === 'done') return;
+      const isWeeklyRotina = !item.isCustom && !item.isChainChild && item.day && item.day.length < 5;
+      if (item.isChainChild || item.isCustom || isWeeklyRotina) {
+        carried.push({ ...item, carried: true, originLabel: shortDate(item._key) });
+      }
+    });
+  }
+  return carried;
+}
+
+function buildView(date) {
+  let list = buildDayRaw(date);
+  const today = isSameDay(date, new Date());
+
+  if (today) {
+    list = list.map(d => {
+      if (d.status === 'pending' && d.due && duePassed(d.due)) {
+        return { ...d, status: 'late', dueLate: true };
+      }
+      return d;
+    });
+    list = getCarryover(date).concat(list);
+  }
+
+  return list;
+}
+
+// ─── RENDER ──────────────────────────────────────────────────
+function render() {
+  if (!carregado) return;
+  demands = buildView(viewDate);
+
+  const dayIdx = viewDate.getDay();
+  document.getElementById('dayBadge').textContent = DAY_NAMES_FULL[dayIdx];
+  document.getElementById('dateCurrent').innerHTML =
+    `${DAY_NAMES_FULL[dayIdx]}, ${viewDate.getDate()} de ${MONTH_NAMES[viewDate.getMonth()]}<span class="date-year">${viewDate.getFullYear()}</span>`;
+
+  const todayFlag = isSameDay(viewDate, new Date());
+  document.getElementById('btnToday').classList.toggle('is-today', todayFlag);
+
+  const banner = document.getElementById('viewBanner');
+  if (isPast(viewDate)) {
+    banner.innerHTML = `<div class="view-banner past">📋 Visualizando dia passado — registro histórico</div>`;
+  } else if (isFuture(viewDate)) {
+    banner.innerHTML = `<div class="view-banner future">🔭 Visualizando dia futuro — rotina prevista</div>`;
+  } else {
+    banner.innerHTML = '';
+  }
+
+  document.getElementById('pending-title').textContent =
+    todayFlag ? 'A fazer hoje' : (isFuture(viewDate) ? 'Previsto para o dia' : 'Não realizado');
+  document.getElementById('done-title').textContent = todayFlag ? 'Concluídas hoje' : 'Concluídas no dia';
+
+  const f = currentFilter;
+  const visible = f === 'all' ? demands : demands.filter(d => d.who === f);
+  const weekend = (dayIdx === 0 || dayIdx === 6);
+
+  if (weekend && demands.length === 0) {
+    ['late','waiting','pending','done'].forEach(s => document.getElementById('section-' + s).style.display = 'none');
+    document.getElementById('statsBar').innerHTML = '';
+    let extra = isPast(viewDate) ? 'Nenhuma demanda avulsa registrada neste dia.'
+      : isFuture(viewDate) ? 'Nenhuma rotina programada. Demandas avulsas podem ser adicionadas no dia.'
+      : 'As demandas de segunda aparecem automaticamente na segunda-feira.';
+    document.getElementById('viewBanner').innerHTML += `
+      <div class="empty-state" style="margin-top:20px;">
+        <div class="empty-state-icon">🏖️</div>
+        <div style="font-weight:600;margin-bottom:6px;">Fim de semana</div>
+        <div>${extra}</div>
+      </div>`;
+    renderAlerts(visible, todayFlag);
+    return;
+  }
+
+  const late    = visible.filter(d => d.status === 'late' || d.carried);
+  const waiting = visible.filter(d => !d.carried && d.status === 'waiting');
+  const pending = visible.filter(d => !d.carried && d.status === 'pending');
+  const done    = visible.filter(d => !d.carried && d.status === 'done');
+
+  const all = demands;
+  document.getElementById('statsBar').innerHTML = `
+    <div class="stat-cell"><div class="stat-num red">${all.filter(d => d.status === 'late' || d.carried).length}</div><div class="stat-lbl">Atrasado</div></div>
+    <div class="stat-cell"><div class="stat-num yellow">${all.filter(d => !d.carried && d.status === 'waiting').length}</div><div class="stat-lbl">Aguardando</div></div>
+    <div class="stat-cell"><div class="stat-num">${all.filter(d => !d.carried && d.status === 'pending').length}</div><div class="stat-lbl">A fazer</div></div>
+    <div class="stat-cell"><div class="stat-num green">${all.filter(d => !d.carried && d.status === 'done').length}</div><div class="stat-lbl">Concluído</div></div>
+  `;
+
+  renderSection('late', late);
+  renderSection('waiting', waiting);
+  renderSection('pending', pending);
+  renderSection('done', done);
+
+  document.getElementById('section-late').style.display    = late.length ? '' : 'none';
+  document.getElementById('section-waiting').style.display = waiting.length ? '' : 'none';
+  document.getElementById('section-pending').style.display = pending.length ? '' : 'none';
+  document.getElementById('section-done').style.display    = done.length ? '' : 'none';
+
+  if (!late.length && !waiting.length && !pending.length && !done.length) {
+    document.getElementById('section-pending').style.display = '';
+    document.getElementById('feed-pending').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <div>Nenhuma demanda para este filtro neste dia.</div>
+      </div>`;
+    document.getElementById('count-pending').textContent = '0';
+  }
+
+  renderAlerts(visible, todayFlag);
+}
+
+function renderSection(sectionKey, items) {
+  document.getElementById('count-' + sectionKey).textContent = items.length;
+  const feed = document.getElementById('feed-' + sectionKey);
+  if (!items.length) { feed.innerHTML = ''; return; }
+
+  feed.innerHTML = items.map(d => cardHTML(d)).join('');
+
+  items.forEach(d => {
+    const domId = d._key + '__' + d.id;
+    const cb = document.getElementById('cb-' + domId);
+    if (cb && !cb.classList.contains('disabled')) {
+      cb.addEventListener('click', () => toggleDemand(d));
+    }
+    const cal = document.getElementById('cal-' + domId);
+    if (cal) cal.addEventListener('click', () => toggleGcalForDemand(d));
+    const del = document.getElementById('del-' + domId);
+    if (del) del.addEventListener('click', (e) => { e.stopPropagation(); deleteCustomDemand(d); });
+  });
+}
+
+function cardHTML(d) {
+  const isDone = d.status === 'done';
+  const domId = d._key + '__' + d.id;
+
+  const whoClass = { mike:'who-mike', leonam:'who-leonam', beatriz:'who-beatriz' }[d.who] || '';
+  const displayStatus = d.carried ? 'late' : d.status;
+  const sbClass = { pending:'sb-pending', waiting:'sb-waiting', late:'sb-late', done:'sb-done' }[displayStatus];
+  const sbLabel = { pending:'A fazer', waiting:'Aguardando', late:'Atrasado', done:'Concluído' }[displayStatus];
+
+  const future = isFuture(viewDate);
+  const cbClasses = ['dc-checkbox'];
+  if (isDone) cbClasses.push('checked');
+  if (future) cbClasses.push('disabled');
+
+  let dueBadge = '';
+  if (d.due) {
+    const passed = isSameDay(viewDate, new Date()) && !isDone && duePassed(d.due);
+    dueBadge = `<span class="dc-due ${passed ? 'passed' : ''}">até ${d.due}</span>`;
+  }
+
+  const originBadge = d.carried ? `<span class="dc-origin">de ${d.originLabel}</span>` : '';
+
+  let chainFooter = '';
+  if (d.chain && !isDone) {
+    const nw = d.chain.next.who;
+    chainFooter = `<div class="dc-chain">
+      <span class="chain-arrow">→</span>
+      <span>Ao concluir: <strong class="chain-next-who ${nw}">${WHO_LABEL[nw]}</strong> recebe "${esc(d.chain.next.title)}"</span>
+    </div>`;
+  }
+  if (d.isChainChild) {
+    chainFooter = `<div class="dc-chain" style="background:rgba(61,122,94,0.06)">
+      <span style="font-size:12px;">🔗</span>
+      <span>Ativado por: <strong>${esc(d.parentTitle)}</strong></span>
+    </div>`;
+  }
+
+  const delBtn = d.isCustom ? `<button class="dc-del" id="del-${domId}" title="Excluir demanda">✕</button>` : '';
+
+  const inCal = !!getGcalEventId(d._key, d.id);
+  const calClasses = ['dc-cal-toggle'];
+  if (inCal) calClasses.push('in-cal');
+  const calCheckClass = inCal ? 'dc-cal-checkbox checked' : 'dc-cal-checkbox';
+  const calLabel = inCal ? 'Na agenda' : 'Adicionar à agenda';
+
+  return `<div class="demand-card status-${displayStatus}">
+    <div class="dc-main">
+      <div class="${cbClasses.join(' ')}" id="cb-${domId}" title="${future ? 'Disponível no dia' : (isDone ? 'Marcar como pendente' : 'Marcar como concluído')}"></div>
+      <div class="dc-body">
+        <div class="dc-meta">
+          <span class="dc-who ${whoClass}">${WHO_LABEL[d.who] || esc(d.who)}</span>
+          <span class="dc-area">${esc(d.area)}</span>
+          ${d.isCustom ? '<span class="dc-area" style="color:var(--sage);">Avulsa</span>' : ''}
+          ${dueBadge}
+          ${originBadge}
+          <span class="status-badge ${sbClass}">${sbLabel}</span>
+          ${delBtn}
+        </div>
+        <div class="dc-title">${esc(d.title)}</div>
+        ${d.desc ? `<div class="dc-desc">${esc(d.desc)}</div>` : ''}
+      </div>
+    </div>
+    ${chainFooter}
+    <div class="${calClasses.join(' ')}" id="cal-${domId}" title="Vincular ao Google Agenda">
+      <span class="${calCheckClass}"></span>
+      <span>📅 ${calLabel}</span>
+    </div>
+  </div>`;
+}
+
+// ─── TOGGLE ──────────────────────────────────────────────────
+function toggleDemand(d) {
+  const key = d._key; // grava no dia de ORIGEM (mantém o histórico correto)
+  const stored = getStatuses(key)[d.id] || (d.isChainChild ? 'waiting' : 'pending');
+
+  if (stored === 'done') {
+    const novo = d.isChainChild ? 'waiting' : 'pending';
+    setStatusLocal(key, d.id, novo);
+    sync('setStatus', { date: key, id: d.id, status: novo });
+    // Ao desmarcar o pai, só remove o filho do encadeamento se ele ainda NÃO foi concluído
+    if (d.chain) {
+      const childId = d.id + '-chain';
+      const childStatus = getStatuses(key)[childId];
+      if (childStatus && childStatus !== 'done') {
+        removeStatusLocal(key, childId);
+        sync('removeStatus', { date: key, id: childId });
+      }
+    }
+    showToast('Marcado como pendente');
+  } else {
+    setStatusLocal(key, d.id, 'done');
+    sync('setStatus', { date: key, id: d.id, status: 'done' });
+    showToast(d.carried ? `Concluído ✓ (registrado em ${d.originLabel})` : 'Concluído ✓');
+    if (d.chain) {
+      const childId = d.id + '-chain';
+      if (!getStatuses(key)[childId]) {
+        setStatusLocal(key, childId, 'waiting');
+        sync('setStatus', { date: key, id: childId, status: 'waiting' });
+        setTimeout(() => showToast(`→ ${WHO_LABEL[d.chain.next.who]} tem nova tarefa`), 600);
+      }
+    }
+  }
+  render();
+}
+
+// ─── EXCLUIR AVULSA ──────────────────────────────────────────
+function deleteCustomDemand(d) {
+  showConfirmModal('Excluir demanda', `"${d.title}" — esta ação não pode ser desfeita.`, () => {
+    STORE.customs[d._key] = (STORE.customs[d._key] || []).filter(c => c.id !== d.id);
+    removeStatusLocal(d._key, d.id);
+    removeStatusLocal(d._key, d.id + '-chain');
+    sync('removeCustom', { date: d._key, id: d.id });
+    sync('removeStatus', { date: d._key, id: d.id });
+    sync('removeStatus', { date: d._key, id: d.id + '-chain' });
+    const eventId = getGcalEventId(d._key, d.id);
+    if (eventId) {
+      if (STORE.gcal[d._key]) delete STORE.gcal[d._key][d.id];
+      sync('clearGcal', { date: d._key, id: d.id });
+      if (gcalAccessToken) deleteGcalEvent(eventId).catch(() => {});
+    }
+    showToast('Demanda excluída');
+    render();
+  });
+}
+
+// ─── ALERTAS ─────────────────────────────────────────────────
+function renderAlerts(visible, todayFlag) {
+  const late    = visible.filter(d => d.status === 'late' || d.carried);
+  const waiting = visible.filter(d => !d.carried && d.status === 'waiting');
+
+  let html = '';
+
+  late.forEach(d => {
+    const origem = d.carried ? ` (de ${d.originLabel})` : '';
+    html += `<div class="alert-item alert-late">
+      <div class="alert-icon">🔴</div>
+      <div class="alert-text"><strong>${esc(d.title)}</strong>${WHO_LABEL[d.who]} — aguardando ação${origem}</div>
+    </div>`;
+  });
+
+  waiting.forEach(d => {
+    html += `<div class="alert-item alert-waiting">
+      <div class="alert-icon">🟡</div>
+      <div class="alert-text"><strong>${esc(d.title)}</strong>${WHO_LABEL[d.who]} precisa agir</div>
+    </div>`;
+  });
+
+  if (todayFlag) {
+    const now = new Date();
+    const before15 = now.getHours() < 15;
+    const prepPendente = visible.some(d =>
+      !d.carried && d.status !== 'done' && d.chain && d.chain.next.who === 'beatriz');
+    if (before15 && prepPendente) {
+      html += `<div class="alert-item alert-15h">
+        <div class="alert-icon">⏰</div>
+        <div class="alert-text"><strong>Regra das 15h</strong>Há preparação pendente que a Beatriz depende para executar após as 15h.</div>
+      </div>`;
+    }
+  }
+
+  if (!late.length && !waiting.length) {
+    html += `<div class="alert-item alert-ok">
+      <div class="alert-icon">🟢</div>
+      <div class="alert-text"><strong>Tudo em ordem</strong>${todayFlag ? 'Nenhum alerta no momento.' : 'Nenhum alerta para este dia.'}</div>
+    </div>`;
+  }
+
+  document.getElementById('alertPanel').innerHTML = html;
+}
+
+// ─── NOVA DEMANDA AVULSA ─────────────────────────────────────
+document.getElementById('f-chain-who').addEventListener('change', function() {
+  document.getElementById('chainDetail').style.display = this.value ? 'block' : 'none';
+});
+
+function addCustomDemand() {
+  const title = document.getElementById('f-title').value.trim();
+  if (!title) { showToast('Digite uma descrição'); return; }
+
+  const who = document.getElementById('f-who').value;
+  const area = document.getElementById('f-area').value;
+  const chainWho = document.getElementById('f-chain-who').value;
+  const chainAction = document.getElementById('f-chain-action').value.trim();
+
+  const newD = {
+    id: 'custom-' + Date.now(),
+    title, desc: '', who, area,
+    chain: chainWho ? {
+      next: {
+        who: chainWho,
+        title: chainAction || `${capitalise(chainWho)} — verificar`,
+        desc: `Ativado por: ${title}`,
+      }
+    } : null,
+  };
+
+  const key = dateKey(viewDate);
+  if (!STORE.customs[key]) STORE.customs[key] = [];
+  STORE.customs[key].push(newD);
+  sync('addCustom', { date: key, demand: newD });
+
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-chain-who').value = '';
+  document.getElementById('f-chain-action').value = '';
+  document.getElementById('chainDetail').style.display = 'none';
+
+  showToast('Demanda adicionada');
+  render();
+}
+
+// ─── FILTRO ──────────────────────────────────────────────────
+function setFilter(f) {
+  currentFilter = f;
+  localStorage.setItem(FILTER_KEY, f);
+  ['all','mike','leonam','beatriz'].forEach(k => {
+    const btn = document.getElementById('fb-' + k);
+    btn.className = 'filter-btn';
+    if (k === f) btn.classList.add('active-' + k);
+  });
+  render();
+}
+
+// ─── NAVEGAÇÃO DE DATA ───────────────────────────────────────
+function changeDay(delta) {
+  viewDate.setDate(viewDate.getDate() + delta);
+  render();
+}
+function goToday() { viewDate = new Date(); render(); }
+function openDatePicker() {
+  const picker = document.getElementById('datePicker');
+  picker.value = dateKey(viewDate);
+  if (picker.showPicker) picker.showPicker(); else picker.click();
+}
+function onDatePicked(value) {
+  if (!value) return;
+  const [y, m, d] = value.split('-').map(Number);
+  viewDate = new Date(y, m - 1, d);
+  render();
+}
+
+// ─── TOAST ───────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ─── START ───────────────────────────────────────────────────
+initGcal();
+setFilter(currentFilter);
+iniciarSessao();
+
+// A cada 60s: busca atualizações dos colegas e reavalia horários-limite
+setInterval(() => {
+  if (!carregado || !SENHA_SESSAO) return;
+  api('getAll')
+    .then(d => { STORE = d.dados; setSyncState('ok'); render(); })
+    .catch(() => setSyncState('err'));
+}, 60000);
 </script>
 </body>
 </html>
