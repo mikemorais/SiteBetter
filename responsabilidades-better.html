@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BETTER. — Minhas Responsabilidades</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;600&display=swap');
+
+  :root {
+    --b-carvao: #1E1E1C;
+    --b-areia: #C8B89A;
+    --b-offwhite: #F5F4F0;
+    --b-branco: #FFFFFF;
+    --b-grafite: #6B6B62;
+    --b-sage: #3D7A5E;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--b-offwhite);
+    color: var(--b-carvao);
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: var(--b-carvao);
+    padding: 2.75rem 2rem 2.25rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -70px; right: -70px;
+    width: 260px; height: 260px;
+    border: 1px solid rgba(200,184,154,0.13);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--b-areia); opacity: 0.7;
+    margin-bottom: 1rem;
+  }
+  .hero-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 52px;
+    letter-spacing: -0.01em; text-transform: uppercase;
+    color: var(--b-branco); line-height: 1;
+  }
+  .hero-logo span { color: var(--b-areia); }
+  .hero-question {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 26px;
+    text-transform: uppercase; letter-spacing: 0.02em;
+    color: var(--b-areia);
+    margin-top: 1.1rem;
+  }
+  .hero-sub {
+    font-size: 13px;
+    color: rgba(245,244,240,0.55);
+    margin-top: 0.4rem;
+    max-width: 540px;
+    line-height: 1.55;
+  }
+
+  /* ─── TABS ─── */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    padding: 1.25rem 2rem 0;
+    flex-wrap: wrap;
+  }
+  .tab {
+    font-family: 'Barlow', sans-serif;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    padding: 9px 18px;
+    border-radius: 4px;
+    border: 0.5px solid rgba(30,30,28,0.18);
+    background: var(--b-branco);
+    color: var(--b-carvao);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .tab:hover { border-color: var(--b-sage); }
+  .tab:focus-visible { outline: 2px solid var(--b-sage); outline-offset: 2px; }
+  .tab.active {
+    background: var(--b-sage);
+    border-color: var(--b-sage);
+    color: var(--b-branco);
+  }
+
+  /* ─── SUMMARY STRIP ─── */
+  .summary {
+    margin: 1.25rem 2rem 0;
+    background: var(--b-branco);
+    border: 0.5px solid rgba(30,30,28,0.1);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: 1.75rem;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+  .summary-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 28px;
+    text-transform: uppercase; line-height: 1;
+  }
+  .summary-stat {
+    font-size: 12px; color: var(--b-grafite);
+    letter-spacing: 0.04em;
+  }
+  .summary-stat strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 19px;
+    color: var(--b-carvao); margin-right: 4px;
+  }
+
+  /* ─── SECTIONS ─── */
+  .role-section { padding: 1.75rem 2rem 0; }
+  .role-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 21px;
+    text-transform: uppercase; letter-spacing: 0.02em;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid rgba(30,30,28,0.12);
+    margin-bottom: 0.9rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .role-title .bar {
+    display: inline-block; width: 26px; height: 2px;
+    background: var(--b-areia); flex-shrink: 0;
+  }
+  .role-desc {
+    font-size: 12px; color: var(--b-grafite);
+    margin: -0.4rem 0 0.9rem; line-height: 1.5;
+  }
+
+  /* ─── CARDS ─── */
+  .cards { display: flex; flex-direction: column; gap: 7px; }
+  .card {
+    background: var(--b-branco);
+    border: 0.5px solid rgba(30,30,28,0.09);
+    border-radius: 6px;
+    padding: 0.7rem 0.95rem;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .card-tag {
+    flex-shrink: 0;
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 0.13em; text-transform: uppercase;
+    padding: 4px 9px; border-radius: 3px;
+    margin-top: 1px;
+    min-width: 88px; text-align: center;
+  }
+  .tag-ge { background: rgba(30,30,28,0.07); color: var(--b-grafite); }
+  .tag-mg { background: rgba(61,122,94,0.12); color: var(--b-sage); }
+  .tag-re { background: rgba(200,184,154,0.2); color: #8a7558; }
+  .tag-lc { background: rgba(200,184,154,0.12); color: var(--b-grafite); }
+  .card-body { flex: 1; }
+  .card-process {
+    font-size: 14px; font-weight: 600;
+    color: var(--b-carvao); line-height: 1.35;
+  }
+  .card-detail {
+    font-size: 12px; color: var(--b-grafite);
+    line-height: 1.5; margin-top: 2px;
+  }
+  .card-detail strong { font-weight: 600; color: var(--b-carvao); }
+  .empty {
+    font-size: 13px; color: var(--b-grafite);
+    background: var(--b-branco);
+    border: 0.5px dashed rgba(30,30,28,0.15);
+    border-radius: 6px; padding: 0.8rem 1rem;
+  }
+
+  /* ─── OVERVIEW TABLE ─── */
+  .overview-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px; background: var(--b-branco);
+    border: 0.5px solid rgba(30,30,28,0.1);
+    border-radius: 8px; overflow: hidden;
+  }
+  .overview-wrap { overflow-x: auto; border-radius: 8px; }
+  .overview-table th {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--b-areia);
+    background: var(--b-carvao);
+    text-align: left; padding: 0.7rem 0.85rem;
+  }
+  .overview-table td {
+    padding: 0.55rem 0.85rem;
+    border-bottom: 0.5px solid rgba(30,30,28,0.06);
+    vertical-align: top; line-height: 1.45;
+  }
+  .overview-table tr:last-child td { border-bottom: none; }
+  .ov-area {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 15px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    background: rgba(200,184,154,0.12) !important;
+    color: #8a7558;
+  }
+  .ov-owner { font-weight: 600; white-space: nowrap; }
+  .ov-muted { color: var(--b-grafite); font-size: 12px; }
+
+  /* ─── RULES ─── */
+  .rules { padding: 2rem 2rem 0; }
+  .rules-box {
+    background: var(--b-carvao);
+    border-radius: 8px;
+    padding: 1.5rem 1.5rem 1.4rem;
+    position: relative; overflow: hidden;
+  }
+  .rules-box::before {
+    content: '';
+    position: absolute;
+    bottom: -50px; right: -50px;
+    width: 160px; height: 160px;
+    border: 1px solid rgba(200,184,154,0.1);
+    border-radius: 50%;
+  }
+  .rules-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 18px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    color: var(--b-areia);
+    margin-bottom: 0.9rem;
+  }
+  .rule-item {
+    display: flex; gap: 10px;
+    font-size: 12.5px; color: rgba(245,244,240,0.78);
+    line-height: 1.6; padding: 4px 0;
+    position: relative;
+  }
+  .rule-item::before {
+    content: '';
+    display: block; width: 14px; height: 1px;
+    background: rgba(200,184,154,0.4);
+    flex-shrink: 0; margin-top: 9px;
+  }
+  .rule-item strong { color: var(--b-branco); font-weight: 600; }
+  .rule-15h {
+    margin-top: 0.9rem;
+    background: rgba(61,122,94,0.12);
+    border: 0.5px solid rgba(61,122,94,0.3);
+    border-radius: 6px;
+    padding: 0.75rem 0.95rem;
+    font-size: 12.5px; color: rgba(245,244,240,0.85);
+    line-height: 1.6; position: relative;
+  }
+  .rule-15h strong { color: var(--b-sage); text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    margin: 2.25rem 2rem 0;
+    padding: 1.1rem 0 2.25rem;
+    border-top: 1px solid rgba(30,30,28,0.1);
+    display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 8px;
+  }
+  .footer-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 17px;
+    text-transform: uppercase; color: var(--b-carvao);
+    letter-spacing: -0.01em;
+  }
+  .footer-logo span { color: var(--b-areia); }
+  .footer-meta {
+    font-size: 10.5px; color: var(--b-grafite);
+    letter-spacing: 0.05em; text-align: right; line-height: 1.5;
+  }
+
+  @media (max-width: 560px) {
+    .hero, .tabs, .role-section, .rules, .footer { padding-left: 1.1rem; padding-right: 1.1rem; }
+    .summary { margin-left: 1.1rem; margin-right: 1.1rem; gap: 1rem; }
+    .hero-logo { font-size: 42px; }
+    .card { flex-direction: column; gap: 6px; }
+    .card-tag { min-width: 0; }
+  }
+</style>
+</head>
+<body>
+<script>
+const senha = "BETTER2026";
+
+if (localStorage.getItem("mr_access") !== "true") {
+
+    const tentativa = prompt("Digite o código de acesso");
+
+    if (tentativa === senha) {
+        localStorage.setItem("mr_access", "true");
+    } else {
+        document.body.innerHTML = `
+            <div style="
+                display:flex;
+                height:100vh;
+                align-items:center;
+                justify-content:center;
+                font-family:sans-serif;
+                flex-direction:column;
+            ">
+                <h1>Acesso Restrito</h1>
+                <p>Entre em contato com a BETTER.</p>
+            </div>
+        `;
+        throw new Error("Acesso negado");
+    }
+}
+</script>
+<div class="hero">
+  <div class="hero-eyebrow">Matriz de Responsabilidades v1.0 · 2026</div>
+  <div class="hero-logo">BETTER<span>.</span></div>
+  <div class="hero-question">De quem é isso?</div>
+  <div class="hero-sub">Cada processo da BETTER tem exatamente um dono. Selecione seu nome e veja, em um só lugar, o que é seu — o que você garante, o que você apoia e o que você aprova.</div>
+</div>
+
+<div class="tabs" role="tablist" aria-label="Selecionar colaborador">
+  <button class="tab active" data-view="Leonam" onclick="setView('Leonam', this)">Leonam</button>
+  <button class="tab" data-view="Beatriz" onclick="setView('Beatriz', this)">Beatriz</button>
+  <button class="tab" data-view="Mike" onclick="setView('Mike', this)">Mike</button>
+  <button class="tab" data-view="all" onclick="setView('all', this)">Visão Geral</button>
+</div>
+
+<div id="content"></div>
+
+<div class="rules">
+  <div class="rules-box">
+    <div class="rules-title">Como esta matriz funciona</div>
+    <div class="rule-item"><div><strong>Todo processo tem exatamente um dono.</strong> Dono duplo é dono nenhum.</div></div>
+    <div class="rule-item"><div><strong>Ser dono não significa fazer tudo sozinho</strong> — significa não deixar cair. Se precisar de ajuda, a iniciativa de pedir é do dono.</div></div>
+    <div class="rule-item"><div><strong>Aprovação é exceção, não rotina.</strong> Quando não há aprovador indicado, o dono decide e conclui. Se você precisa consultar o Mike para o trivial, falta procedimento — anote como procedimento a escrever.</div></div>
+    <div class="rule-item"><div><strong>Dúvida de responsabilidade se resolve apontando para esta matriz</strong> — não para o costume. Se a matriz estiver errada, anota-se a correção para a revisão.</div></div>
+    <div class="rule-15h"><strong>Regra das 15h</strong> · Tudo que depende da Beatriz e tem prazo deve chegar organizado até as 15h (preparado pelo Leonam) ou prever execução no dia anterior. Urgência fiscal de manhã sobe para o Mike — e deve ser registrada toda vez que ocorrer.</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-logo">BETTER<span>.</span></div>
+  <div class="footer-meta">Matriz de Responsabilidades v1.0 · Complementar ao SOB<br>Revisão prevista: 90 dias · Uso interno</div>
+</div>
+
+<script>
+// ─── DADOS · Matriz de Responsabilidades v1.0 ───
+// area: GE = Gestão Empresarial · MG = Management · RE = Real Estate · LC = Locações
+const AREAS = { GE: 'Gestão', MG: 'Management', RE: 'Real Estate', LC: 'Locações' };
+const P = [
+  // Gestão Empresarial
+  { a:'GE', p:'Planejamento da BETTER', dono:'Mike', donoNota:'', apoia:[['Beatriz','informações da rotina'],['Leonam','informações da rotina']], aprova:null },
+  { a:'GE', p:'Crescimento da empresa (novos contratos e frentes)', dono:'Mike', apoia:[['Leonam','dados e documentação']], aprova:null },
+  { a:'GE', p:'Controle financeiro da BETTER (caixa, recebimentos, visão mensal)', dono:'Beatriz', apoia:[['Leonam','lançamentos da manhã']], aprova:['Mike',''] },
+  { a:'GE', p:'Contas a pagar (da empresa)', dono:'Beatriz', apoia:[['Leonam','organização das contas até 15h']], aprova:['Mike','fora da rotina'] },
+  { a:'GE', p:'Contas a receber (honorários da BETTER)', dono:'Leonam', apoia:[['Beatriz','conferência']], aprova:['Mike','negociação de atrasos'] },
+  { a:'GE', p:'Organização documental da empresa', dono:'Leonam', apoia:[['Beatriz','documentos fiscais']], aprova:null },
+  { a:'GE', p:'Controle de acessos e senhas', dono:'Mike', apoia:[['Leonam','inventário e atualização']], aprova:null },
+  // Management
+  { a:'MG', p:'Atendimento inicial de condôminos', dono:'Leonam', apoia:[['Mike','casos sensíveis']], aprova:null },
+  { a:'MG', p:'Comunicação com condôminos (rotina)', dono:'Leonam', apoia:[], aprova:['Mike','assuntos sensíveis'] },
+  { a:'MG', p:'Comunicados mensais', dono:'Leonam', apoia:[], aprova:['Mike','conteúdo'] },
+  { a:'MG', p:'Cobranças', dono:'Leonam', apoia:[], aprova:null },
+  { a:'MG', p:'Inadimplência (régua e acompanhamento)', dono:'Leonam', apoia:[['Beatriz','conciliação de pagamentos']], aprova:['Mike','acordos e jurídico'] },
+  { a:'MG', p:'Emissão de boletos', dono:'Leonam', apoia:[], aprova:null },
+  { a:'MG', p:'Atualização cadastral', dono:'Leonam', apoia:[], aprova:null },
+  { a:'MG', p:'Controle de pendências (registro único)', dono:'Leonam', apoia:[['Mike','alimenta o registro'],['Beatriz','alimenta o registro']], aprova:null },
+  { a:'MG', p:'Atas', dono:'Leonam', apoia:[], aprova:['Mike','validação'] },
+  { a:'MG', p:'Assembleias (preparação, condução, encaminhamentos)', dono:'Mike', apoia:[['Leonam','convocação, materiais, lista de presença']], aprova:null },
+  { a:'MG', p:'Orçamentos (cotações com fornecedores)', dono:'Mike', apoia:[['Leonam','solicitação e organização das cotações']], aprova:null },
+  { a:'MG', p:'Obras (decisão e acompanhamento técnico)', dono:'Mike', apoia:[['Leonam','registro e arquivo de documentos']], aprova:null },
+  { a:'MG', p:'Acompanhamento da limpeza', dono:'Mike', donoNota:'nas visitas', apoia:[['Leonam','registro de reclamações e ocorrências']], aprova:null },
+  { a:'MG', p:'Prestação de contas', dono:'Leonam', donoNota:'montagem no sistema', apoia:[['Beatriz','conferência financeira']], aprova:['Mike','validação como síndico'] },
+  { a:'MG', p:'Controle bancário dos condomínios', dono:'Beatriz', apoia:[['Leonam','preparação pela manhã']], aprova:['Mike','pagamentos fora da rotina'] },
+  { a:'MG', p:'AVCB e Bombeiros', dono:'Beatriz', apoia:[['Leonam','documentos e controle de prazos']], aprova:['Mike','contratações e orçamentos'] },
+  // Real Estate
+  { a:'RE', p:'Captação de clientes', dono:'Mike', apoia:[], aprova:null },
+  { a:'RE', p:'Diagnóstico de necessidades', dono:'Mike', apoia:[], aprova:null },
+  { a:'RE', p:'Curadoria imobiliária', dono:'Mike', apoia:[['Leonam','organização do material']], aprova:null },
+  { a:'RE', p:'Pesquisa de imóveis', dono:'Mike', apoia:[['Leonam','levantamento preliminar de anúncios e fichas']], aprova:null },
+  { a:'RE', p:'Análise documental', dono:'Mike', apoia:[['Leonam','coleta de certidões e documentos']], aprova:null },
+  { a:'RE', p:'Negociação', dono:'Mike', apoia:[], aprova:null },
+  { a:'RE', p:'Fechamento', dono:'Mike', apoia:[['Beatriz','nota fiscal e parte tributária']], aprova:null },
+  { a:'RE', p:'Pós-venda', dono:'Mike', apoia:[['Leonam','acompanhamento de pendências do pós']], aprova:null },
+  // Locações
+  { a:'LC', p:'Captação (imóveis e inquilinos)', dono:'Mike', apoia:[['Leonam','fichas e cadastro']], aprova:null },
+  { a:'LC', p:'Contratos', dono:'Leonam', donoNota:'elaboração no modelo', apoia:[['Beatriz','parte fiscal quando houver']], aprova:['Mike','condições e assinatura'] },
+  { a:'LC', p:'Cobrança (aluguéis)', dono:'Leonam', apoia:[], aprova:null },
+  { a:'LC', p:'Repasses aos proprietários', dono:'Beatriz', apoia:[['Leonam','conferência de valores pela manhã']], aprova:['Mike','descontos e exceções'] },
+  { a:'LC', p:'Inadimplência de locação', dono:'Leonam', apoia:[], aprova:['Mike','acordos e jurídico'] },
+  { a:'LC', p:'Manutenção dos imóveis', dono:'Mike', donoNota:'decisão e fornecedores', apoia:[['Leonam','recebimento e registro de chamados']], aprova:null },
+];
+
+function tag(a) {
+  const cls = { GE:'tag-ge', MG:'tag-mg', RE:'tag-re', LC:'tag-lc' }[a];
+  return `<div class="card-tag ${cls}">${AREAS[a]}</div>`;
+}
+
+function card(proc, detailHtml) {
+  return `<div class="card">${tag(proc.a)}<div class="card-body">
+    <div class="card-process">${proc.p}</div>
+    ${detailHtml ? `<div class="card-detail">${detailHtml}</div>` : ''}
+  </div></div>`;
+}
+
+function renderPerson(name) {
+  const dono = P.filter(x => x.dono === name);
+  const apoia = P.filter(x => x.apoia.some(s => s[0] === name));
+  const aprova = P.filter(x => x.aprova && x.aprova[0] === name);
+
+  const donoCards = dono.map(x => {
+    const partes = [];
+    if (x.donoNota) partes.push(`<strong>Seu papel:</strong> ${x.donoNota}.`);
+    if (x.apoia.length) partes.push('<strong>Quem te apoia:</strong> ' + x.apoia.map(s => `${s[0]}${s[1] ? ' (' + s[1] + ')' : ''}`).join(' · ') + '.');
+    if (x.aprova) partes.push(`<strong>Aprovação:</strong> ${x.aprova[0]}${x.aprova[1] ? ' — ' + x.aprova[1] : ''}.`);
+    else partes.push('<strong>Você decide e conclui</strong> — sem necessidade de aprovação.');
+    return card(x, partes.join(' '));
+  }).join('');
+
+  const apoiaCards = apoia.map(x => {
+    const meu = x.apoia.find(s => s[0] === name);
+    return card(x, `<strong>Você apoia com:</strong> ${meu[1] || 'execução de partes do processo'}. <strong>Dono:</strong> ${x.dono}.`);
+  }).join('');
+
+  const aprovaCards = aprova.map(x => {
+    return card(x, `<strong>Você aprova:</strong> ${x.aprova[1] || 'a palavra final'}. <strong>Dono:</strong> ${x.dono}.`);
+  }).join('');
+
+  return `
+    <div class="summary">
+      <div class="summary-name">${name}</div>
+      <div class="summary-stat"><strong>${dono.length}</strong>processos como dono</div>
+      <div class="summary-stat"><strong>${apoia.length}</strong>processos que apoia</div>
+      <div class="summary-stat"><strong>${aprova.length}</strong>aprovações</div>
+    </div>
+
+    <div class="role-section">
+      <div class="role-title"><span class="bar"></span>Você é o dono</div>
+      <div class="role-desc">Você responde por estes processos: garante que aconteçam, no prazo e com qualidade. Se faltar algo, a iniciativa de pedir ajuda é sua.</div>
+      <div class="cards">${donoCards || '<div class="empty">Nenhum processo como dono.</div>'}</div>
+    </div>
+
+    <div class="role-section">
+      <div class="role-title"><span class="bar"></span>Você apoia</div>
+      <div class="role-desc">Você executa partes destes processos ou fornece insumos, sob coordenação do dono.</div>
+      <div class="cards">${apoiaCards || '<div class="empty">Nenhum processo como apoio.</div>'}</div>
+    </div>
+
+    <div class="role-section">
+      <div class="role-title"><span class="bar"></span>Você aprova</div>
+      <div class="role-desc">Você dá a palavra final nestas decisões, que excedem a alçada do dono.</div>
+      <div class="cards">${aprovaCards || '<div class="empty">Nenhuma aprovação atribuída.</div>'}</div>
+    </div>`;
+}
+
+function renderAll() {
+  const order = ['GE','MG','RE','LC'];
+  let rows = '';
+  order.forEach(a => {
+    rows += `<tr><td class="ov-area" colspan="4">${AREAS[a]}</td></tr>`;
+    P.filter(x => x.a === a).forEach(x => {
+      const apoia = x.apoia.length ? x.apoia.map(s => `${s[0]}${s[1] ? ' <span class="ov-muted">(' + s[1] + ')</span>' : ''}`).join('<br>') : '<span class="ov-muted">—</span>';
+      const aprova = x.aprova ? `${x.aprova[0]}${x.aprova[1] ? ' <span class="ov-muted">(' + x.aprova[1] + ')</span>' : ''}` : '<span class="ov-muted">—</span>';
+      rows += `<tr>
+        <td>${x.p}${x.donoNota ? ' <span class="ov-muted">(' + x.donoNota + ')</span>' : ''}</td>
+        <td class="ov-owner">${x.dono}</td>
+        <td>${apoia}</td>
+        <td>${aprova}</td>
+      </tr>`;
+    });
+  });
+  return `
+    <div class="role-section">
+      <div class="role-title"><span class="bar"></span>Todos os processos · ${P.length} mapeados</div>
+      <div class="overview-wrap">
+      <table class="overview-table">
+        <thead><tr><th>Processo</th><th>Dono</th><th>Apoia</th><th>Aprova</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      </div>
+    </div>`;
+}
+
+function setView(view, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('content').innerHTML = view === 'all' ? renderAll() : renderPerson(view);
+}
+
+document.getElementById('content').innerHTML = renderPerson('Leonam');
+</script>
+</body>
+</html>
