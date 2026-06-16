@@ -704,7 +704,7 @@ body {
 //  CONFIGURAÇÃO — cole aqui a URL do seu App da Web (Apps Script)
 //  Ela é gerada ao publicar o Code.gs e termina em /exec
 // ═══════════════════════════════════════════════════════════════
-const API_URL = 'https://script.google.com/macros/s/AKfycbxhZzbIkRonIrcvrtGVV800F5QP5CQhGyc2n2kN5tZTpI1eG9g18T4XyEcF4lmh3lHTPA/exec';
+const API_URL = 'COLE_AQUI_A_URL_DO_APP_DA_WEB';
 
 // ─── CONFIGURAÇÕES GOOGLE AGENDA ─────────────────────────────
 const GCAL_CLIENT_ID = '721838040530-r6qe06j6kleph12hb8k9askh8fb0cojm.apps.googleusercontent.com';
@@ -825,6 +825,86 @@ const ROTINA = [
    who:'leonam', area:'Gestão', day:['sexta'],
    chain:{ next:{ who:'mike', title:'Confirmar fechamento do registro', desc:'Leonam entregou o registro fechado. Mike valida e assina off na semana.' }}},
 ];
+
+// ─── TAREFAS MENSAIS (relógios de água e gás) ────────────────
+// Aparecem todo mês a partir do dia da janela. Diferente da rotina semanal,
+// elas têm dia fixo no mês — não dependem do dia da semana.
+//   monthly.start / monthly.end → janela em que a tarefa aparece sem ficar atrasada.
+//   Só vira "atraso" depois do dia monthly.end (a margem 14–17 cobre fim de
+//   semana e feriado: Mike antecipa ou adia dentro dela sem penalidade).
+//   chain.next.dueBusinessDays → prazo do encadeamento em DIAS ÚTEIS após a conclusão.
+const MEDICAO_PREDIOS = [
+  'Weston','Las Olas','Asafe','Grant Mare','Vicenza','Royal Vitalle 2',
+  'Maresias (só gás)','Henrique','Niki Lauda','Raiar','Manoel Pires'
+];
+
+function slug(s) {
+  return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+function monthlyDefs() {
+  const defs = [];
+  // 11 medições do Mike, cada uma encadeia a tabulação do mesmo prédio para o Leonam
+  MEDICAO_PREDIOS.forEach(predio => {
+    defs.push({
+      base: 'm-medicao-' + slug(predio),
+      title: 'Medição de relógios — ' + predio,
+      desc: 'Leitura dos relógios de água e gás. Janela dia 14 a 17 — antecipa ou adia dentro dela se cair em fim de semana ou feriado.',
+      who: 'mike', area: 'Management',
+      monthly: { start: 14, end: 17 },
+      chain: { next: {
+        who: 'leonam',
+        title: 'Tabulação e conferência — ' + predio,
+        desc: 'Tabular e conferir a medição de ' + predio + '. Prazo: 2 dias úteis após a medição do Mike.',
+        dueBusinessDays: 2,
+      }},
+    });
+  });
+  // Brisa Mar: só administração, depende de terceiros, entrega obrigatória até dia 20
+  defs.push({
+    base: 'm-tabulacao-brisamar',
+    title: 'Tabulação e conferência — Brisa Mar',
+    desc: 'Brisa Mar (só administramos) depende de terceiros. Entrega obrigatória até o dia 20.',
+    who: 'leonam', area: 'Management',
+    monthly: { start: 14, end: 20, hardDay: 20 },
+    chain: null,
+  });
+  return defs;
+}
+
+// ─── HELPERS DE DATA (dias úteis) ────────────────────────────
+function parseISO(s) {
+  const [y, m, d] = s.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+function endOfDay(d) {
+  const x = new Date(d);
+  x.setHours(23, 59, 59, 999);
+  return x;
+}
+function addBusinessDays(date, n) {
+  const d = new Date(date);
+  let added = 0;
+  while (added < n) {
+    d.setDate(d.getDate() + 1);
+    const wd = d.getDay();
+    if (wd !== 0 && wd !== 6) added++;
+  }
+  return d;
+}
+function fmtShort(d) {
+  return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0');
+}
+function monthKey(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-01`;
+}
+function isStatusDone(raw) {
+  return raw === 'done' || (typeof raw === 'string' && raw.indexOf('done|') === 0);
+}
+function doneDate(raw) {
+  return (typeof raw === 'string' && raw.indexOf('done|') === 0) ? raw.split('|')[1] : null;
+}
 
 // ─── API ─────────────────────────────────────────────────────
 async function api(action, payload = {}) {
@@ -1206,7 +1286,82 @@ function buildView(date) {
     list = getCarryover(date).concat(list);
   }
 
+  // Tarefas mensais (medições/tabulações) — aparecem dentro da janela do mês
+  list = getMonthlyItems(date).concat(list);
+
   return list;
+}
+
+// Gera as tarefas mensais do mês da data visualizada.
+// Status é sempre calculado contra a data real de hoje (não a visualizada),
+// para que "atrasado" reflita o tempo real, não a navegação.
+function getMonthlyItems(viewDate) {
+  const y = viewDate.getFullYear();
+  const mo = viewDate.getMonth();
+  const mKey = monthKey(viewDate);
+  const statuses = getStatuses(mKey);
+  const realNow = new Date();
+  const viewedDay = viewDate.getDate();
+  const items = [];
+
+  monthlyDefs().forEach(def => {
+    if (viewedDay < def.monthly.start) return; // ainda não apareceu neste mês
+
+    const id = def.base;
+    const raw = statuses[id];
+    const parentDone = isStatusDone(raw);
+    const completedAt = doneDate(raw);
+
+    let status;
+    if (parentDone) {
+      status = 'done';
+    } else {
+      const endDate = endOfDay(new Date(y, mo, def.monthly.end));
+      status = realNow > endDate ? 'late' : 'pending';
+    }
+
+    items.push({
+      ...def,
+      id,
+      _key: mKey,
+      isMonthly: true,
+      isCustom: false,
+      status,
+      windowLabel: def.monthly.hardDay ? ('até dia ' + def.monthly.hardDay)
+                                        : ('janela ' + def.monthly.start + '–' + def.monthly.end),
+    });
+
+    // Encadeamento: tabulação do mesmo prédio para o Leonam, prazo em dias úteis
+    if (parentDone && def.chain) {
+      const childId = id + '-chain';
+      const childRaw = statuses[childId];
+      const childDone = isStatusDone(childRaw);
+      const baseDate = completedAt ? parseISO(completedAt) : new Date(y, mo, def.monthly.end);
+      const childDue = addBusinessDays(baseDate, def.chain.next.dueBusinessDays || 2);
+
+      let cstatus;
+      if (childDone) cstatus = 'done';
+      else cstatus = realNow > endOfDay(childDue) ? 'late' : 'pending';
+
+      items.push({
+        id: childId,
+        _key: mKey,
+        isMonthly: true,
+        isChainChild: true,
+        isCustom: false,
+        title: def.chain.next.title,
+        desc: def.chain.next.desc,
+        who: def.chain.next.who,
+        area: def.area,
+        chain: null,
+        status: cstatus,
+        parentTitle: def.title,
+        windowLabel: 'até ' + fmtShort(childDue),
+      });
+    }
+  });
+
+  return items;
 }
 
 // ─── RENDER ──────────────────────────────────────────────────
@@ -1330,6 +1485,9 @@ function cardHTML(d) {
     const passed = isSameDay(viewDate, new Date()) && !isDone && duePassed(d.due);
     dueBadge = `<span class="dc-due ${passed ? 'passed' : ''}">até ${d.due}</span>`;
   }
+  if (d.isMonthly && d.windowLabel) {
+    dueBadge = `<span class="dc-due ${d.status === 'late' ? 'passed' : ''}">${d.windowLabel}</span>`;
+  }
 
   const originBadge = d.carried ? `<span class="dc-origin">de ${d.originLabel}</span>` : '';
 
@@ -1364,6 +1522,7 @@ function cardHTML(d) {
           <span class="dc-who ${whoClass}">${WHO_LABEL[d.who] || esc(d.who)}</span>
           <span class="dc-area">${esc(d.area)}</span>
           ${d.isCustom ? '<span class="dc-area" style="color:var(--sage);">Avulsa</span>' : ''}
+          ${d.isMonthly ? '<span class="dc-area" style="color:#8a7558;">Mensal</span>' : ''}
           ${dueBadge}
           ${originBadge}
           <span class="status-badge ${sbClass}">${sbLabel}</span>
@@ -1383,6 +1542,8 @@ function cardHTML(d) {
 
 // ─── TOGGLE ──────────────────────────────────────────────────
 function toggleDemand(d) {
+  if (d.isMonthly) { toggleMonthly(d); return; }
+
   const key = d._key; // grava no dia de ORIGEM (mantém o histórico correto)
   const stored = getStatuses(key)[d.id] || (d.isChainChild ? 'waiting' : 'pending');
 
@@ -1410,6 +1571,44 @@ function toggleDemand(d) {
         setStatusLocal(key, childId, 'waiting');
         sync('setStatus', { date: key, id: childId, status: 'waiting' });
         setTimeout(() => showToast(`→ ${WHO_LABEL[d.chain.next.who]} tem nova tarefa`), 600);
+      }
+    }
+  }
+  render();
+}
+
+// Toggle de tarefa mensal. Ao concluir, grava a DATA de conclusão junto
+// (status 'done|AAAA-MM-DD') para que o prazo da tabulação (2 dias úteis)
+// seja calculado a partir do dia real em que o Mike finalizou.
+function toggleMonthly(d) {
+  const key = d._key; // bucket do mês (AAAA-MM-01)
+  const raw = getStatuses(key)[d.id];
+  const done = isStatusDone(raw);
+
+  if (done) {
+    setStatusLocal(key, d.id, 'pending');
+    sync('setStatus', { date: key, id: d.id, status: 'pending' });
+    // desfez a medição → remove a tabulação encadeada, se ela ainda não foi concluída
+    if (d.chain) {
+      const childId = d.id + '-chain';
+      const childRaw = getStatuses(key)[childId];
+      if (childRaw && !isStatusDone(childRaw)) {
+        removeStatusLocal(key, childId);
+        sync('removeStatus', { date: key, id: childId });
+      }
+    }
+    showToast('Marcado como pendente');
+  } else {
+    const val = 'done|' + dateKey(new Date());
+    setStatusLocal(key, d.id, val);
+    sync('setStatus', { date: key, id: d.id, status: val });
+    showToast('Concluído ✓');
+    if (d.chain) {
+      const childId = d.id + '-chain';
+      if (!getStatuses(key)[childId]) {
+        setStatusLocal(key, childId, 'pending');
+        sync('setStatus', { date: key, id: childId, status: 'pending' });
+        setTimeout(() => showToast(`→ ${WHO_LABEL[d.chain.next.who]} tem a tabulação (2 dias úteis)`), 600);
       }
     }
   }
