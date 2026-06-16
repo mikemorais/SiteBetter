@@ -925,23 +925,47 @@ function setSyncState(state) {
 }
 
 // Envia uma alteração; o servidor devolve os dados atualizados de todos
+// Fila SERIAL de gravações. Cada alteração entra na fila e é enviada uma de
+// cada vez. Enquanto houver gravações na fila, as respostas do servidor NÃO
+// sobrescrevem o STORE local (que já contém a verdade mais recente) — isso
+// evita a condição de corrida em que uma resposta antiga "desfazia" uma
+// conclusão recém-marcada. O STORE só é ressincronizado quando a fila esvazia.
+let writeQueue = [];
+let queueRunning = false;
+
 function sync(action, payload) {
+  writeQueue.push({ action, payload });
+  if (!queueRunning) runQueue();
+}
+
+async function runQueue() {
+  queueRunning = true;
   setSyncState('syncing');
-  api(action, payload)
-    .then(d => {
-      if (d.dados) STORE = d.dados;
-      setSyncState('ok');
-      render();
-    })
-    .catch(err => {
+  while (writeQueue.length) {
+    const { action, payload } = writeQueue.shift();
+    try {
+      const d = await api(action, payload);
+      // Só adota o STORE do servidor quando esta foi a ÚLTIMA gravação da fila.
+      // Assim respostas intermediárias não rebaixam o estado local.
+      if (d.dados && writeQueue.length === 0) {
+        STORE = d.dados;
+        render();
+      }
+    } catch (err) {
       setSyncState('err');
       if (String(err.message) === 'senha_invalida') {
         sessionStorage.removeItem('better_senha');
         location.reload();
-      } else {
-        showToast('Erro ao sincronizar — tente novamente');
+        return;
       }
-    });
+      showToast('Erro ao sincronizar — tente novamente');
+      // mantém o que falhou para nova tentativa e para a fila
+      queueRunning = false;
+      return;
+    }
+  }
+  queueRunning = false;
+  setSyncState('ok');
 }
 
 async function carregarTudo() {
@@ -1765,9 +1789,11 @@ initGcal();
 setFilter(currentFilter);
 iniciarSessao();
 
-// A cada 60s: busca atualizações dos colegas e reavalia horários-limite
+// A cada 60s: busca atualizações dos colegas e reavalia horários-limite.
+// Pula se há gravações pendentes na fila, para não sobrescrever o estado local.
 setInterval(() => {
   if (!carregado || !SENHA_SESSAO) return;
+  if (queueRunning || writeQueue.length) return;
   api('getAll')
     .then(d => { STORE = d.dados; setSyncState('ok'); render(); })
     .catch(() => setSyncState('err'));
