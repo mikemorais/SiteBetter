@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparativo de Orçamentos — Impermeabilização</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --b-carvao: #1E1E1C;
+    --b-areia: #C8B89A;
+    --b-offwhite: #F5F4F0;
+    --b-branco: #FFFFFF;
+    --b-grafite: #6B6B62;
+    --b-sage: #3D7A5E;
+    --b-alerta: #C0392B;
+    --b-atencao: #B07D1A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--b-offwhite);
+    color: var(--b-carvao);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    font-size: 14px;
+  }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 900px; margin: 0 auto; padding: 0 0 40px; }
+
+  /* ── CAPA ── */
+  .cover {
+    background: var(--b-carvao);
+    padding: 28px 20px 24px;
+  }
+  .cover-logo {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: 26px; letter-spacing: -0.01em; text-transform: uppercase;
+    color: var(--b-branco); line-height: 1;
+  }
+  .cover-logo span { color: var(--b-areia); }
+  .cover-logo-sub {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--b-grafite); margin-top: 3px;
+  }
+  .cover-eyebrow {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--b-areia); margin: 20px 0 8px;
+  }
+  .cover-title {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: 42px; line-height: 0.92; text-transform: uppercase;
+    color: var(--b-branco); letter-spacing: -0.01em;
+  }
+  .cover-title em { font-style: normal; color: var(--b-areia); display: block; }
+  .cover-desc {
+    font-size: 12px; color: rgba(245,244,240,0.5); line-height: 1.5; margin-top: 12px;
+  }
+  .cover-meta-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 20px;
+  }
+  .meta-card {
+    background: rgba(255,255,255,0.05); border: 0.5px solid rgba(200,184,154,0.15);
+    border-radius: 6px; padding: 10px 12px;
+  }
+  .meta-card-label {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--b-grafite); margin-bottom: 2px;
+  }
+  .meta-card-value {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 15px; color: var(--b-branco); text-transform: uppercase; letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+  .meta-card-value.accent { color: var(--b-areia); font-size: 13px; }
+  .meta-card-value.green { color: #5DB896; font-size: 13px; }
+  .meta-card.full { grid-column: 1 / -1; }
+  .cover-bottom {
+    border-top: 1px solid rgba(200,184,154,0.15); padding-top: 10px; margin-top: 20px;
+    font-size: 10px; color: rgba(200,184,154,0.45); letter-spacing: 0.04em; line-height: 1.7;
+  }
+  .cover-bottom strong { color: rgba(200,184,154,0.7); }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    padding: 18px 16px 12px;
+    border-bottom: 1px solid rgba(30,30,28,0.1);
+    display: flex; align-items: center; gap: 8px;
+    background: var(--b-offwhite); position: sticky; top: 0; z-index: 10;
+  }
+  .section-bar { width: 16px; height: 3px; background: var(--b-areia); flex-shrink: 0; }
+  .section-label {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--b-areia);
+  }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 16px; text-transform: uppercase; color: var(--b-carvao); letter-spacing: 0.01em;
+  }
+
+  /* ── ORÇAMENTO CARDS (mobile-first) ── */
+  .orc-list { padding: 12px 12px; display: flex; flex-direction: column; gap: 10px; }
+  .orc-card {
+    background: var(--b-branco); border: 0.5px solid rgba(30,30,28,0.12);
+    border-radius: 8px; overflow: hidden;
+  }
+
+  .orc-card-head {
+    background: var(--b-carvao); padding: 10px 12px;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+  }
+  .orc-card-head-left { flex: 1; }
+  .orc-name {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 15px; text-transform: uppercase; color: var(--b-branco);
+    letter-spacing: 0.02em; line-height: 1.1;
+  }
+  .orc-origin {
+    display: inline-block; font-size: 9px; font-weight: 600;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    padding: 1px 6px; border-radius: 2px; margin-top: 4px;
+  }
+  .origin-indicacao { background: rgba(200,184,154,0.25); color: #C8A030; }
+  .origin-digital { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4); }
+  .orc-price {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: 20px; color: var(--b-branco); white-space: nowrap; padding-top: 2px;
+  }
+
+  .orc-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+  .orc-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; font-size: 12px; }
+  .orc-row-label { color: var(--b-grafite); font-weight: 600; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; flex-shrink: 0; }
+  .orc-row-val { color: var(--b-carvao); text-align: right; line-height: 1.3; }
+  .badge {
+    display: inline-block; padding: 1px 6px; border-radius: 2px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .badge-green { background: rgba(61,122,94,0.12); color: var(--b-sage); }
+  .badge-yellow { background: rgba(176,125,26,0.12); color: var(--b-atencao); }
+  .badge-red { background: rgba(192,57,43,0.12); color: var(--b-alerta); }
+  .cred-ok { color: var(--b-sage); font-weight: 600; }
+  .cred-warn { color: var(--b-atencao); font-weight: 600; }
+  .cred-none { color: var(--b-grafite); font-style: italic; }
+  .orc-card-foot {
+    padding: 7px 12px; border-top: 0.5px solid rgba(30,30,28,0.08);
+    background: rgba(30,30,28,0.02);
+  }
+  .google-link { color: var(--b-sage); font-size: 11px; font-weight: 600; text-decoration: none; }
+  .orc-option-sep {
+    height: 0.5px; background: rgba(30,30,28,0.08); margin: 2px 0 6px;
+  }
+  .option-tag {
+    display: inline-block; background: rgba(200,184,154,0.2); color: var(--b-grafite);
+    font-size: 10px; font-weight: 600; letter-spacing: 0.05em; padding: 1px 6px; border-radius: 2px;
+  }
+  .legenda {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    padding: 10px 12px; border-top: 0.5px solid rgba(30,30,28,0.08);
+    font-size: 10px; color: var(--b-grafite); margin: 0 12px 4px;
+    background: var(--b-branco); border-radius: 0 0 8px 8px;
+  }
+  .legenda-item { display: flex; align-items: center; gap: 4px; }
+
+  /* ── RANKING ── */
+  .ranking-list { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .rank-card {
+    background: var(--b-branco); border: 0.5px solid rgba(30,30,28,0.1);
+    border-radius: 8px; padding: 12px;
+  }
+  .rank-card.rank1 { }
+
+  .rank-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .rank-badge {
+    display: flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 14px;
+    background: var(--b-carvao); color: var(--b-branco);
+  }
+  .rank-badge.gold { background: var(--b-carvao); }
+
+  .rank-name {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 16px; text-transform: uppercase; letter-spacing: 0.02em;
+  }
+  .rank-option { font-size: 11px; color: var(--b-grafite); }
+  .rank-total {
+    margin-left: auto;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: 26px;
+  }
+  .rank-total.top { color: var(--b-carvao); }
+  .rank-total.mid { color: var(--b-carvao); }
+  .rank-total.low { color: var(--b-carvao); }
+  .rank-bars { display: flex; flex-direction: column; gap: 6px; }
+  .bar-row { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+  .bar-label { color: var(--b-grafite); width: 110px; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 6px; background: rgba(30,30,28,0.08); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; }
+  .bar-fill.top { background: var(--b-sage); }
+  .bar-fill.mid { background: var(--b-areia); }
+  .bar-fill.low { background: var(--b-alerta); }
+  .bar-num { font-weight: 600; font-size: 11px; min-width: 28px; text-align: right; }
+  .bar-num.top { color: var(--b-sage); }
+  .bar-num.mid { color: var(--b-atencao); }
+  .bar-num.low { color: var(--b-alerta); }
+  .score-note {
+    font-size: 11px; color: var(--b-grafite); line-height: 1.5;
+    margin: 8px 12px 12px; padding: 10px 12px;
+    background: var(--b-branco); border-radius: 6px;
+    border-left: 3px solid var(--b-areia);
+  }
+
+  /* ── FORNECEDOR CARDS ── */
+  .vendor-list { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .vendor-card {
+    background: var(--b-branco); border: 0.5px solid rgba(30,30,28,0.1);
+    border-radius: 8px; overflow: hidden;
+  }
+  .vendor-card.destaque { }
+  .vendor-card-header { background: var(--b-carvao); padding: 10px 12px; }
+  .vendor-card-name {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 16px; text-transform: uppercase; color: var(--b-branco);
+    letter-spacing: 0.02em; line-height: 1.1;
+  }
+  .vendor-card-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+  .vendor-field-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.13em;
+    text-transform: uppercase; color: var(--b-grafite); margin-bottom: 2px;
+  }
+  .vendor-field-value { font-size: 12px; color: var(--b-carvao); line-height: 1.4; }
+  .vendor-field-value.ok { color: var(--b-sage); font-weight: 600; }
+  .vendor-field-value.warn { color: var(--b-atencao); font-weight: 600; }
+  .vendor-card-foot {
+    padding: 8px 12px; border-top: 0.5px solid rgba(30,30,28,0.08);
+    background: rgba(30,30,28,0.02);
+  }
+
+
+  /* ── FOOTER ── */
+  .page-footer {
+    background: var(--b-carvao); padding: 16px 16px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  .footer-logo {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: 16px; text-transform: uppercase; color: rgba(255,255,255,0.5); letter-spacing: 0.03em;
+  }
+  .footer-logo span { color: var(--b-areia); }
+  .footer-info { font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; }
+
+  /* ── DESKTOP TWEAKS ── */
+  @media (min-width: 640px) {
+    .cover { padding: 40px 32px 32px; }
+    .cover-title { font-size: 56px; }
+    .cover-meta-grid { grid-template-columns: repeat(3, 1fr); }
+    .meta-card.full { grid-column: auto; }
+    .orc-list, .ranking-list, .vendor-list { padding: 16px; gap: 12px; }
+    .orc-body { flex-direction: row; flex-wrap: wrap; }
+    .orc-row { flex-direction: column; align-items: flex-start; flex: 1; min-width: 120px; }
+    .orc-row-val { text-align: left; }
+    .section-header { padding: 18px 20px 12px; }
+  }
+
+  @media (min-width: 900px) {
+    .vendor-list { display: grid; grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ── PRINT (A4 / Letter) ── */
+  @media print {
+    .section-header { position: static; }
+    .orc-card, .rank-card, .vendor-card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- CAPA -->
+  <div class="cover">
+    <div class="cover-logo">BETTER<span>.</span></div>
+    <div class="cover-logo-sub">Administração de Condomínios · Gestão Transparente</div>
+    <div class="cover-eyebrow">Comparativo de Fornecedores — Assembleia de Condôminos</div>
+    <div class="cover-title">
+      Impermeabilização<br>
+      <em>Manta Asfáltica</em>
+      Telhado
+    </div>
+    <div class="cover-desc">
+      Comparação objetiva e transparente dos orçamentos recebidos para a execução do serviço de impermeabilização com manta asfáltica. Dados compilados diretamente dos orçamentos dos prestadores.
+    </div>
+    <div class="cover-meta-grid">
+      <div class="meta-card"><div class="meta-card-label">Fornecedores</div><div class="meta-card-value">5 Empresas</div></div>
+      <div class="meta-card"><div class="meta-card-label">Opções</div><div class="meta-card-value">10 Opções</div></div>
+      <div class="meta-card full"><div class="meta-card-label">Faixa de Preço</div><div class="meta-card-value accent">R$ 20.160 – R$ 50.030</div></div>
+    </div>
+    <div class="cover-bottom">
+      Preparado por <strong>Mike Morais</strong> · BETTER. Administração de Condomínios<br>
+      adm@sejabetter.com.br · (47) 9 9613-5771
+    </div>
+  </div>
+
+
+  <!-- SEÇÃO 1 — TABELA -->
+  <div class="section-header">
+    <div class="section-bar"></div>
+    <div>
+      <div class="section-label">01 — Dados Completos</div>
+      <div class="section-title">Todas as Opções</div>
+    </div>
+  </div>
+
+  <div class="orc-list">
+
+    <!-- FÊNIX A -->
+    <div class="orc-card">
+      <div class="orc-card-head">
+        <div class="orc-card-head-left">
+          <div class="orc-name">Fênix Impermeabilizações</div>
+          <span class="orc-origin origin-digital">Anúncio Instagram</span>
+        </div>
+        <div style="text-align:right;">
+          <div class="orc-price">R$&nbsp;20.160</div>
+          <div class="option-tag" style="margin-top:4px;">Opção A</div>
+        </div>
+      </div>
+      <div class="orc-body">
+        <div class="orc-row"><span class="orc-row-label">Espessura</span><span class="orc-row-val"><span class="badge badge-red">1,8 mm</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Garantia</span><span class="orc-row-val"><span class="badge badge-yellow">5 anos</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Pagamento</span><span class="orc-row-val">À vista (−5%) ou 10x sem juros</span></div>
+        <div class="orc-row"><span class="orc-row-label">Credibilidade</span><span class="orc-row-val"><span class="cred-warn">3,8 ⭐ · 21 aval. ⚠</span></span></div>
+      </div>
+      <div class="orc-card-foot"><a href="https://share.google/aDZEPeY3c4yoAzwdS" target="_blank" class="google-link">↗ Ver no Google</a></div>
+    </div>
+
+    <!-- FÊNIX B -->
+    <div class="orc-card">
+      <div class="orc-card-head">
+        <div class="orc-card-head-left">
+          <div class="orc-name">Fênix Impermeabilizações</div>
+          <span class="orc-origin origin-digital">Anúncio Instagram</span>
+        </div>
+        <div style="text-align:right;">
+          <div class="orc-price">R$&nbsp;25.200</div>
+          <div class="option-tag" style="margin-top:4px;">Opção B · Colorida</div>
+        </div>
+      </div>
+      <div class="orc-body">
+        <div class="orc-row"><span class="orc-row-label">Espessura</span><span class="orc-row-val"><span class="badge badge-yellow">2 mm</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Garantia</span><span class="orc-row-val"><span class="badge badge-yellow">5 anos</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Pagamento</span><span class="orc-row-val">À vista (−5%) ou 10x sem juros</span></div>
+        <div class="orc-row"><span class="orc-row-label">Credibilidade</span><span class="orc-row-val"><span class="cred-warn">3,8 ⭐ · 21 aval. ⚠</span></span></div>
+      </div>
+      <div class="orc-card-foot"><a href="https://share.google/aDZEPeY3c4yoAzwdS" target="_blank" class="google-link">↗ Ver no Google</a></div>
+    </div>
+
+    <!-- FÊNIX C -->
+    <div class="orc-card">
+      <div class="orc-card-head">
+        <div class="orc-card-head-left">
+          <div class="orc-name">Fênix Impermeabilizações</div>
+          <span class="orc-origin origin-digital">Anúncio Instagram</span>
+        </div>
+        <div style="text-align:right;">
+          <div class="orc-price">R$&nbsp;30.240</div>
+          <div class="option-tag" style="margin-top:4px;">Opção C · Colorida</div>
+        </div>
+      </div>
+      <div class="orc-body">
+        <div class="orc-row"><span class="orc-row-label">Espessura</span><span class="orc-row-val"><span class="badge badge-green">3 mm</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Garantia</span><span class="orc-row-val"><span class="badge badge-yellow">5 anos</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Pagamento</span><span class="orc-row-val">À vista (−5%) ou 10x sem juros</span></div>
+        <div class="orc-row"><span class="orc-row-label">Credibilidade</span><span class="orc-row-val"><span class="cred-warn">3,8 ⭐ · 21 aval. ⚠</span></span></div>
+      </div>
+      <div class="orc-card-foot"><a href="https://share.google/aDZEPeY3c4yoAzwdS" target="_blank" class="google-link">↗ Ver no Google</a></div>
+    </div>
+
+    <!-- GESSER A -->
+    <div class="orc-card">
+      <div class="orc-card-head">
+        <div class="orc-card-head-left">
+          <div class="orc-name">Gesser</div>
+          <span class="orc-origin origin-indicacao">Indicação: Sr. Antônio</span>
+        </div>
+        <div style="text-align:right;">
+          <div class="orc-price">R$&nbsp;30.000</div>
+          <div class="option-tag" style="margin-top:4px;">Opção A</div>
+        </div>
+      </div>
+      <div class="orc-body">
+        <div class="orc-row"><span class="orc-row-label">Espessura</span><span class="orc-row-val"><span class="badge badge-red">0,6 mm ⚠</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Garantia</span><span class="orc-row-val"><span class="badge badge-yellow">4 anos</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Pagamento</span><span class="orc-row-val">Negociável</span></div>
+        <div class="orc-row"><span class="orc-row-label">Credibilidade</span><span class="orc-row-val"><span class="cred-ok">✓ Indicação condômino</span> · <span class="cred-none">Sem Google</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Pendência ⚠</span><span class="orc-row-val" style="color:var(--b-atencao);">Confirmar espessura real antes de deliberar</span></div>
+      </div>
+      <div class="orc-card-foot"><span style="font-size:11px;color:var(--b-grafite);">Sem perfil Google verificado</span></div>
+    </div>
+
+    <!-- GRE9 A -->
+    <div class="orc-card">
+      <div class="orc-card-head">
+        <div class="orc-card-head-left">
+          <div class="orc-name">GRE9 Impermeabilizações</div>
+          <span class="orc-origin origin-digital">Anúncio Instagram</span>
+        </div>
+        <div style="text-align:right;">
+          <div class="orc-price">R$&nbsp;23.850</div>
+          <div class="option-tag" style="margin-top:4px;">Opção A · Aluminizada</div>
+        </div>
+      </div>
+      <div class="orc-body">
+        <div class="orc-row"><span class="orc-row-label">Espessura</span><span class="orc-row-val"><span class="badge badge-yellow">2,5 mm</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Garantia</span><span class="orc-row-val"><span class="badge badge-green">10 anos</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Pagamento</span><span class="orc-row-val">À vista · 12x c/ juros · Frete grátis</span></div>
+        <div class="orc-row"><span class="orc-row-label">Credibilidade</span><span class="orc-row-val"><span class="cred-none">Sem Google verificado</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Validade ⚠</span><span class="orc-row-val" style="color:var(--b-atencao);">Proposta venceu em 10/06/2026 — reconfirmar</span></div>
+      </div>
+      <div class="orc-card-foot"><a href="https://www.instagram.com/gre9mantas/" target="_blank" class="google-link">↗ @gre9mantas (Instagram)</a></div>
+    </div>
+
+    <!-- GRE9 B -->
+    <div class="orc-card">
+      <div class="orc-card-head">
+        <div class="orc-card-head-left">
+          <div class="orc-name">GRE9 Impermeabilizações</div>
+          <span class="orc-origin origin-digital">Anúncio Instagram</span>
+        </div>
+        <div style="text-align:right;">
+          <div class="orc-price">R$&nbsp;29.150</div>
+          <div class="option-tag" style="margin-top:4px;">Opção B · Colorida</div>
+        </div>
+      </div>
+      <div class="orc-body">
+        <div class="orc-row"><span class="orc-row-label">Espessura</span><span class="orc-row-val"><span class="badge badge-green">3 mm</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Garantia</span><span class="orc-row-val"><span class="badge badge-green">10 anos</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Pagamento</span><span class="orc-row-val">À vista · 12x c/ juros · Frete grátis</span></div>
+        <div class="orc-row"><span class="orc-row-label">Credibilidade</span><span class="orc-row-val"><span class="cred-none">Sem Google verificado</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Validade ⚠</span><span class="orc-row-val" style="color:var(--b-atencao);">Proposta venceu em 10/06/2026 — reconfirmar</span></div>
+      </div>
+      <div class="orc-card-foot"><a href="https://www.instagram.com/gre9mantas/" target="_blank" class="google-link">↗ @gre9mantas (Instagram)</a></div>
+    </div>
+
+    <!-- ORTIZ A -->
+    <div class="orc-card">
+      <div class="orc-card-head">
+        <div class="orc-card-head-left">
+          <div class="orc-name">Ortiz Impermeabilização</div>
+          <span class="orc-origin origin-digital">Google + Instagram</span>
+        </div>
+        <div style="text-align:right;">
+          <div class="orc-price">R$&nbsp;39.950</div>
+          <div class="option-tag" style="margin-top:4px;">Opção A · Aluminizada</div>
+        </div>
+      </div>
+      <div class="orc-body">
+        <div class="orc-row"><span class="orc-row-label">Espessura</span><span class="orc-row-val"><span class="badge badge-yellow">2,3 mm</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Garantia</span><span class="orc-row-val"><span class="badge badge-yellow">5 anos</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Pagamento</span><span class="orc-row-val">50% sinal · 50% conclusão · PIX/boleto/cartão</span></div>
+        <div class="orc-row"><span class="orc-row-label">Resp. Técnica</span><span class="orc-row-val" style="color:var(--b-sage);font-weight:600;">Arq. Giovana Ortiz · RRT inclusa</span></div>
+        <div class="orc-row"><span class="orc-row-label">Credibilidade</span><span class="orc-row-val"><span class="cred-ok">5,0 ⭐ · 42 aval. ✓</span></span></div>
+      </div>
+      <div class="orc-card-foot"><a href="https://share.google/CEeAC2CMsLWY5EiY8" target="_blank" class="google-link">↗ Ver no Google</a></div>
+    </div>
+
+    <!-- ORTIZ B -->
+    <div class="orc-card">
+      <div class="orc-card-head">
+        <div class="orc-card-head-left">
+          <div class="orc-name">Ortiz Impermeabilização</div>
+          <span class="orc-origin origin-digital">Google + Instagram</span>
+        </div>
+        <div style="text-align:right;">
+          <div class="orc-price">R$&nbsp;50.030</div>
+          <div class="option-tag" style="margin-top:4px;">Opção B · 3mm Tipo IIB</div>
+        </div>
+      </div>
+      <div class="orc-body">
+        <div class="orc-row"><span class="orc-row-label">Espessura</span><span class="orc-row-val"><span class="badge badge-green">3 mm</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Garantia</span><span class="orc-row-val"><span class="badge badge-yellow">5 anos</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Pagamento</span><span class="orc-row-val">50% sinal · 50% conclusão · PIX/boleto/cartão</span></div>
+        <div class="orc-row"><span class="orc-row-label">Resp. Técnica</span><span class="orc-row-val" style="color:var(--b-sage);font-weight:600;">Arq. Giovana Ortiz · RRT inclusa</span></div>
+        <div class="orc-row"><span class="orc-row-label">Credibilidade</span><span class="orc-row-val"><span class="cred-ok">5,0 ⭐ · 42 aval. ✓</span></span></div>
+      </div>
+      <div class="orc-card-foot"><a href="https://share.google/CEeAC2CMsLWY5EiY8" target="_blank" class="google-link">↗ Ver no Google</a></div>
+    </div>
+
+    <!-- VOLTOLINI A -->
+    <div class="orc-card">
+      <div class="orc-card-head">
+        <div class="orc-card-head-left">
+          <div class="orc-name">Voltolini Soluções</div>
+          <span class="orc-origin origin-indicacao">Indicação: MS Calhas</span>
+        </div>
+        <div style="text-align:right;">
+          <div class="orc-price">R$&nbsp;27.300</div>
+          <div class="option-tag" style="margin-top:4px;">Opção A</div>
+        </div>
+      </div>
+      <div class="orc-body">
+        <div class="orc-row"><span class="orc-row-label">Espessura</span><span class="orc-row-val"><span class="badge badge-yellow">2 mm</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Garantia</span><span class="orc-row-val"><span class="badge badge-yellow">3 anos</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Pagamento</span><span class="orc-row-val">50% ato · 50% término · à vista ou c/ juros</span></div>
+        <div class="orc-row"><span class="orc-row-label">Credibilidade</span><span class="orc-row-val"><span class="cred-ok">5,0 ⭐ · 17 aval. ✓ · Indicação parceiro</span></span></div>
+      </div>
+      <div class="orc-card-foot"><a href="https://share.google/oFBuhaShrYfaAqTzb" target="_blank" class="google-link">↗ Ver no Google</a></div>
+    </div>
+
+    <!-- VOLTOLINI B ★ -->
+    <div class="orc-card">
+      <div class="orc-card-head">
+        <div class="orc-card-head-left">
+          <div class="orc-name">Voltolini Soluções</div>
+          <span class="orc-origin origin-indicacao">Indicação: MS Calhas</span>
+        </div>
+        <div style="text-align:right;">
+          <div class="orc-price">R$&nbsp;33.500</div>
+          <div class="option-tag" style="margin-top:4px;">Opção B</div>
+        </div>
+      </div>
+      <div class="orc-body">
+        <div class="orc-row"><span class="orc-row-label">Espessura</span><span class="orc-row-val"><span class="badge badge-green">3 mm</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Garantia</span><span class="orc-row-val"><span class="badge badge-green">5 anos</span></span></div>
+        <div class="orc-row"><span class="orc-row-label">Prazo</span><span class="orc-row-val" style="color:var(--b-sage);font-weight:600;">10 a 15 dias úteis</span></div>
+        <div class="orc-row"><span class="orc-row-label">Pagamento</span><span class="orc-row-val">50% ato · 50% término · à vista ou c/ juros</span></div>
+        <div class="orc-row"><span class="orc-row-label">Escopo</span><span class="orc-row-val">Lava-jato · calhas · primer · rufos · rodapés · acabamento</span></div>
+        <div class="orc-row"><span class="orc-row-label">Credibilidade</span><span class="orc-row-val"><span class="cred-ok">5,0 ⭐ · 17 aval. ✓ · Indicação parceiro</span></span></div>
+      </div>
+      <div class="orc-card-foot"><a href="https://share.google/oFBuhaShrYfaAqTzb" target="_blank" class="google-link">↗ Ver no Google</a></div>
+    </div>
+
+  </div>
+
+  <div class="legenda">
+    <div class="legenda-item"><span class="badge badge-green" style="font-size:9px;">●</span> Adequado</div>
+    <div class="legenda-item"><span class="badge badge-yellow" style="font-size:9px;">●</span> Atenção</div>
+    <div class="legenda-item"><span class="badge badge-red" style="font-size:9px;">●</span> Risco</div>
+  
+  </div>
+
+
+  <!-- SEÇÃO 2 — RANKING -->
+  <div class="section-header" style="margin-top:16px;">
+    <div class="section-bar"></div>
+    <div>
+      <div class="section-label">02 — Análise Técnica</div>
+      <div class="section-title">Ranking por Pontuação</div>
+    </div>
+  </div>
+
+  <div class="ranking-list">
+
+    <div class="rank-card rank1">
+      <div class="rank-top">
+        <div class="rank-badge gold">1</div>
+        <div><div class="rank-name">Voltolini</div><div class="rank-option">Opção B · R$ 33.500</div></div>
+        <div class="rank-total top">8,0</div>
+      </div>
+      <div class="rank-bars">
+        <div class="bar-row"><span class="bar-label">Preço (25%)</span><div class="bar-track"><div class="bar-fill mid" style="width:64%"></div></div><span class="bar-num mid">3,21</span></div>
+        <div class="bar-row"><span class="bar-label">Espessura (20%)</span><div class="bar-track"><div class="bar-fill top" style="width:100%"></div></div><span class="bar-num top">5</span></div>
+        <div class="bar-row"><span class="bar-label">Garantia (20%)</span><div class="bar-track"><div class="bar-fill top" style="width:80%"></div></div><span class="bar-num top">4</span></div>
+        <div class="bar-row"><span class="bar-label">Credibilidade (20%)</span><div class="bar-track"><div class="bar-fill top" style="width:80%"></div></div><span class="bar-num top">4</span></div>
+        <div class="bar-row"><span class="bar-label">Transp. (15%)</span><div class="bar-track"><div class="bar-fill top" style="width:80%"></div></div><span class="bar-num top">4</span></div>
+      </div>
+    </div>
+
+    <div class="rank-card">
+      <div class="rank-top">
+        <div class="rank-badge">2</div>
+        <div><div class="rank-name">Fênix</div><div class="rank-option">Opção C · R$ 30.240</div></div>
+        <div class="rank-total top">7,12</div>
+      </div>
+      <div class="rank-bars">
+        <div class="bar-row"><span class="bar-label">Preço (25%)</span><div class="bar-track"><div class="bar-fill top" style="width:73%"></div></div><span class="bar-num top">3,65</span></div>
+        <div class="bar-row"><span class="bar-label">Espessura (20%)</span><div class="bar-track"><div class="bar-fill top" style="width:100%"></div></div><span class="bar-num top">5</span></div>
+        <div class="bar-row"><span class="bar-label">Garantia (20%)</span><div class="bar-track"><div class="bar-fill top" style="width:80%"></div></div><span class="bar-num top">4</span></div>
+        <div class="bar-row"><span class="bar-label">Credibilidade (20%)</span><div class="bar-track"><div class="bar-fill mid" style="width:40%"></div></div><span class="bar-num mid">2</span></div>
+        <div class="bar-row"><span class="bar-label">Transp. (15%)</span><div class="bar-track"><div class="bar-fill mid" style="width:60%"></div></div><span class="bar-num mid">3</span></div>
+      </div>
+    </div>
+
+    <div class="rank-card">
+      <div class="rank-top">
+        <div class="rank-badge">3</div>
+        <div><div class="rank-name">GRE9</div><div class="rank-option">Opção B · R$ 29.150</div></div>
+        <div class="rank-total top">6,9</div>
+      </div>
+      <div class="rank-bars">
+        <div class="bar-row"><span class="bar-label">Preço (25%)</span><div class="bar-track"><div class="bar-fill top" style="width:76%"></div></div><span class="bar-num top">3,8</span></div>
+        <div class="bar-row"><span class="bar-label">Espessura (20%)</span><div class="bar-track"><div class="bar-fill top" style="width:100%"></div></div><span class="bar-num top">5</span></div>
+        <div class="bar-row"><span class="bar-label">Garantia (20%)</span><div class="bar-track"><div class="bar-fill top" style="width:100%"></div></div><span class="bar-num top">5</span></div>
+        <div class="bar-row"><span class="bar-label">Credibilidade (20%)</span><div class="bar-track"><div class="bar-fill low" style="width:20%"></div></div><span class="bar-num low">1</span></div>
+        <div class="bar-row"><span class="bar-label">Transp. (15%)</span><div class="bar-track"><div class="bar-fill mid" style="width:40%"></div></div><span class="bar-num mid">2</span></div>
+      </div>
+    </div>
+
+    <div class="rank-card">
+      <div class="rank-top">
+        <div class="rank-badge">4</div>
+        <div><div class="rank-name">GRE9</div><div class="rank-option">Opção A · R$ 23.850</div></div>
+        <div class="rank-total top">6,86</div>
+      </div>
+      <div class="rank-bars">
+        <div class="bar-row"><span class="bar-label">Preço (25%)</span><div class="bar-track"><div class="bar-fill top" style="width:90%"></div></div><span class="bar-num top">4,51</span></div>
+        <div class="bar-row"><span class="bar-label">Espessura (20%)</span><div class="bar-track"><div class="bar-fill top" style="width:80%"></div></div><span class="bar-num top">4</span></div>
+        <div class="bar-row"><span class="bar-label">Garantia (20%)</span><div class="bar-track"><div class="bar-fill top" style="width:100%"></div></div><span class="bar-num top">5</span></div>
+        <div class="bar-row"><span class="bar-label">Credibilidade (20%)</span><div class="bar-track"><div class="bar-fill low" style="width:20%"></div></div><span class="bar-num low">1</span></div>
+        <div class="bar-row"><span class="bar-label">Transp. (15%)</span><div class="bar-track"><div class="bar-fill mid" style="width:40%"></div></div><span class="bar-num mid">2</span></div>
+      </div>
+    </div>
+
+    <div class="rank-card">
+      <div class="rank-top">
+        <div class="rank-badge">5</div>
+        <div><div class="rank-name">Ortiz</div><div class="rank-option">Opção B · R$ 50.030</div></div>
+        <div class="rank-total mid">6,5</div>
+      </div>
+      <div class="rank-bars">
+        <div class="bar-row"><span class="bar-label">Preço (25%)</span><div class="bar-track"><div class="bar-fill low" style="width:20%"></div></div><span class="bar-num low">1,0</span></div>
+        <div class="bar-row"><span class="bar-label">Espessura (20%)</span><div class="bar-track"><div class="bar-fill top" style="width:100%"></div></div><span class="bar-num top">5</span></div>
+        <div class="bar-row"><span class="bar-label">Garantia (20%)</span><div class="bar-track"><div class="bar-fill top" style="width:80%"></div></div><span class="bar-num top">4</span></div>
+        <div class="bar-row"><span class="bar-label">Credibilidade (20%)</span><div class="bar-track"><div class="bar-fill mid" style="width:60%"></div></div><span class="bar-num mid">3</span></div>
+        <div class="bar-row"><span class="bar-label">Transp. (15%)</span><div class="bar-track"><div class="bar-fill top" style="width:80%"></div></div><span class="bar-num top">4</span></div>
+      </div>
+    </div>
+
+    <div class="rank-card">
+      <div class="rank-top">
+        <div class="rank-badge">6</div>
+        <div><div class="rank-name">Ortiz</div><div class="rank-option">Opção A · R$ 39.950</div></div>
+        <div class="rank-total mid">6,38</div>
+      </div>
+      <div class="rank-bars">
+        <div class="bar-row"><span class="bar-label">Preço (25%)</span><div class="bar-track"><div class="bar-fill mid" style="width:47%"></div></div><span class="bar-num mid">2,35</span></div>
+        <div class="bar-row"><span class="bar-label">Espessura (20%)</span><div class="bar-track"><div class="bar-fill mid" style="width:60%"></div></div><span class="bar-num mid">3</span></div>
+        <div class="bar-row"><span class="bar-label">Garantia (20%)</span><div class="bar-track"><div class="bar-fill top" style="width:80%"></div></div><span class="bar-num top">4</span></div>
+        <div class="bar-row"><span class="bar-label">Credibilidade (20%)</span><div class="bar-track"><div class="bar-fill mid" style="width:60%"></div></div><span class="bar-num mid">3</span></div>
+        <div class="bar-row"><span class="bar-label">Transp. (15%)</span><div class="bar-track"><div class="bar-fill top" style="width:80%"></div></div><span class="bar-num top">4</span></div>
+      </div>
+    </div>
+
+    <div class="rank-card">
+      <div class="rank-top">
+        <div class="rank-badge">7</div>
+        <div><div class="rank-name">Fênix</div><div class="rank-option">Opção B · R$ 25.200</div></div>
+        <div class="rank-total mid">6,26</div>
+      </div>
+      <div class="rank-bars">
+        <div class="bar-row"><span class="bar-label">Preço (25%)</span><div class="bar-track"><div class="bar-fill top" style="width:87%"></div></div><span class="bar-num top">4,33</span></div>
+        <div class="bar-row"><span class="bar-label">Espessura (20%)</span><div class="bar-track"><div class="bar-fill mid" style="width:40%"></div></div><span class="bar-num mid">2</span></div>
+        <div class="bar-row"><span class="bar-label">Garantia (20%)</span><div class="bar-track"><div class="bar-fill top" style="width:80%"></div></div><span class="bar-num top">4</span></div>
+        <div class="bar-row"><span class="bar-label">Credibilidade (20%)</span><div class="bar-track"><div class="bar-fill mid" style="width:40%"></div></div><span class="bar-num mid">2</span></div>
+        <div class="bar-row"><span class="bar-label">Transp. (15%)</span><div class="bar-track"><div class="bar-fill mid" style="width:60%"></div></div><span class="bar-num mid">3</span></div>
+      </div>
+    </div>
+
+    <div class="rank-card">
+      <div class="rank-top">
+        <div class="rank-badge">8</div>
+        <div><div class="rank-name">Fênix</div><div class="rank-option">Opção A · R$ 20.160</div></div>
+        <div class="rank-total mid">6,2</div>
+      </div>
+      <div class="rank-bars">
+        <div class="bar-row"><span class="bar-label">Preço (25%)</span><div class="bar-track"><div class="bar-fill top" style="width:100%"></div></div><span class="bar-num top">5,0</span></div>
+        <div class="bar-row"><span class="bar-label">Espessura (20%)</span><div class="bar-track"><div class="bar-fill low" style="width:20%"></div></div><span class="bar-num low">1</span></div>
+        <div class="bar-row"><span class="bar-label">Garantia (20%)</span><div class="bar-track"><div class="bar-fill top" style="width:80%"></div></div><span class="bar-num top">4</span></div>
+        <div class="bar-row"><span class="bar-label">Credibilidade (20%)</span><div class="bar-track"><div class="bar-fill mid" style="width:40%"></div></div><span class="bar-num mid">2</span></div>
+        <div class="bar-row"><span class="bar-label">Transp. (15%)</span><div class="bar-track"><div class="bar-fill mid" style="width:60%"></div></div><span class="bar-num mid">3</span></div>
+      </div>
+    </div>
+
+    <div class="rank-card">
+      <div class="rank-top">
+        <div class="rank-badge">9</div>
+        <div><div class="rank-name">Voltolini</div><div class="rank-option">Opção A · R$ 27.300</div></div>
+        <div class="rank-total mid">6,02</div>
+      </div>
+      <div class="rank-bars">
+        <div class="bar-row"><span class="bar-label">Preço (25%)</span><div class="bar-track"><div class="bar-fill top" style="width:81%"></div></div><span class="bar-num top">4,04</span></div>
+        <div class="bar-row"><span class="bar-label">Espessura (20%)</span><div class="bar-track"><div class="bar-fill mid" style="width:40%"></div></div><span class="bar-num mid">2</span></div>
+        <div class="bar-row"><span class="bar-label">Garantia (20%)</span><div class="bar-track"><div class="bar-fill low" style="width:20%"></div></div><span class="bar-num low">1</span></div>
+        <div class="bar-row"><span class="bar-label">Credibilidade (20%)</span><div class="bar-track"><div class="bar-fill top" style="width:80%"></div></div><span class="bar-num top">4</span></div>
+        <div class="bar-row"><span class="bar-label">Transp. (15%)</span><div class="bar-track"><div class="bar-fill top" style="width:80%"></div></div><span class="bar-num top">4</span></div>
+      </div>
+    </div>
+
+    <div class="rank-card">
+      <div class="rank-top">
+        <div class="rank-badge">10</div>
+        <div><div class="rank-name">Gesser</div><div class="rank-option">Opção A · R$ 30.000</div></div>
+        <div class="rank-total low">3,74</div>
+      </div>
+      <div class="rank-bars">
+        <div class="bar-row"><span class="bar-label">Preço (25%)</span><div class="bar-track"><div class="bar-fill top" style="width:74%"></div></div><span class="bar-num top">3,68</span></div>
+        <div class="bar-row"><span class="bar-label">Espessura (20%)</span><div class="bar-track"><div class="bar-fill low" style="width:0%"></div></div><span class="bar-num low">0</span></div>
+        <div class="bar-row"><span class="bar-label">Garantia (20%)</span><div class="bar-track"><div class="bar-fill mid" style="width:40%"></div></div><span class="bar-num mid">2</span></div>
+        <div class="bar-row"><span class="bar-label">Credibilidade (20%)</span><div class="bar-track"><div class="bar-fill mid" style="width:40%"></div></div><span class="bar-num mid">2</span></div>
+        <div class="bar-row"><span class="bar-label">Transp. (15%)</span><div class="bar-track"><div class="bar-fill low" style="width:20%"></div></div><span class="bar-num low">1</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="score-note">
+    <strong>Metodologia:</strong> Preço (escala relativa ao menor valor) · Espessura (3mm=5, 2,5mm=4, 2,3mm=3, 2mm=2, 1,8mm=1, 0,6mm=0) · Garantia (10a=5, 5a=4, 4a=2, 3a=1) · Credibilidade (indicação direta + Google + reputação) · Transparência &amp; Processo (CNPJ + escopo escrito + resp. técnico + visita presencial + presença digital). Máximo: 10,0.
+  </div>
+
+
+  <!-- SEÇÃO 3 — FICHAS -->
+  <div class="section-header" style="margin-top:16px;">
+    <div class="section-bar"></div>
+    <div>
+      <div class="section-label">03 — Credenciais</div>
+      <div class="section-title">Ficha de Cada Fornecedor</div>
+    </div>
+  </div>
+
+  <div class="vendor-list">
+
+    <div class="vendor-card">
+      <div class="vendor-card-header">
+        <div class="vendor-card-name">Fênix Impermeabilizações</div>
+        <span class="orc-origin origin-digital" style="margin-top:4px;display:inline-block;">Anúncio Instagram</span>
+      </div>
+      <div class="vendor-card-body">
+        <div><div class="vendor-field-label">CNPJ</div><div class="vendor-field-value">46.754.557/0001-60</div></div>
+        <div><div class="vendor-field-label">Opções / Valores</div><div class="vendor-field-value">A: R$ 20.160 (1,8mm) · B: R$ 25.200 (2mm) · C: R$ 30.240 (3mm) · 5 anos de garantia</div></div>
+        <div><div class="vendor-field-label">Escopo incluso</div><div class="vendor-field-value">Lavagem · Primer asfáltico · Manta aderida · Material e M.O.</div></div>
+        <div><div class="vendor-field-label">Pagamento</div><div class="vendor-field-value ok">10x sem juros (máquina) ou à vista −5%</div></div>
+      </div>
+      <div class="vendor-card-foot"><a href="https://share.google/aDZEPeY3c4yoAzwdS" target="_blank" class="google-link">↗ Google 3,8 ⭐ (21 avaliações) ⚠</a></div>
+    </div>
+
+    <div class="vendor-card">
+      <div class="vendor-card-header">
+        <div class="vendor-card-name">Gesser</div>
+        <span class="orc-origin origin-indicacao" style="margin-top:4px;display:inline-block;">Indicação: Sr. Antônio</span>
+      </div>
+      <div class="vendor-card-body">
+        <div><div class="vendor-field-label">CNPJ</div><div class="vendor-field-value">Não informado</div></div>
+        <div><div class="vendor-field-label">Opções / Valores</div><div class="vendor-field-value">A: R$ 30.000 · Garantia 4 anos</div></div>
+        <div><div class="vendor-field-label">Espessura ⚠</div><div class="vendor-field-value warn">0,6mm — abaixo do padrão mínimo recomendado</div></div>
+        <div><div class="vendor-field-label">Pendência</div><div class="vendor-field-value warn">Confirmar espessura real antes de deliberar</div></div>
+      </div>
+      <div class="vendor-card-foot"><span style="font-size:11px;color:var(--b-grafite);">Indicação do Sr. Antônio · Sem perfil Google verificado</span></div>
+    </div>
+
+    <div class="vendor-card">
+      <div class="vendor-card-header">
+        <div class="vendor-card-name">GRE9 Impermeabilizações</div>
+        <span class="orc-origin origin-digital" style="margin-top:4px;display:inline-block;">Anúncio Instagram</span>
+      </div>
+      <div class="vendor-card-body">
+        <div><div class="vendor-field-label">Metragem orçada</div><div class="vendor-field-value">530 m² (inclui inclinação, ondulação e transpasse)</div></div>
+        <div><div class="vendor-field-label">Opções / Valores</div><div class="vendor-field-value">A: R$ 23.850 (2,5mm aluminizada) · B: R$ 29.150 (3mm colorida)</div></div>
+        <div><div class="vendor-field-label">Garantia</div><div class="vendor-field-value ok">10 anos · Certificado de garantia incluso</div></div>
+        <div><div class="vendor-field-label">Diferenciais</div><div class="vendor-field-value ok">Frete grátis · Responsável técnico indicado</div></div>
+        <div><div class="vendor-field-label">Validade ⚠</div><div class="vendor-field-value warn">Proposta venceu em 10/06/2026 — reconfirmar</div></div>
+      </div>
+      <div class="vendor-card-foot"><a href="https://www.instagram.com/gre9mantas/" target="_blank" class="google-link">↗ @gre9mantas (Instagram) · Sem Google verificado</a></div>
+    </div>
+
+    <div class="vendor-card">
+      <div class="vendor-card-header">
+        <div class="vendor-card-name">Ortiz Impermeabilização</div>
+        <span class="orc-origin origin-digital" style="margin-top:4px;display:inline-block;">Google + Instagram</span>
+      </div>
+      <div class="vendor-card-body">
+        <div><div class="vendor-field-label">CNPJ</div><div class="vendor-field-value">30.937.802/0001-93</div></div>
+        <div><div class="vendor-field-label">Opções / Valores</div><div class="vendor-field-value">A: R$ 39.950 (2,3mm) · B: R$ 50.030 (3mm Tipo IIB) · RRT R$ 2.150 inclusa</div></div>
+        <div><div class="vendor-field-label">Responsável técnica</div><div class="vendor-field-value ok">Arq. Giovana Ortiz · Pós-grad. Tecnologia da Impermeabilização · RRT inclusa</div></div>
+        <div><div class="vendor-field-label">Escopo diferenciado</div><div class="vendor-field-value">Linha de vida NR-35/NR-18 · Rodapé 20cm · Primer · M.O. e material inclusos</div></div>
+        <div><div class="vendor-field-label">Contato</div><div class="vendor-field-value">(47) 9696-1574 · contato@ortizimpermeabilizacao.com.br</div></div>
+      </div>
+      <div class="vendor-card-foot"><a href="https://share.google/CEeAC2CMsLWY5EiY8" target="_blank" class="google-link">↗ Google 5,0 ⭐ (42 avaliações)</a></div>
+    </div>
+
+    <div class="vendor-card">
+      <div class="vendor-card-header">
+        <div class="vendor-card-name">Voltolini Soluções</div>
+        <span class="orc-origin origin-indicacao" style="margin-top:4px;display:inline-block;">Indicação: MS Calhas</span>
+      </div>
+      <div class="vendor-card-body">
+        <div><div class="vendor-field-label">CNPJ</div><div class="vendor-field-value">53.572.264/0001-86</div></div>
+        <div><div class="vendor-field-label">Opções / Valores</div><div class="vendor-field-value">A: R$ 27.300 (2mm · 3 anos) · B: R$ 33.500 (3mm · 5 anos)</div></div>
+        <div><div class="vendor-field-label">Escopo incluso</div><div class="vendor-field-value">Lava-jato · Limpeza de calhas · Primer asfáltico · Rufos · Rodapés · Acabamentos finais</div></div>
+        <div><div class="vendor-field-label">Prazo de execução</div><div class="vendor-field-value ok">10 a 15 dias úteis</div></div>
+        <div><div class="vendor-field-label">Pagamento</div><div class="vendor-field-value">50% ato · 50% término · à vista ou c/ juros</div></div>
+        <div><div class="vendor-field-label">Contato</div><div class="vendor-field-value">(47) 99220-5248 · voltolinieduardo@gmail.com</div></div>
+      </div>
+      <div class="vendor-card-foot"><a href="https://share.google/oFBuhaShrYfaAqTzb" target="_blank" class="google-link">↗ Google 5,0 ⭐ (17 aval.) · Indicação MS Calhas</a></div>
+    </div>
+
+  </div>
+
+  <!-- RODAPÉ -->
+  <div class="page-footer">
+    <div class="footer-logo">BETTER<span>.</span></div>
+    <div class="footer-info">Mike Morais · adm@sejabetter.com.br · (47) 9 9613-5771</div>
+  </div>
+
+</div>
+</body>
+</html>
