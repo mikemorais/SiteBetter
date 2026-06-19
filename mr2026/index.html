@@ -704,7 +704,7 @@ body {
 //  CONFIGURAÇÃO — cole aqui a URL do seu App da Web (Apps Script)
 //  Ela é gerada ao publicar o Code.gs e termina em /exec
 // ═══════════════════════════════════════════════════════════════
-const API_URL = 'https://script.google.com/macros/s/AKfycbxgTo2_-xIzBUwwg9wuVVf1FHq3aOeVGSZN6_4Daidn9uk--OunKwrZTvQ_FIW656-srA/exec';
+const API_URL = 'COLE_AQUI_A_URL_DO_APP_DA_WEB';
 
 // ─── CONFIGURAÇÕES GOOGLE AGENDA ─────────────────────────────
 const GCAL_CLIENT_ID = '721838040530-r6qe06j6kleph12hb8k9askh8fb0cojm.apps.googleusercontent.com';
@@ -1281,18 +1281,35 @@ function buildDayRaw(date) {
 // (as diárias se repetem sozinhas e virariam ruído).
 function getCarryover(today) {
   const carried = [];
+  const vistos = new Set();       // já decidido sobre este id (trazido ou silenciado)
+  const concluidos = new Set();   // ids com alguma ocorrência recente concluída
+  const candidatos = [];
+
+  // 1ª passada: varre os dias anteriores, registra a ocorrência mais recente
+  // de cada tarefa e marca quais ids já têm uma conclusão em algum dia recente.
   for (let i = 1; i <= CARRYOVER_DAYS; i++) {
     const d = new Date(today);
     d.setDate(d.getDate() - i);
     const items = buildDayRaw(d);
     items.forEach(item => {
-      if (item.status === 'done') return;
       const isWeeklyRotina = !item.isCustom && !item.isChainChild && item.day && item.day.length < 5;
-      if (item.isChainChild || item.isCustom || isWeeklyRotina) {
-        carried.push({ ...item, carried: true, originLabel: shortDate(item._key) });
+      const elegivel = item.isChainChild || item.isCustom || isWeeklyRotina;
+      if (!elegivel) return;
+
+      if (item.status === 'done') { concluidos.add(item.id); return; }
+
+      // guarda só a ocorrência mais recente (primeira ao voltar no tempo)
+      if (!vistos.has(item.id)) {
+        vistos.add(item.id);
+        candidatos.push({ ...item, carried: true, originLabel: shortDate(item._key) });
       }
     });
   }
+
+  // Só arrasta se NENHUMA ocorrência recente daquele id foi concluída.
+  // Assim, concluir a tarefa (em qualquer dia) a remove do atraso de vez.
+  candidatos.forEach(c => { if (!concluidos.has(c.id)) carried.push(c); });
+
   return carried;
 }
 
