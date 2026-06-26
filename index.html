@@ -3,17 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="https://drive.google.com/uc?export=view&id=1XYpJkqD3NNpB6e_ZtG46WTh6SUuIGuaR"><title>BETTER. — Real Estate & Management | Curadoria Imobiliária e Gestão Condominial</title>
-<meta name="description" content="BETTER. Real Estate & Management. Curadoria imobiliária de precisão e gestão condominial humana em Balneário Piçarras, Barra Velha e Penha — SC. Mike Morais · CRECI 43276.">
-<meta name="keywords" content="corretor de imóveis, administração de condomínios, síndico profissional, Balneário Piçarras, Barra Velha, Penha, curadoria imobiliária, gestão condominial">
-<meta property="og:title" content="BETTER. — Real Estate & Management">
-<meta property="og:description" content="Curadoria imobiliária e gestão condominial. Decisões inteligentes para o seu patrimônio.">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <title>BETTER. — Imóveis e Condomínios | Consultoria Imobiliária e Gestão de Condomínios</title>
+<meta name="description" content="BETTER. Imóveis e Condomínios. Consultoria imobiliária de critério e gestão de condomínios com gente de verdade, em Balneário Piçarras, Barra Velha e Penha — SC. Mike Morais · CRECI 43276.">
+<meta name="keywords" content="corretor de imóveis, administração de condomínios, síndico profissional, Balneário Piçarras, Barra Velha, Penha, consultoria imobiliária, gestão de condomínios">
+<meta property="og:title" content="BETTER. — Imóveis e Condomínios">
+<meta property="og:description" content="Consultoria imobiliária e gestão de condomínios. Decisões inteligentes para o seu patrimônio.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════
-   TOKENS — BETTER. V4.0
+   TOKENS — BETTER. V5.0
 ═══════════════════════════════════════════ */
 :root {
   --b-coal:       #1e1e1c;
@@ -37,6 +40,76 @@
 html { scroll-behavior: smooth; }
 body { font-family: var(--font-body); background: var(--b-offwhite); color: var(--b-coal); overflow-x: hidden; }
 
+/* ─── ROUPAGEM DE MARCA: "CERTO." / "CERTA." ─── */
+.brand-word {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.brand-word .dot { color: var(--b-areia); }
+
+/* Termo clicável com a fonte da roupagem, mas cor de link (não de marca) */
+.term-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  font-size: 1.08em;
+}
+
+/* ─── BALÃO / TOOLTIP (hover no desktop, toque no mobile) ─── */
+.term {
+  position: relative;
+  border-bottom: 1px dotted var(--b-areia);
+  cursor: help;
+  color: inherit;
+}
+.term .term-balloon {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  width: max-content;
+  max-width: 280px;
+  background: var(--b-coal);
+  color: rgba(255,255,255,0.88);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.55;
+  letter-spacing: 0;
+  text-transform: none;
+  padding: 12px 16px;
+  border: 0.5px solid var(--b-areia-dim);
+  border-radius: 6px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.28);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  z-index: 50;
+  pointer-events: none;
+}
+.term .term-balloon::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--b-coal);
+}
+.term:hover .term-balloon,
+.term:focus .term-balloon,
+.term.open .term-balloon {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+@media (max-width:600px) {
+  .term .term-balloon { max-width: 220px; font-size: 12.5px; }
+}
+
 /* ─── CURSOR ─── */
 .cursor { width:10px; height:10px; background:var(--b-white); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); mix-blend-mode:difference; transition:width 0.2s ease, height 0.2s ease; }
 .cursor-ring { width:32px; height:32px; border:1px solid var(--b-white); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); mix-blend-mode:difference; transition:all 0.12s ease; }
@@ -51,6 +124,7 @@ body.cursor-hover .cursor-ring { width:56px; height:56px; opacity:0.5; }
 nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:20px 56px; display:flex; justify-content:space-between; align-items:center; transition:background 0.4s ease, padding 0.4s ease; }
 nav.scrolled { background:rgba(30,30,28,0.95); backdrop-filter:blur(12px); padding:14px 56px; }
 .nav-logo { font-family:var(--font-display); font-weight:900; font-size:22px; color:var(--b-white); text-decoration:none; letter-spacing:-0.01em; }
+.nav-logo .dot { color:var(--b-areia); }
 .nav-links { display:flex; gap:36px; align-items:center; }
 .nav-links a { font-family:var(--font-body); font-size:11px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:rgba(255,255,255,0.6); text-decoration:none; transition:color 0.2s; }
 .nav-links a:hover { color:var(--b-white); }
@@ -70,7 +144,7 @@ nav.scrolled { background:rgba(30,30,28,0.95); backdrop-filter:blur(12px); paddi
 .hero-bg-word { position:absolute; right:-60px; top:50%; transform:translateY(-50%); font-family:var(--font-display); font-weight:900; font-size:clamp(200px,28vw,420px); color:rgba(255,255,255,0.03); line-height:1; pointer-events:none; user-select:none; white-space:nowrap; }
 .hero-tag { font-size:11px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--b-areia); margin-bottom:28px; opacity:0; transform:translateY(16px); animation:fadeUp 0.8s 0.3s forwards; }
 .hero-headline { font-family:var(--font-display); font-weight:900; font-size:clamp(64px,10vw,140px); color:var(--b-white); line-height:0.92; letter-spacing:-0.02em; max-width:900px; opacity:0; transform:translateY(24px); animation:fadeUp 0.9s 0.5s forwards; }
-.hero-headline em { color:var(--b-areia); font-style:normal; }
+.hero-headline .dot { color:var(--b-areia); }
 .hero-sub { margin-top:36px; max-width:520px; font-size:15px; font-weight:300; color:rgba(255,255,255,0.75); line-height:1.75; opacity:0; transform:translateY(16px); animation:fadeUp 0.9s 0.75s forwards; }
 .hero-actions { margin-top:48px; display:flex; gap:16px; align-items:center; opacity:0; transform:translateY(16px); animation:fadeUp 0.9s 1s forwards; flex-wrap:wrap; }
 .btn-primary { display:inline-block; background:var(--b-sage); color:var(--b-white); font-family:var(--font-display); font-weight:700; font-size:13px; letter-spacing:0.15em; text-transform:uppercase; padding:16px 36px; text-decoration:none; transition:background 0.2s, transform 0.2s; }
@@ -99,6 +173,8 @@ nav.scrolled { background:rgba(30,30,28,0.95); backdrop-filter:blur(12px); paddi
 .about-headline em { color:var(--b-sage); font-style:normal; }
 .about-text { font-size:15px; font-weight:300; line-height:1.85; color:var(--b-grafite); margin-bottom:28px; }
 .about-highlight { border-left:3px solid var(--b-areia); padding-left:20px; font-size:17px; font-weight:500; color:var(--b-coal); line-height:1.5; margin-bottom:40px; }
+.about-text .brand-word { color:var(--b-coal); font-size:1.08em; }
+.about-q { font-family:var(--font-display); font-weight:700; font-size:20px; text-transform:uppercase; letter-spacing:0.01em; color:var(--b-coal); margin-top:-12px; margin-bottom:40px; }
 .about-link { display:inline-flex; align-items:center; gap:10px; font-size:12px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--b-sage); text-decoration:none; border-bottom:1px solid var(--b-sage); padding-bottom:4px; transition:gap 0.2s, color 0.2s; }
 .about-link:hover { gap:16px; color:var(--b-sage-dark); }
 
@@ -112,6 +188,12 @@ nav.scrolled { background:rgba(30,30,28,0.95); backdrop-filter:blur(12px); paddi
 .services-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:64px; }
 .services-label { font-size:10px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--b-areia); margin-bottom:16px; }
 .services-headline { font-family:var(--font-display); font-weight:900; font-size:clamp(36px,5vw,64px); color:var(--b-white); line-height:0.95; letter-spacing:-0.01em; }
+.services-headline .brand-word { color:var(--b-white); }
+.services-headline .brand-word .dot { color:var(--b-areia); }
+/* Entorno claro: CERTO. invertido (Areia com ponto branco) destaca pela cor */
+.headline-soft { font-weight:700; color:var(--b-white); }
+.headline-soft .brand-word { color:var(--b-areia); font-weight:800; }
+.headline-soft .brand-word .dot { color:var(--b-white); }
 .services-desc { max-width:320px; font-size:14px; font-weight:300; line-height:1.7; color:rgba(255,255,255,0.75); text-align:right; }
 .services-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-bottom:2px; }
 .services-grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-bottom:2px; }
@@ -124,16 +206,19 @@ nav.scrolled { background:rgba(30,30,28,0.95); backdrop-filter:blur(12px); paddi
 .service-icon svg { width:20px; height:20px; stroke:var(--b-areia); fill:none; stroke-width:1.5; }
 .service-title { font-family:var(--font-display); font-weight:800; font-size:22px; color:var(--b-white); line-height:1.1; margin-bottom:14px; text-transform:uppercase; letter-spacing:0.02em; }
 .service-text { font-size:13px; font-weight:300; line-height:1.75; color:rgba(255,255,255,0.75); }
+.service-text .brand-word { color:var(--b-white); }
+.service-text .term { color:var(--b-areia); border-bottom-color:rgba(200,184,154,0.5); }
 
-/* ─── REAL ESTATE: acento Areia ─── */
+/* ─── CONSULTORIA: acento Areia ─── */
 #real-estate .service-card::after { background:var(--b-areia); }
 #real-estate .service-card { border-top:1px solid rgba(200,184,154,0); transition:background 0.3s, border-color 0.3s; }
 #real-estate .service-card:hover { border-top-color:rgba(200,184,154,0.18); }
 .re-intro-card { grid-column:span 3; background:#232321 !important; border-left:2px solid var(--b-areia) !important; }
 .re-intro-card .service-num { font-size:20px; font-family:var(--font-display); font-weight:800; letter-spacing:0.03em; text-transform:uppercase; line-height:1.1; margin-bottom:20px; color:var(--b-areia); }
-.re-intro-card .service-text { font-size:14px; max-width:820px; line-height:1.8; color:rgba(255,255,255,0.75); }
+.re-intro-card .service-text { font-size:14px; max-width:820px; line-height:1.8; color:rgba(255,255,255,0.75); margin-bottom:14px; }
+.re-intro-card .service-text:last-child { margin-bottom:0; }
 
-/* ─── MANAGEMENT: acento Sage ─── */
+/* ─── GESTÃO: acento Sage ─── */
 #management { background:#1a1a18; }
 #management .service-card::after { background:var(--b-sage); }
 #management .service-num { color:var(--b-sage); }
@@ -141,8 +226,9 @@ nav.scrolled { background:rgba(30,30,28,0.95); backdrop-filter:blur(12px); paddi
 #management .service-icon svg { stroke:var(--b-sage); }
 #management .services-label { color:var(--b-sage); }
 #management .services-desc { color:rgba(255,255,255,0.75); }
+#management .service-text .term { color:var(--b-sage); border-bottom-color:rgba(61,122,94,0.5); }
 
-/* ─── PLANTÃO (fundo escuro, sage só no botão) ─── */
+/* ─── PLANTÃO ─── */
 .plantao-card { background:var(--b-coal-deep); padding:40px 48px; margin-top:2px; position:relative; overflow:hidden; border-left:2px solid var(--b-sage); }
 .plantao-card::before { content:'PLANTÃO'; position:absolute; right:-20px; top:50%; transform:translateY(-50%); font-family:var(--font-display); font-weight:900; font-size:120px; color:rgba(255,255,255,0.03); line-height:1; pointer-events:none; white-space:nowrap; }
 .plantao-card .service-num { color:var(--b-sage); }
@@ -187,7 +273,6 @@ nav.scrolled { background:rgba(30,30,28,0.95); backdrop-filter:blur(12px); paddi
 .test-btn svg { width:16px; height:16px; stroke:var(--b-coal); fill:none; stroke-width:2; transition:stroke 0.2s; }
 .test-track-wrap { overflow:hidden; }
 .test-track { display:flex; gap:2px; will-change:transform; }
-/* Cards como div — acessibilidade correta */
 .test-card { min-width:calc(33.333% - 2px); max-width:calc(33.333% - 2px); height:380px; background:var(--b-cream); padding:40px 36px; flex-shrink:0; display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden; white-space:normal; cursor:default; }
 .test-card::after { content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:var(--b-areia); transition:width 0.4s ease; }
 .test-card:hover { background:#ddd9d2; }
@@ -206,57 +291,67 @@ nav.scrolled { background:rgba(30,30,28,0.95); backdrop-filter:blur(12px); paddi
 .test-dot { width:6px; height:6px; border-radius:50%; background:rgba(30,30,28,0.15); cursor:pointer; transition:background 0.2s, transform 0.2s; }
 .test-dot.active { background:var(--b-coal); transform:scale(1.4); }
 
-/* ─── MIKE ─── */
-.mike-section { background:var(--b-coal); padding:120px 56px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
-.mike-photo-wrap { position:relative; }
-.mike-photo-wrap img { width:100%; height:440px; max-height:440px; object-fit:cover; object-position:top center; display:block; filter:grayscale(15%) contrast(1.05); position:relative; z-index:1; }
-.mike-photo-wrap::before { content:''; position:absolute; top:-12px; left:-12px; right:12px; bottom:12px; border:1px solid rgba(200,184,154,0.2); z-index:0; pointer-events:none; }
-.mike-content .services-label { margin-bottom:20px; }
-.mike-headline { font-family:var(--font-display); font-weight:900; font-size:clamp(36px,4vw,60px); color:var(--b-white); line-height:0.95; letter-spacing:-0.01em; margin-bottom:28px; }
-.mike-headline em { color:var(--b-areia); font-style:normal; }
-.mike-text { font-size:15px; font-weight:300; line-height:1.85; color:rgba(255,255,255,0.75); margin-bottom:20px; }
-.mike-text strong { color:rgba(255,255,255,0.95); font-weight:500; }
-.mike-quote { border-left:2px solid var(--b-areia); padding-left:18px; font-size:14.5px; font-style:italic; color:rgba(255,255,255,0.75); line-height:1.6; margin-top:24px; margin-bottom:24px; }
-.mike-credenciais { display:inline-block; background:rgba(200,184,154,0.1); border:1px solid rgba(200,184,154,0.25); color:var(--b-areia); font-size:12px; font-weight:600; letter-spacing:0.05em; padding:6px 14px; margin-bottom:24px; text-transform:uppercase; }
-.mike-stats { display:flex; gap:40px; margin-top:40px; padding-top:40px; border-top:1px solid rgba(255,255,255,0.06); }
-.mike-stat-num { font-family:var(--font-display); font-weight:900; font-size:40px; color:var(--b-areia); line-height:1; display:block; }
-.mike-stat-label { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-top:4px; display:block; }
+/* ─── EQUIPE ─── */
+.team-section { background:var(--b-coal); padding:120px 56px; }
+.team-header { margin-bottom:56px; max-width:680px; }
+.team-label { font-size:10px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--b-areia); margin-bottom:16px; }
+.team-headline { font-family:var(--font-display); font-weight:900; font-size:clamp(36px,5vw,64px); color:var(--b-white); line-height:0.95; letter-spacing:-0.01em; }
+.team-headline em { color:var(--b-areia); font-style:normal; }
+.team-sub { font-size:14px; font-weight:300; line-height:1.7; color:rgba(255,255,255,0.6); margin-top:20px; max-width:520px; }
+.team-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:2px; }
+.team-card { background:var(--b-coal-mid); padding:32px 28px; position:relative; overflow:hidden; transition:background 0.3s; min-height:200px; display:flex; flex-direction:column; }
+.team-card::after { content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:var(--b-areia); transition:width 0.4s ease; }
+.team-card:hover { background:#323230; }
+.team-card:hover::after { width:100%; }
+.team-card-num { font-family:var(--font-display); font-weight:900; font-size:11px; color:rgba(200,184,154,0.5); letter-spacing:0.15em; margin-bottom:20px; }
+.team-card-role { font-family:var(--font-display); font-weight:800; font-size:21px; color:var(--b-white); text-transform:uppercase; letter-spacing:0.02em; margin-bottom:14px; }
+.team-card-desc { font-size:13px; font-weight:300; line-height:1.7; color:rgba(255,255,255,0.7); }
 
-/* ─── CONTATO ─── */
-.contact { background:var(--b-coal); padding:120px 56px; border-top:1px solid rgba(255,255,255,0.05); }
+/* Card do fundador — discreto, fecha a sequência (sobretom escuro, não branco) */
+.founder-card { background:var(--b-coal-deep); margin-top:2px; display:grid; grid-template-columns:auto 1fr; gap:36px; align-items:center; padding:40px 48px; position:relative; overflow:hidden; border-top:1px solid rgba(200,184,154,0.12); }
+.founder-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; object-position:top center; filter:grayscale(15%) contrast(1.05); flex-shrink:0; border:1px solid rgba(200,184,154,0.18); }
+.founder-photo-fallback { width:120px; height:120px; border-radius:50%; background:var(--b-coal); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:900; font-size:38px; color:var(--b-areia); flex-shrink:0; border:1px solid rgba(200,184,154,0.18); }
+.founder-info { display:flex; flex-direction:column; }
+.founder-role-label { font-size:10px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--b-areia); margin-bottom:8px; }
+.founder-name { font-family:var(--font-display); font-weight:900; font-size:30px; color:var(--b-white); text-transform:uppercase; letter-spacing:-0.01em; line-height:1; margin-bottom:10px; }
+.founder-creds { display:inline-block; background:rgba(200,184,154,0.12); border:1px solid rgba(200,184,154,0.25); color:var(--b-areia); font-size:11px; font-weight:600; letter-spacing:0.04em; padding:5px 12px; margin-bottom:16px; text-transform:uppercase; width:fit-content; }
+.founder-quote { border-left:2px solid var(--b-areia); padding-left:16px; font-size:14px; font-style:italic; color:rgba(255,255,255,0.6); line-height:1.6; max-width:560px; }
+
+/* ─── ENCERRAMENTO (CONTATO + ASSINATURA) ─── */
+.closing { background:var(--b-coal); border-top:1px solid rgba(255,255,255,0.05); }
+.closing-cta { padding:120px 56px 64px; }
 .contact-label { font-size:10px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--b-areia); margin-bottom:16px; }
 .contact-headline { font-family:var(--font-display); font-weight:900; font-size:clamp(36px,5vw,76px); color:var(--b-white); line-height:0.92; letter-spacing:-0.01em; margin-bottom:20px; }
-.contact-headline em { color:var(--b-sage); font-style:normal; }
-.contact-sub { font-size:15px; font-weight:300; color:rgba(255,255,255,0.75); max-width:520px; line-height:1.7; margin-bottom:48px; }
-.contact-btns { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:80px; }
+.contact-headline .dot { color:var(--b-areia); }
+.contact-headline .brand-invert { color:var(--b-areia); }
+.contact-headline .brand-invert .dot { color:var(--b-white); }
+.contact-sub { font-size:15px; font-weight:300; color:rgba(255,255,255,0.7); max-width:520px; line-height:1.7; margin-bottom:44px; }
+.contact-btns { display:flex; gap:16px; flex-wrap:wrap; }
 .btn-primary-sand { display:inline-block; background:var(--b-areia); color:var(--b-coal); font-family:var(--font-display); font-weight:700; font-size:13px; letter-spacing:0.15em; text-transform:uppercase; padding:16px 36px; text-decoration:none; transition:transform 0.2s, opacity 0.2s; }
 .btn-primary-sand:hover { transform:translateY(-2px); opacity:0.9; }
-.contact-info-horizontal { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; padding-top:48px; border-top:1px solid rgba(255,255,255,0.06); }
-.contact-item-horiz { display:flex; gap:14px; align-items:flex-start; }
+
+/* faixa de informações com ícones discretos */
+.closing-info { display:grid; grid-template-columns:repeat(6,1fr); gap:1px; background:rgba(255,255,255,0.05); border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.06); }
+.closing-item { display:flex; gap:13px; align-items:flex-start; background:var(--b-coal); padding:30px 28px; text-decoration:none; transition:background 0.25s; }
+a.closing-item:hover { background:var(--b-coal-deep); }
 .contact-icon-box { width:34px; height:34px; border:1px solid rgba(200,184,154,0.2); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .contact-icon-box svg { width:15px; height:15px; stroke:var(--b-areia); fill:none; stroke-width:1.5; }
 .contact-text-wrap { display:flex; flex-direction:column; }
 .contact-item-meta { font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:5px; }
-.contact-item-data { font-size:13.5px; color:rgba(255,255,255,0.8); font-weight:400; line-height:1.45; }
-.contact-item-data a { color:rgba(255,255,255,0.8); text-decoration:none; transition:color 0.2s; }
-.contact-item-data a:hover { color:var(--b-areia); }
+.contact-item-data { font-size:13px; color:rgba(255,255,255,0.8); font-weight:400; line-height:1.45; }
 
-/* ─── FOOTER ─── */
-footer { background:#151513; padding:56px 56px 40px; }
-.footer-top { display:flex; justify-content:space-between; align-items:flex-start; padding-bottom:40px; border-bottom:1px solid rgba(255,255,255,0.07); margin-bottom:32px; }
-.footer-logo { font-family:var(--font-display); font-weight:900; font-size:32px; color:var(--b-white); }
-.footer-tagline { font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.25); margin-top:6px; }
-.footer-links { display:flex; gap:64px; }
-.footer-col-title { font-size:9px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--b-areia); margin-bottom:16px; }
-.footer-col a { display:block; font-size:13px; color:rgba(255,255,255,0.45); text-decoration:none; margin-bottom:10px; transition:color 0.2s; }
-.footer-col a:hover { color:var(--b-white); }
-.footer-bottom { display:flex; justify-content:space-between; align-items:center; }
-.footer-copy { font-size:11px; color:rgba(255,255,255,0.2); }
+/* assinatura final com a transição do escuro */
+.closing-signature { background:#151513; padding:40px 56px; display:flex; justify-content:space-between; align-items:flex-end; gap:40px; }
+.footer-logo { font-family:var(--font-display); font-weight:900; font-size:32px; color:var(--b-white); line-height:1; }
+.footer-logo .dot { color:var(--b-areia); }
+.footer-tagline { font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-top:8px; }
+.closing-sig-right { display:flex; flex-direction:column; align-items:flex-end; gap:14px; }
 .footer-social { display:flex; gap:12px; }
 .social-link { width:32px; height:32px; border:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; text-decoration:none; transition:border-color 0.2s, background 0.2s; }
 .social-link:hover { border-color:var(--b-areia); background:rgba(200,184,154,0.08); }
 .social-link svg { width:14px; height:14px; stroke:rgba(255,255,255,0.4); fill:none; stroke-width:1.5; }
 .social-link:hover svg { stroke:var(--b-areia); }
+.footer-copy { font-size:11px; color:rgba(255,255,255,0.2); }
 
 /* ─── REVEAL ─── */
 .reveal { opacity:0; transform:translateY(32px); transition:opacity 0.8s ease, transform 0.8s ease; }
@@ -274,7 +369,8 @@ footer { background:#151513; padding:56px 56px 40px; }
 
 /* ─── RESPONSIVE ─── */
 @media (max-width:1024px) {
-  .contact-info-horizontal { grid-template-columns:repeat(2,1fr); gap:32px; }
+  .closing-info { grid-template-columns:repeat(3,1fr); }
+  .team-grid { grid-template-columns:repeat(3,1fr); }
 }
 @media (max-width:900px) {
   nav { padding:16px 24px; }
@@ -297,19 +393,21 @@ footer { background:#151513; padding:56px 56px 40px; }
   .testimonials { padding:80px 24px; }
   .test-header { flex-direction:column; align-items:flex-start; gap:20px; }
   .test-card { min-width:calc(100% - 2px); max-width:100%; min-height:280px; height:auto; }
-  .mike-section { grid-template-columns:1fr; padding:80px 24px; gap:48px; }
-  .mike-photo-wrap img { height:400px; }
-  .contact { padding:80px 24px; }
+  .team-section { padding:80px 24px; }
+  .team-grid { grid-template-columns:1fr 1fr; }
+  .founder-card { grid-template-columns:1fr; text-align:center; justify-items:center; gap:20px; padding:40px 28px; }
+  .founder-quote { text-align:left; }
+  .closing-cta { padding:80px 24px 48px; }
   .contact-btns { flex-direction:column; }
-  .contact-info-horizontal { grid-template-columns:1fr; gap:24px; }
-  footer { padding:48px 24px 32px; }
-  .footer-top { flex-direction:column; gap:40px; }
-  .footer-links { flex-wrap:wrap; gap:32px; }
-  .footer-bottom { flex-direction:column; gap:16px; }
+  .closing-info { grid-template-columns:1fr 1fr; }
+  .closing-item { padding:24px 22px; }
+  .closing-signature { flex-direction:column; align-items:flex-start; gap:28px; padding:40px 24px; }
+  .closing-sig-right { align-items:flex-start; }
 }
 @media (max-width:600px) {
   .services-grid { grid-template-columns:1fr; }
-  .mike-stats { flex-direction:column; gap:20px; }
+  .team-grid { grid-template-columns:1fr; }
+  .closing-info { grid-template-columns:1fr; }
 }
 @media (prefers-reduced-motion:reduce) {
   *, *::before, *::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
@@ -326,18 +424,18 @@ footer { background:#151513; padding:56px 56px 40px; }
 <div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Menu de navegação">
   <span class="mobile-menu-close" id="menuClose" role="button" aria-label="Fechar menu" tabindex="0">✕</span>
   <a href="#sobre" onclick="closeMobileMenu()">Sobre</a>
-  <a href="#real-estate" onclick="closeMobileMenu()">Real Estate</a>
-  <a href="#management" onclick="closeMobileMenu()">Management</a>
+  <a href="#real-estate" onclick="closeMobileMenu()">Imóveis</a>
+  <a href="#management" onclick="closeMobileMenu()">Condomínios</a>
   <a href="#contato" onclick="closeMobileMenu()">Contato</a>
 </div>
 
 <!-- NAV -->
 <nav id="navbar" role="navigation" aria-label="Navegação principal">
-  <a href="#" class="nav-logo" aria-label="BETTER. — Real Estate & Management">BETTER.</a>
+  <a href="#" class="nav-logo" aria-label="BETTER. — Imóveis e Condomínios">BETTER<span class="dot">.</span></a>
   <div class="nav-links">
     <a href="#sobre">Sobre</a>
-    <a href="#real-estate">Real Estate</a>
-    <a href="#management">Management</a>
+    <a href="#real-estate">Imóveis</a>
+    <a href="#management">Condomínios</a>
     <a href="#contato" class="nav-cta">Fale com um Especialista</a>
   </div>
   <div class="hamburger" id="hamburger" role="button" aria-label="Abrir menu" aria-expanded="false" tabindex="0">
@@ -349,20 +447,20 @@ footer { background:#151513; padding:56px 56px 40px; }
 <section class="hero" id="hero" aria-label="Apresentação">
  <div class="hero-bg-word" aria-hidden="true">BETTER.</div>
 
-<div style="max-width: 850px; margin-bottom: auto; padding-top: 140px;">
-  <div class="hero-tag" style="margin-bottom: 16px;">Real Estate & Management · Litoral Norte de SC</div>
-  
-  <h1 class="hero-headline" style="font-size: clamp(48px, 7vw, 92px); line-height: 1.05; margin-bottom: 24px;">
-    Inteligência imobiliária.<br>Governança corporativa.
+<div style="max-width: 880px; margin-bottom: auto; padding-top: 150px;">
+  <div class="hero-tag" style="margin-bottom: 22px;">Imóveis e Condomínios · Litoral Norte de SC</div>
+
+  <h1 class="hero-headline" style="font-weight:800; font-size: clamp(38px, 5.2vw, 72px); line-height: 1.08; margin-bottom: 32px;">
+    Escolha o imóvel <span style="white-space:nowrap;">BETTER<span class="dot">.</span></span><br>Escolha a gestão condominial <span style="white-space:nowrap;">BETTER<span class="dot">.</span></span>
   </h1>
-  
-  <p class="hero-sub" style="max-width: 580px; font-size: 16px; color: rgba(255,255,255,0.65); line-height: 1.6; margin-bottom: 40px;">
-    Decisões patrimoniais complexas simplificadas por um único padrão: o rigor do critério e a transparência total.
+
+  <p class="hero-sub" style="max-width: 560px; font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 44px;">
+    Ajudamos você a escolher o imóvel certo e a cuidar bem do seu condomínio, com critério, clareza e gente de verdade do outro lado.
   </p>
-  
+
   <div class="hero-actions" style="display: flex; gap: 16px; align-items: center;">
-    <a href="#real-estate" class="btn-primary-sand">BETTER. Real Estate</a>
-    <a href="#management" class="btn-outline" style="border-color: rgba(61, 122, 94, 0.6); color: #3d7a5e;">BETTER. Management</a>
+    <a href="#real-estate" class="btn-primary-sand">Quero comprar um imóvel</a>
+    <a href="#management" class="btn-outline" style="border-color: rgba(61, 122, 94, 0.6); color: #3d7a5e;">Quero uma gestão melhor</a>
   </div>
 </div>
 
@@ -370,7 +468,7 @@ footer { background:#151513; padding:56px 56px 40px; }
   <div class="stat-item"><div class="stat-num">5<span>.0</span></div><div class="stat-label">Nota no Google</div></div>
   <div class="stat-item"><div class="stat-num">24<span>h</span></div><div class="stat-label">Plantão ativo</div></div>
   <div class="stat-item"><div class="stat-num">100<span>+</span></div><div class="stat-label">Unidades em Gestão</div></div>
-  <div class="stat-item"><div class="stat-num no-count">1:1</div><div class="stat-label">Atendimento Humano</div></div>
+  <div class="stat-item"><div class="stat-num no-count">1:1</div><div class="stat-label">Gente pra Gente</div></div>
 </div>
   <div class="hero-scroll" aria-hidden="true"><div class="scroll-line"></div><span>Scroll</span></div>
 </section>
@@ -379,20 +477,16 @@ footer { background:#151513; padding:56px 56px 40px; }
 <div class="marquee-strip" aria-hidden="true">
   <div class="marquee-track">
     <span class="marquee-item">Menos links, mais critério<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Transparência Total<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Curadoria Imobiliária<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Plantão 24h por Ligação<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Governança Profissional<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Contas Claras<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Suporte Jurídico Ativo<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Contas claras<span class="marquee-dot"></span></span>
+    <span class="marquee-item">A escolha certa pro seu patrimônio<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Plantão 24h por ligação<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Gente de verdade do outro lado<span class="marquee-dot"></span></span>
     <span class="marquee-item">Balneário Piçarras · Barra Velha · Penha<span class="marquee-dot"></span></span>
     <span class="marquee-item">Menos links, mais critério<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Transparência Total<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Curadoria Imobiliária<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Plantão 24h por Ligação<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Governança Profissional<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Contas Claras<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Suporte Jurídico Ativo<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Contas claras<span class="marquee-dot"></span></span>
+    <span class="marquee-item">A escolha certa pro seu patrimônio<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Plantão 24h por ligação<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Gente de verdade do outro lado<span class="marquee-dot"></span></span>
     <span class="marquee-item">Balneário Piçarras · Barra Velha · Penha<span class="marquee-dot"></span></span>
   </div>
 </div>
@@ -404,28 +498,29 @@ footer { background:#151513; padding:56px 56px 40px; }
     <h2 class="about-headline">Uma marca.<br>Duas divisões.<br><em>Um critério.</em></h2>
   </div>
   <div class="reveal reveal-delay-2">
-    <p class="about-text">Nascemos para simplificar o complexo através da transparência e honestidade. Desde a curadoria estratégica para a compra do seu imóvel no litoral até a governança condominial humana e moderna — a BETTER. atua de ponta a ponta no seu patrimônio.</p>
-    <div class="about-highlight">"Cada recomendação, cada decisão e cada estratégia passam por um princípio fundamental: agir como agiríamos se o patrimônio fosse nosso."</div>
-    <p class="about-text">Não buscamos ser os maiores; buscamos ser a escolha certa para quem valoriza confiança, compromisso e resultado. Patrimônio se constrói com decisões inteligentes. E boas escolhas exigem critério.</p>
-    <a href="#real-estate" class="about-link">Conhecer nossas áreas de atuação <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></a>
+    <p class="about-text">Nascemos pra simplificar o que é complicado, com transparência e honestidade. Da escolha do seu imóvel no litoral até o cuidado do dia a dia do seu condomínio, a BETTER. acompanha o seu patrimônio do começo ao fim.</p>
+    <div class="about-highlight">"Cada recomendação, cada decisão e cada estratégia passam por um princípio: agir como agiríamos se o patrimônio fosse nosso."</div>
+    <p class="about-text">Não queremos ser a maior. Queremos ser a escolha <span class="brand-word">CERTA<span class="dot">.</span></span> A escolha certa se baseia em confiança, compromisso e resultados reais. Patrimônio se constrói com decisões inteligentes. E boas decisões exigem critério.</p>
+    <div class="about-q">Qual é o seu?</div>
+    <a href="#real-estate" class="about-link">Conheça o que fazemos <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></a>
   </div>
 </section>
 
-<!-- ══════════════ REAL ESTATE ══════════════ -->
+<!-- ══════════════ CONSULTORIA IMOBILIÁRIA ══════════════ -->
 <section class="services" id="real-estate">
   <div class="services-header reveal">
     <div>
-      <div class="div-badge div-badge-re">Real Estate</div>
-      <div class="services-label">BETTER. — Curadoria Imobiliária</div>
-      <h2 class="services-headline">O imóvel certo<br>existe. Nós sabemos<br>onde está.</h2>
+      <div class="div-badge div-badge-re">Consultoria Imobiliária</div>
+      <h2 class="services-headline headline-soft">O imóvel <span class="brand-word">CERTO<span class="dot">.</span></span><br>existe. Sabemos<br>onde está.</h2>
     </div>
-    <p class="services-desc">Não trabalhamos com volume. Trabalhamos com precisão. Menos links, mais critério — nosso foco nunca será a maior comissão, mas sim o melhor produto para o seu patrimônio.</p>
+    <p class="services-desc">Não trabalhamos com volume, trabalhamos com critério. Menos links, mais escolha certa. O foco nunca é a maior comissão, é o melhor imóvel pro seu patrimônio.</p>
   </div>
 
   <div class="services-grid-3 reveal" style="margin-bottom:2px;">
     <div class="service-card re-intro-card">
-      <div class="service-num">Parceria Exclusiva de Compra</div>
-      <p class="service-text">Através de uma parceria exclusiva, realizamos uma varredura completa com todas as construtoras e corretores confiáveis do mercado. Você abre o seu propósito e se compromete a comprar conosco; nós entregamos a solução definitiva em Balneário Piçarras e região. Nossa curadoria não é uma lista — é uma recomendação. E por trás dela há pesquisa, experiência e honestidade. Você não precisa visitar cinquenta imóveis para encontrar o certo.</p>
+      <div class="service-num">Parceria de compra exclusiva</div>
+      <p class="service-text">Fazemos a <span class="term term-brand" tabindex="0" role="button" aria-label="O que é curadoria">curadoria<span class="term-balloon">Pesquisamos, visitamos e separamos os imóveis certos pra você. Você não perde tempo com o que não serve.</span></span> do mercado pra você. Temos acesso fácil a boa parte das construtoras, imobiliárias e corretores da região, então a busca é ampla de verdade. Você conta o seu objetivo e se compromete a comprar conosco, e entregamos a solução <span class="brand-word">CERTA<span class="dot">.</span></span> em Balneário Piçarras e região.</p>
+      <p class="service-text">Não é uma lista de imóveis. É uma recomendação. Avaliamos cada imóvel e deixamos toda a documentação em ordem, pra você comprar com segurança. Você não precisa visitar cinquenta imóveis pra achar o <span class="brand-word">CERTO<span class="dot">.</span></span> Precisa de quem já avaliou eles por você.</p>
     </div>
   </div>
 
@@ -434,25 +529,25 @@ footer { background:#151513; padding:56px 56px 40px; }
       <div class="service-num">Etapa 01</div>
       <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
       <div class="service-title">Alinhamento Inicial</div>
-      <p class="service-text">Entendemos o seu propósito — lucratividade, lazer ou descanso —, seu fluxo de caixa real e estipulamos as metas de busca. Sem atalhos.</p>
+      <p class="service-text">Entendemos o seu objetivo, se é pra lucrar, pra lazer ou pra morar, e quanto você realmente pode investir. Daí definimos juntos o que procurar. Sem atalho.</p>
     </div>
     <div class="service-card">
       <div class="service-num">Etapa 02</div>
       <div class="service-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
       <div class="service-title">Filtro & Afunilamento</div>
-      <p class="service-text">Apresentamos as opções planilhadas. Eliminamos o que não agrada e afunilamos as buscas em imóveis com características alinhadas ao seu perfil e intenção de investimento.</p>
+      <p class="service-text">Mostramos as opções organizadas numa planilha. Você tira o que não gostou, e vamos afunilando até sobrarem só os imóveis com a cara do que você procura.</p>
     </div>
     <div class="service-card">
       <div class="service-num">Etapa 03</div>
       <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
       <div class="service-title">Visita Estratégica</div>
-      <p class="service-text">Vamos a campo apenas para validar presencialmente as localizações que você já monitorou e aprovou conosco previamente. Sem perda de tempo.</p>
+      <p class="service-text">Só vamos a campo pra confirmar de perto o que você já acompanhou e aprovou com a BETTER. antes. Sem perder tempo com visita à toa.</p>
     </div>
     <div class="service-card">
       <div class="service-num">Etapa 04</div>
       <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
       <div class="service-title">Negociação Firme</div>
-      <p class="service-text">Montamos a engenharia da proposta e negociamos direto com a construtora, garantindo o melhor negócio para o seu patrimônio — não para a nossa comissão.</p>
+      <p class="service-text">Montamos a proposta e negociamos direto com a construtora, pra garantir o melhor negócio pro seu patrimônio. Não pra nossa comissão.</p>
     </div>
   </div>
 </section>
@@ -470,35 +565,34 @@ footer { background:#151513; padding:56px 56px 40px; }
   </div>
 </div>
 
-<!-- ══════════════ MANAGEMENT ══════════════ -->
+<!-- ══════════════ GESTÃO DE CONDOMÍNIOS ══════════════ -->
 <section class="services" id="management">
   <div class="services-header reveal">
     <div>
-      <div class="div-badge div-badge-mg">Management</div>
-      <div class="services-label">BETTER. — Gestão Condominial</div>
+      <div class="div-badge div-badge-mg">Gestão de Condomínios</div>
       <h2 class="services-headline">Gestão que você<br>sente no dia a dia.</h2>
     </div>
-    <p class="services-desc">Um condomínio bem administrado não aparece nos problemas — aparece na ausência deles. Somos a presença que o seu condomínio precisa.</p>
+    <p class="services-desc">Um condomínio bem cuidado não aparece nos problemas. Aparece na falta deles. Somos a presença que o seu condomínio precisa.</p>
   </div>
 
   <div class="services-grid-3 reveal">
     <div class="service-card">
       <div class="service-num">Administração · 01</div>
       <div class="service-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="1"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
-      <div class="service-title">Contas Claras, Sem Segredos</div>
-      <p class="service-text">Substituímos pastas confusas por uma prestação de contas limpa, intuitiva e digital. Qualquer morador consegue auditar e entender para onde vai o dinheiro do condomínio.</p>
+      <div class="service-title">Contas Claras, Sem Segredo</div>
+      <p class="service-text">Trocamos as pastas bagunçadas por uma prestação de contas limpa e digital. Qualquer morador consegue entender pra onde vai o dinheiro do condomínio.</p>
     </div>
     <div class="service-card">
       <div class="service-num">Administração · 02</div>
       <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
-      <div class="service-title">Atendimento Humanizado</div>
-      <p class="service-text">Canal aberto e direto com pessoas reais. Ouvimos e resolvemos demandas com agilidade, abandonando a frieza institucional corporativa que a maioria tolera sem precisar.</p>
+      <div class="service-title">Atendimento de Gente pra Gente</div>
+      <p class="service-text">Canal aberto e direto, com pessoas de verdade. Ouvimos e resolvemos as demandas com rapidez, sem aquela frieza de empresa grande que ninguém merece.</p>
     </div>
     <div class="service-card">
       <div class="service-num">Administração · 03</div>
       <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
-      <div class="service-title">Suporte Jurídico de Perto</div>
-      <p class="service-text">Total respaldo legal para o dia a dia do prédio: análises contratuais, atas de assembleias e cobrança amigável de inadimplência com segurança e clareza.</p>
+      <div class="service-title">Apoio Jurídico de Perto</div>
+      <p class="service-text">Respaldo legal no dia a dia do prédio: análise de contratos, atas de assembleia e cobrança amigável de quem está em <span class="term" tabindex="0" role="button" aria-label="O que é inadimplência">inadimplência<span class="term-balloon">É quando o morador atrasa ou deixa de pagar a taxa do condomínio.</span></span>, com segurança e clareza.</p>
     </div>
   </div>
 
@@ -506,28 +600,28 @@ footer { background:#151513; padding:56px 56px 40px; }
     <div class="service-card">
       <div class="service-num">Síndico Profissional · 01</div>
       <div class="service-icon"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
-      <div class="service-title">Acompanhamento de Resultados</div>
-      <p class="service-text">Presença ativa nos trabalhos do condomínio. Garantimos que as entregas sigam o padrão desejado e que o patrimônio coletivo seja preservado com critério técnico.</p>
+      <div class="service-title">Acompanhamento de Perto</div>
+      <p class="service-text">Presença ativa nas obras e serviços do condomínio. Garantimos que cada entrega siga o padrão combinado e que o patrimônio de todos seja preservado com critério.</p>
     </div>
     <div class="service-card">
       <div class="service-num">Síndico Profissional · 02</div>
       <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg></div>
       <div class="service-title">Parcerias de Confiança</div>
-      <p class="service-text">Priorizamos profissionais com histórico consolidado — nem sempre o preço mais barato é a escolha certa. Decisões tomadas com responsabilidade pelo patrimônio de todos.</p>
+      <p class="service-text">Damos preferência a profissionais com histórico comprovado. Nem sempre o mais barato é a escolha <span class="brand-word">CERTA<span class="dot">.</span></span> Cada decisão é tomada com responsabilidade pelo patrimônio de todos.</p>
     </div>
     <div class="service-card">
       <div class="service-num">Síndico Profissional · 03</div>
       <div class="service-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
-      <div class="service-title">Gestão de Conflitos</div>
-      <p class="service-text">Mediação eficaz entre moradores, fornecedores e conselho. Decisões tomadas com respaldo técnico e jurídico, protegendo todos os lados com imparcialidade.</p>
+      <div class="service-title">Mediação de Conflitos</div>
+      <p class="service-text">Resolvemos os atritos entre moradores, fornecedores e conselho com imparcialidade. Decisões com respaldo técnico e jurídico, protegendo todos os lados.</p>
     </div>
   </div>
 
   <div class="plantao-card reveal" style="margin-top:2px;">
     <div class="service-num">Plantão Emergencial</div>
     <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 012 4.18 2 2 0 014 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
-    <div class="service-title">Ativo 24h — Qualquer Dia do Ano</div>
-    <p class="service-text">Mantemos plantão emergencial ativo 24 horas por dia, em qualquer dia do ano — finais de semana, feriados e recesso. Válido exclusivamente mediante <strong style="color:rgba(255,255,255,0.95);">ligação telefônica</strong>. Ocorreu uma emergência real? Ligue imediatamente.</p>
+    <div class="service-title">Ativo 24h, Qualquer Dia do Ano</div>
+    <p class="service-text">Plantão emergencial ativo 24 horas por dia, todos os dias do ano, incluindo fins de semana, feriados e recesso. Funciona só por <span class="brand-word" style="color:var(--b-white);">LIGAÇÃO TELEFÔNICA<span class="dot">.</span></span> Precisou? Pode ligar!</p>
     <a href="tel:+5547996135771" class="btn-call">
       <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 012 4.18 2 2 0 014 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
       Ligar Agora — (47) 9 9613-5771
@@ -538,12 +632,12 @@ footer { background:#151513; padding:56px 56px 40px; }
     <div class="horario-card">
       <div class="horario-label">Expediente Regular</div>
       <div class="horario-title">Segunda a Sexta</div>
-      <p class="horario-text">Das 9h às 12h e das 13h30 às 18h, exceto feriados. Canal aberto para todas as demandas administrativas e operacionais.</p>
+      <p class="horario-text">Das 9h às 12h e das 13h30 às 18h, exceto feriados. Canal aberto pra todas as demandas do dia a dia.</p>
     </div>
     <div class="horario-card">
       <div class="horario-label">Recesso de Fim de Ano</div>
-      <div class="horario-title">Natal & Ano Novo</div>
-      <p class="horario-text">Encerramos as atividades administrativas na sexta-feira anterior às vésperas de Natal e retornamos na primeira segunda-feira após o Ano Novo. O plantão emergencial permanece ativo.</p>
+      <div class="horario-title">Natal e Ano Novo</div>
+      <p class="horario-text">Paramos as atividades administrativas na sexta-feira antes do Natal e voltamos na primeira segunda depois do Ano Novo. O plantão emergencial continua ativo.</p>
     </div>
   </div>
 </section>
@@ -553,7 +647,7 @@ footer { background:#151513; padding:56px 56px 40px; }
   <div class="number-item reveal" role="listitem"><div class="number-val">5<span>.0</span></div><div class="number-label">Nota no Google</div></div>
   <div class="number-item reveal reveal-delay-1" role="listitem"><div class="number-val">24<span>h</span></div><div class="number-label">Plantão Ativo</div></div>
   <div class="number-item reveal reveal-delay-2" role="listitem"><div class="number-val">100<span>+</span></div><div class="number-label">Unidades em Gestão</div></div>
-  <div class="number-item reveal reveal-delay-3" role="listitem"><div class="number-val no-count">1:1</div><div class="number-label">Atendimento Humano</div></div>
+  <div class="number-item reveal reveal-delay-3" role="listitem"><div class="number-val no-count">1:1</div><div class="number-label">Gente pra Gente</div></div>
 </div>
 
 <!-- ══════════════ DEPOIMENTOS ══════════════ -->
@@ -704,115 +798,129 @@ footer { background:#151513; padding:56px 56px 40px; }
   <div class="test-dots" id="testDots" role="tablist" aria-label="Navegar depoimentos"></div>
 </section>
 
-<!-- ══════════════ MIKE ══════════════ -->
-<section class="mike-section" id="sobre-mike">
-  <div class="mike-left-col">
-    <div class="mike-photo-wrap reveal">
-      <img src="mike.jpg" alt="Mike Morais — Fundador da BETTER. Real Estate & Management" onerror="this.style.background='#2a2a28';this.removeAttribute('src')">
+<!-- ══════════════ EQUIPE ══════════════ -->
+<section class="team-section" id="equipe">
+  <div class="team-header reveal">
+    <div class="team-label">A estrutura por trás da BETTER.</div>
+    <h2 class="team-headline">Quem cuida do<br>seu <em>patrimônio</em>?</h2>
+    <p class="team-sub">Cada frente coberta por quem entende dela. Da porta de entrada até a palavra final, tem gente de verdade respondendo por cada parte.</p>
+  </div>
+
+  <div class="team-grid reveal">
+    <div class="team-card">
+      <div class="team-card-num">01</div>
+      <div class="team-card-role">Atendimento</div>
+      <p class="team-card-desc">A porta de entrada. Canal direto, de gente pra gente, pra ouvir e resolver o que você precisa.</p>
     </div>
-    <div class="mike-quote reveal reveal-delay-1" style="margin-top:32px;">
-      "Todo homem está sujeito ao erro. Mas a verdadeira competência está na busca obstinada pela resolução."
+    <div class="team-card">
+      <div class="team-card-num">02</div>
+      <div class="team-card-role">Operação</div>
+      <p class="team-card-desc">Quem faz a máquina girar todo dia. Documentos, rotinas e prazos, tudo no lugar certo.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-card-num">03</div>
+      <div class="team-card-role">Financeiro</div>
+      <p class="team-card-desc">Contas em ordem, recebimentos e repasses conferidos, sem surpresa no fim do mês.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-card-num">04</div>
+      <div class="team-card-role">Fiscal</div>
+      <p class="team-card-desc">Notas, impostos e obrigações em dia. A parte chata feita direito pra você não se preocupar.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-card-num">05</div>
+      <div class="team-card-role">Jurídico</div>
+      <p class="team-card-desc">Respaldo legal no dia a dia: contratos, atas de assembleia e cobranças, com segurança e clareza.</p>
     </div>
   </div>
-  <div class="mike-content reveal reveal-delay-2">
-    <div class="services-label">O Profissional por trás da BETTER.</div>
-    <h2 class="mike-headline">Mike Morais.<br><em>Presença,<br>responsabilidade<br>e resolução.</em></h2>
-    <div class="mike-credenciais">CRA-SC 34779 · CRECI 43276 · CNAI 42087</div>
-    <p class="mike-text"><strong>Fundador.</strong> Atuante em curadoria imobiliária estratégica no litoral e governança condominial humana — as duas divisões da BETTER.</p>
-    <p class="mike-text">Ex-gestor de pós-obras do Grupo MB e síndico profissional com ampla expertise em engenharia de processos. Atua com presença ativa, responsabilidade técnica e atendimento direto.</p>
-    <div class="mike-stats">
-      <div><span class="mike-stat-num">5.0</span><span class="mike-stat-label">Nota no Google</span></div>
-      <div><span class="mike-stat-num">24h</span><span class="mike-stat-label">Plantão ativo</span></div>
-      <div><span class="mike-stat-num">100+</span><span class="mike-stat-label">Unidades em Gestão</span></div>
+
+  <div class="founder-card reveal">
+    <img class="founder-photo" src="mike.jpg" alt="Mike Morais, fundador da BETTER." onerror="this.outerHTML='<div class=&quot;founder-photo-fallback&quot;>MM</div>'">
+    <div class="founder-info">
+      <div class="founder-role-label">Fundador</div>
+      <div class="founder-name">Mike Morais</div>
+      <div class="founder-creds">CRA-SC 34779 · CRECI 43276 · CNAI 42087</div>
+      <div class="founder-quote">"Todo homem está sujeito ao erro. Mas a verdadeira competência está na busca obstinada pela resolução."</div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════ CONTATO ══════════════ -->
-<section class="contact" id="contato">
-  <div class="reveal">
+<!-- ══════════════ ENCERRAMENTO (CONTATO + ASSINATURA) ══════════════ -->
+<section class="closing" id="contato">
+  <div class="closing-cta reveal">
     <div class="contact-label">Dê o próximo passo</div>
-    <h2 class="contact-headline">Pronto para ser <em>BETTER.</em><br>Vamos conversar.</h2>
-    <p class="contact-sub">Esqueça menus automáticos e robôs. Escolha a área do seu interesse para iniciar o atendimento técnico exclusivo direto no WhatsApp.</p>
+    <h2 class="contact-headline">Pronto pra ser <span class="brand-invert" style="white-space:nowrap;">BETTER<span class="dot">.</span></span><br>Vamos conversar.</h2>
+    <p class="contact-sub">Esqueça menu automático e robô. Escolha a área que te interessa e fale direto no WhatsApp.</p>
     <div class="contact-btns">
-      <a href="https://wa.me/5547996135771?text=Ol%C3%A1%2C%20Mike.%20Gostaria%20de%20conversar%20sobre%20a%20BETTER.%20Real%20Estate%20%E2%80%94%20Curadoria%20Imobili%C3%A1ria." target="_blank" rel="noopener noreferrer" class="btn-primary-sand">BETTER. Real Estate</a>
-      <a href="https://wa.me/5547996135771?text=Ol%C3%A1%2C%20Mike.%20Gostaria%20de%20uma%20proposta%20para%20meu%20Condom%C3%ADnio%20%E2%80%94%20BETTER.%20Management." target="_blank" rel="noopener noreferrer" class="btn-primary">BETTER. Management</a>
+      <a href="https://wa.me/5547996135771?text=Ol%C3%A1%2C%20Mike.%20Gostaria%20de%20conversar%20sobre%20a%20compra%20de%20um%20im%C3%B3vel%20com%20a%20BETTER." target="_blank" rel="noopener noreferrer" class="btn-primary-sand">Quero comprar um imóvel</a>
+      <a href="https://wa.me/5547996135771?text=Ol%C3%A1%2C%20Mike.%20Gostaria%20de%20uma%20proposta%20de%20gest%C3%A3o%20para%20o%20meu%20condom%C3%ADnio%20com%20a%20BETTER." target="_blank" rel="noopener noreferrer" class="btn-primary">Quero uma gestão melhor</a>
     </div>
-    <div class="contact-info-horizontal">
-      <div class="contact-item-horiz">
-        <div class="contact-icon-box"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 012 4.18 2 2 0 014 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
-        <div class="contact-text-wrap">
-          <div class="contact-item-meta">WhatsApp / Fone</div>
-          <div class="contact-item-data"><a href="https://wa.me/5547996135771" target="_blank" rel="noopener noreferrer">(47) 9 9613-5771</a></div>
-        </div>
+  </div>
+
+  <div class="closing-info reveal">
+    <a href="https://wa.me/5547996135771" target="_blank" rel="noopener noreferrer" class="closing-item">
+      <div class="contact-icon-box"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 012 4.18 2 2 0 014 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+      <div class="contact-text-wrap">
+        <div class="contact-item-meta">WhatsApp / Fone</div>
+        <div class="contact-item-data">(47) 9 9613-5771</div>
       </div>
-      <div class="contact-item-horiz">
-        <div class="contact-icon-box"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-        <div class="contact-text-wrap">
-          <div class="contact-item-meta">E-mail Oficial</div>
-          <div class="contact-item-data"><a href="mailto:adm@sejabetter.com.br">adm@sejabetter.com.br</a></div>
-        </div>
+    </a>
+    <a href="mailto:adm@sejabetter.com.br" class="closing-item">
+      <div class="contact-icon-box"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+      <div class="contact-text-wrap">
+        <div class="contact-item-meta">E-mail Oficial</div>
+        <div class="contact-item-data">adm@sejabetter.com.br</div>
       </div>
-      <div class="contact-item-horiz">
-        <div class="contact-icon-box"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-        <div class="contact-text-wrap">
-          <div class="contact-item-meta">Escritório Físico</div>
-          <div class="contact-item-data">Av. Simas, 630 — Itajuba<br>Barra Velha, SC</div>
-        </div>
+    </a>
+    <a href="https://maps.app.goo.gl/hoh8nFM1ZiXdghLX6" target="_blank" rel="noopener noreferrer" class="closing-item">
+      <div class="contact-icon-box"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+      <div class="contact-text-wrap">
+        <div class="contact-item-meta">Escritório Físico</div>
+        <div class="contact-item-data">Av. Simas, 630, Itajuba<br>Barra Velha, SC</div>
       </div>
-      <div class="contact-item-horiz">
-        <div class="contact-icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg></div>
-        <div class="contact-text-wrap">
-          <div class="contact-item-meta">Área de Atendimento</div>
-          <div class="contact-item-data">Piçarras, Barra Velha e Penha — SC</div>
-        </div>
+    </a>
+    <div class="closing-item">
+      <div class="contact-icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg></div>
+      <div class="contact-text-wrap">
+        <div class="contact-item-meta">Atendimento</div>
+        <div class="contact-item-data">Seg a Sex, 9h às 12h<br>e 13h30 às 18h</div>
       </div>
+    </div>
+    <div class="closing-item">
+      <div class="contact-icon-box"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 012 4.18 2 2 0 014 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+      <div class="contact-text-wrap">
+        <div class="contact-item-meta">Plantão</div>
+        <div class="contact-item-data">24h, todos os dias<br>por ligação</div>
+      </div>
+    </div>
+    <div class="closing-item">
+      <div class="contact-icon-box"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+      <div class="contact-text-wrap">
+        <div class="contact-item-meta">Área de Atendimento</div>
+        <div class="contact-item-data">Piçarras, Barra Velha<br>e Penha, SC</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="closing-signature">
+    <div class="closing-sig-brand">
+      <div class="footer-logo">BETTER<span class="dot">.</span></div>
+      <div class="footer-tagline">Imóveis e Condomínios · Consultoria Imobiliária e Gestão de Condomínios</div>
+      <div class="footer-tagline" style="color:rgba(255,255,255,0.18); font-size:8.5px; margin-top:4px;">CRA-SC 34779 · CRECI 43276 · CNAI 42087</div>
+    </div>
+    <div class="closing-sig-right">
+      <div class="footer-social">
+        <a href="https://www.instagram.com/sejabetter.com.br/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram @sejabetter.com.br">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5" stroke-linecap="round" stroke-width="3"/></svg>
+        </a>
+        <a href="https://maps.app.goo.gl/hoh8nFM1ZiXdghLX6" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Google Maps — BETTER.">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor" stroke="none"/></svg>
+        </a>
+      </div>
+      <div class="footer-copy">© 2026 BETTER. Imóveis e Condomínios. Todos os direitos reservados.</div>
     </div>
   </div>
 </section>
-
-<!-- ══════════════ FOOTER ══════════════ -->
-<footer role="contentinfo">
-  <div class="footer-top">
-    <div>
-      <div class="footer-logo">BETTER.</div>
-      <div class="footer-tagline">Real Estate & Management · Curadoria Imobiliária e Gestão Condominial</div>
-      <div class="footer-tagline" style="color:rgba(255,255,255,0.15); font-size:8.5px; margin-top:4px;">CRA-SC 34779 · CRECI 43276 · CNAI 42087</div>
-    </div>
-    <div class="footer-links">
-      <div class="footer-col">
-        <div class="footer-col-title">Empresa</div>
-        <a href="#sobre">Sobre a BETTER.</a>
-        <a href="#real-estate">Real Estate</a>
-        <a href="#management">Management</a>
-        <a href="#depoimentos">Avaliações</a>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Contato</div>
-        <a href="https://wa.me/5547996135771" target="_blank" rel="noopener noreferrer">(47) 9 9613-5771</a>
-        <a href="mailto:adm@sejabetter.com.br">adm@sejabetter.com.br</a>
-        <a href="https://maps.app.goo.gl/hoh8nFM1ZiXdghLX6" target="_blank" rel="noopener noreferrer">Av. Simas, 630 — Itajuba, Barra Velha</a>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Atendimento</div>
-        <a href="#">Seg–Sex: 9h às 12h / 13h30 às 18h</a>
-        <a href="tel:+5547996135771">Plantão 24h — Ligar: (47) 9 9613-5771</a>
-        <a href="https://wa.me/5547996135771" target="_blank" rel="noopener noreferrer">WhatsApp direto</a>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <div class="footer-copy">© 2026 BETTER. Real Estate & Management. Todos os direitos reservados.</div>
-    <div class="footer-social">
-      <a href="https://www.instagram.com/sejabetter.com.br/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram @sejabetter.com.br">
-        <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5" stroke-linecap="round" stroke-width="3"/></svg>
-      </a>
-      <a href="https://maps.app.goo.gl/hoh8nFM1ZiXdghLX6" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Google Maps — BETTER.">
-        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor" stroke="none"/></svg>
-      </a>
-    </div>
-  </div>
-</footer>
 
 <script>
 /* ─── CURSOR ─── */
@@ -828,7 +936,7 @@ document.addEventListener('mousemove', e => {
   ring.style.left = rx+'px'; ring.style.top = ry+'px';
   requestAnimationFrame(animateRing);
 })();
-document.querySelectorAll('a, button, .service-card, .test-card').forEach(el => {
+document.querySelectorAll('a, button, .service-card, .test-card, .team-card').forEach(el => {
   el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
   el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
 });
@@ -844,6 +952,28 @@ document.getElementById('menuClose').addEventListener('click',   closeMobileMenu
 document.getElementById('hamburger').addEventListener('click',   openMobileMenu);
 document.getElementById('menuClose').addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' ') closeMobileMenu(); });
 document.getElementById('hamburger').addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' ') openMobileMenu();  });
+
+/* ─── BALÕES / TOOLTIPS (toque no mobile, hover no desktop) ─── */
+document.querySelectorAll('.term').forEach(term => {
+  term.addEventListener('click', e => {
+    e.preventDefault();
+    const wasOpen = term.classList.contains('open');
+    document.querySelectorAll('.term.open').forEach(t => t.classList.remove('open'));
+    if (!wasOpen) term.classList.add('open');
+  });
+  term.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      term.classList.toggle('open');
+    }
+    if (e.key === 'Escape') term.classList.remove('open');
+  });
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest('.term')) {
+    document.querySelectorAll('.term.open').forEach(t => t.classList.remove('open'));
+  }
+});
 
 /* ─── REVEAL ON SCROLL ─── */
 const revealObs = new IntersectionObserver(entries => {
@@ -885,11 +1015,9 @@ document.querySelectorAll('.number-val').forEach(el => {
   let isTransitioning = false;
   const numClones = 3;
 
-  /* Clonar últimos 3 para o início */
   for (let i = originalCount - 1; i >= originalCount - numClones; i--) {
     track.insertBefore(originalCards[i].cloneNode(true), track.firstChild);
   }
-  /* Clonar primeiros 3 para o final */
   for (let i = 0; i < numClones; i++) {
     track.appendChild(originalCards[i].cloneNode(true));
   }
