@@ -704,7 +704,7 @@ body {
 //  CONFIGURAÇÃO — cole aqui a URL do seu App da Web (Apps Script)
 //  Ela é gerada ao publicar o Code.gs e termina em /exec
 // ═══════════════════════════════════════════════════════════════
-const API_URL = 'https://script.google.com/macros/s/AKfycbxgTo2_-xIzBUwwg9wuVVf1FHq3aOeVGSZN6_4Daidn9uk--OunKwrZTvQ_FIW656-srA/exec';
+const API_URL = 'COLE_AQUI_A_URL_DO_APP_DA_WEB';
 
 // ─── CONFIGURAÇÕES GOOGLE AGENDA ─────────────────────────────
 const GCAL_CLIENT_ID = '721838040530-r6qe06j6kleph12hb8k9askh8fb0cojm.apps.googleusercontent.com';
@@ -924,14 +924,16 @@ function setSyncState(state) {
   label.textContent = { ok: 'Sincronizado', syncing: 'Sincronizando', err: 'Sem conexão' }[state] || '—';
 }
 
-// Envia uma alteração; o servidor devolve os dados atualizados de todos
 // Fila SERIAL de gravações. Cada alteração entra na fila e é enviada uma de
-// cada vez. Enquanto houver gravações na fila, as respostas do servidor NÃO
-// sobrescrevem o STORE local (que já contém a verdade mais recente) — isso
-// evita a condição de corrida em que uma resposta antiga "desfazia" uma
-// conclusão recém-marcada. O STORE só é ressincronizado quando a fila esvazia.
+// cada vez. As gravações agora só confirmam {ok:true} — NÃO trazem mais o
+// banco inteiro (o STORE local já foi atualizado de forma otimista). Em caso
+// de falha transitória ("sem conexão"), reenvia com backoff antes de desistir.
+// Reenvio é seguro: o backend é idempotente (última linha por chave vence).
 let writeQueue = [];
 let queueRunning = false;
+let lastWriteTs = 0;
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 function sync(action, payload) {
   writeQueue.push({ action, payload });
@@ -942,25 +944,31 @@ async function runQueue() {
   queueRunning = true;
   setSyncState('syncing');
   while (writeQueue.length) {
-    const { action, payload } = writeQueue.shift();
-    try {
-      const d = await api(action, payload);
-      // Só adota o STORE do servidor quando esta foi a ÚLTIMA gravação da fila.
-      // Assim respostas intermediárias não rebaixam o estado local.
-      if (d.dados && writeQueue.length === 0) {
-        STORE = d.dados;
-        render();
+    const job = writeQueue[0]; // espia sem remover, para poder reenviar
+    let ok = false;
+    for (let tentativa = 0; tentativa < 3 && !ok; tentativa++) {
+      try {
+        await api(job.action, job.payload);
+        ok = true;
+      } catch (err) {
+        if (String(err.message) === 'senha_invalida') {
+          sessionStorage.removeItem('better_senha');
+          location.reload();
+          return;
+        }
+        await sleep(600 * (tentativa + 1)); // backoff: 0.6s, 1.2s
       }
-    } catch (err) {
+    }
+    writeQueue.shift();
+    if (ok) {
+      lastWriteTs = Date.now();
+    } else {
       setSyncState('err');
-      if (String(err.message) === 'senha_invalida') {
-        sessionStorage.removeItem('better_senha');
-        location.reload();
-        return;
-      }
-      showToast('Erro ao sincronizar — tente novamente');
-      // mantém o que falhou para nova tentativa e para a fila
+      showToast('Falha ao salvar — será tentado de novo');
+      // devolve o item para o fim da fila e tenta mais tarde
+      writeQueue.push(job);
       queueRunning = false;
+      setTimeout(() => { if (!queueRunning) runQueue(); }, 5000);
       return;
     }
   }
@@ -1805,10 +1813,13 @@ setFilter(currentFilter);
 iniciarSessao();
 
 // A cada 60s: busca atualizações dos colegas e reavalia horários-limite.
-// Pula se há gravações pendentes na fila, para não sobrescrever o estado local.
+// Pula se há gravações pendentes na fila OU se houve gravação nos últimos 30s
+// (a leitura do servidor é memoizada por 25s e poderia vir sem a alteração
+// recém-feita, revertendo o estado local). A guarda evita esse "piscar".
 setInterval(() => {
   if (!carregado || !SENHA_SESSAO) return;
   if (queueRunning || writeQueue.length) return;
+  if (Date.now() - lastWriteTs < 30000) return;
   api('getAll')
     .then(d => { STORE = d.dados; setSyncState('ok'); render(); })
     .catch(() => setSyncState('err'));
